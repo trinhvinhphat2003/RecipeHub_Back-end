@@ -31,21 +31,21 @@ public class SecurityConfig {
 		http.csrf().disable();
 		http.formLogin().disable();
 		
-//		http
-//			.authorizeHttpRequests()
+		http
+			.authorizeHttpRequests()
 //			.requestMatchers("/api/user").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
 //			.requestMatchers("/api/user").hasAuthority(Role.ADMIN.name())
-//			.requestMatchers("/api/v1/auth/**").permitAll()
-////			.anyRequest().authenticated()
-//			.and()
-//			.sessionManagement()
-//			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//			.and()
-//			.authenticationProvider(authenticationProvider)
-//			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-////			.exceptionHandling()
-////        	.accessDeniedHandler(customAccessDeniedHandler)
-////        	.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+			.requestMatchers("/api/v1/auth/**").permitAll()
+			.anyRequest().authenticated()
+			.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+			.authenticationProvider(authenticationProvider)
+			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//			.exceptionHandling()
+//        	.accessDeniedHandler(customAccessDeniedHandler)
+//        	.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 		return http.build();
 	}
 }
