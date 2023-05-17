@@ -1,6 +1,7 @@
 package com.example.RecipeHub.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.repositories.UserRepository;
 
 
@@ -21,6 +23,18 @@ public class ApplicationConfig {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Bean
+	public CommandLineRunner getCommandLineRunner() {
+		return new CommandLineRunner() {
+			
+			@Override
+			public void run(String... args) throws Exception {
+				userRepository.save(new User("user@gmail.com", getPasswordEncoder().encode("123456")));
+				userRepository.save(new User("admin@gmail.com", getPasswordEncoder().encode("123456")));
+			}
+		};
+	}
 	
 	@Bean
 	public AuthenticationProvider getAuthenticationProvider() {
