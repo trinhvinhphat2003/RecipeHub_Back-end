@@ -34,7 +34,7 @@ public class AuthenticationController {
 
 	@PostMapping("login")
 	public ResponseEntity<String> handleLogin(@RequestBody LoginDTO loginDTO) {
-		//authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
 		UserDetails userDetails = userRepository.findByEmail(loginDTO.getEmail()).get();
 		String JwtToken = jwtService.generateToken(userDetails);
 		return new ResponseEntity<String>("Bearer " + JwtToken, HttpStatus.OK);
