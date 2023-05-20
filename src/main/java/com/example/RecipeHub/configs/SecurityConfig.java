@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.example.RecipeHub.enums.Role;
 import com.example.RecipeHub.filters.JwtFilter;
 
 @Configuration
@@ -34,7 +35,7 @@ public class SecurityConfig {
 		http
 			.authorizeHttpRequests()
 //			.requestMatchers("/api/user").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
-//			.requestMatchers("/api/user").hasAuthority(Role.ADMIN.name())
+			.requestMatchers("/admin/api/v1/**").hasAuthority(Role.ADMIN.name())
 			.requestMatchers("/api/v1/auth/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
