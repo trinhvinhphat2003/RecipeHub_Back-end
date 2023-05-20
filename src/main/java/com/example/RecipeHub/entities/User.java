@@ -1,50 +1,82 @@
 package com.example.RecipeHub.entities;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import org.hibernate.annotations.GeneratorType;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.example.RecipeHub.enums.Gender;
+import com.example.RecipeHub.enums.Role;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "user")
 public class User implements UserDetails{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
+	private Long user_id;
+	@Column(nullable = false, unique = true)
 	private String email;
-	
+	@Column(nullable = false)
 	private String password;
 	
+	private String full_name;
+	
+	private String profile_image;
+	
+	private Date birthday;
+	
+	@Enumerated(EnumType.STRING)
+	private Role role;
+	
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
+
 	public User() {
 		super();
 	}
 
-	public User(Long id, String email, String password) {
+	public User(Long user_id, String email, String password) {
 		super();
-		this.id = id;
+		this.user_id = user_id;
 		this.email = email;
 		this.password = password;
 	}
 
-	public User(String email, String password) {
+	public User(Long user_id) {
+		super();
+		this.user_id = user_id;
+	}
+
+	public User(String email, String password, Role role) {
 		super();
 		this.email = email;
 		this.password = password;
+		this.role = role;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getUser_id() {
+		return user_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
 	}
 	
 	public String getEmail() {
@@ -62,7 +94,7 @@ public class User implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return null;
+		return List.of(new SimpleGrantedAuthority(role.name()));
 	}
 
 	@Override
