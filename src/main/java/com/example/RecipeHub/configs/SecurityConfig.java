@@ -37,6 +37,7 @@ public class SecurityConfig {
 //			.requestMatchers("/api/user").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
 			.requestMatchers("/admin/api/v1/**").hasAuthority(Role.ADMIN.name())
 			.requestMatchers("/api/v1/auth/**").permitAll()
+//			.requestMatchers("/api/v1/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.sessionManagement()

@@ -2,6 +2,7 @@ package com.example.RecipeHub.entities;
 
 import java.util.ArrayList;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,5 +21,6 @@ public class Ingredient {
 	@ManyToMany(mappedBy = "ingredients")
 	private ArrayList<Recipe> recipes;
 //	private Long recipe_id;
+	@Column(nullable = false)
 	private String ingredient_name;
 }

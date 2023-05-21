@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GeneratorType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.Role;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,32 +23,39 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user")
-public class User implements UserDetails{
-	
+public class User implements UserDetails {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long user_id;
 	@Column(nullable = false, unique = true)
 	private String email;
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String password;
-	
+
 	private String full_name;
-	
+
 	private String profile_image;
-	
+
 	private Date birthday;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Role role;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
+	private List<User> friends = new ArrayList<>();
 
 	public User() {
 		super();
@@ -57,6 +66,7 @@ public class User implements UserDetails{
 		this.user_id = user_id;
 		this.email = email;
 		this.password = password;
+
 	}
 
 	public User(Long user_id) {
@@ -64,11 +74,62 @@ public class User implements UserDetails{
 		this.user_id = user_id;
 	}
 
-	public User(String email, String password, Role role) {
+	public User(String email, String password, Role role, String fullname, Gender gender) {
 		super();
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.full_name = fullname;
+		this.gender = gender;
+	}
+
+	public String getFull_name() {
+		return full_name;
+	}
+
+	public void setFull_name(String full_name) {
+		this.full_name = full_name;
+	}
+
+	public String getProfile_image() {
+		return profile_image;
+	}
+
+	public void setProfile_image(String profile_image) {
+		this.profile_image = profile_image;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public List<User> getFriends() {
+		Hibernate.initialize(friends);
+		return friends;
+	}
+
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
 	}
 
 	public Long getUser_id() {
@@ -78,7 +139,7 @@ public class User implements UserDetails{
 	public void setUser_id(Long user_id) {
 		this.user_id = user_id;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
