@@ -7,10 +7,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.RecipeHub.dtos.FriendshipRequestDTO;
 import com.example.RecipeHub.dtos.UserDTO;
+import com.example.RecipeHub.entities.FriendshipRequest;
 import com.example.RecipeHub.entities.User;
+import com.example.RecipeHub.enums.Friendship_status;
+import com.example.RecipeHub.errorHandlers.NotFoundExeption;
 import com.example.RecipeHub.errorHandlers.UserNotFoundExeption;
+import com.example.RecipeHub.mappers.FriendshipRequestMapper;
 import com.example.RecipeHub.mappers.UserMapper;
+import com.example.RecipeHub.repositories.FriendshipRequestRepository;
 import com.example.RecipeHub.repositories.UserRepository;
 
 @Service
@@ -18,10 +24,12 @@ public class FriendService {
 	
 
 	private final UserRepository userRepository;
+	private final FriendshipRequestRepository friendshipRequestRepository;
 	
-	public FriendService(UserRepository userRepository) {
+	public FriendService(UserRepository userRepository, FriendshipRequestRepository friendshipRequestRepository) {
 		super();
 		this.userRepository = userRepository;
+		this.friendshipRequestRepository = friendshipRequestRepository;
 	}
 
 	public void addFriend(Long user_id, Long friend_id) {
@@ -51,5 +59,13 @@ public class FriendService {
 		} else {
 			throw new UserNotFoundExeption("");
 		}
+	}
+
+	public ArrayList<FriendshipRequestDTO> getAllFriendshipRequest(User user) {
+		user = userRepository.findById(user.getUser_id()).orElseThrow(() -> new NotFoundExeption(""));
+		ArrayList<FriendshipRequestDTO> friendshipRequestDTOs = new ArrayList<>();
+		List<FriendshipRequest> friendshipRequests = friendshipRequestRepository.findAllByReceiverAndStatus(user, Friendship_status.WAITING);
+		for(FriendshipRequest friendshipRequest : friendshipRequests) friendshipRequestDTOs.add(FriendshipRequestMapper.INSTANCE.friendshipRequestToFriendshipRequestDTO(friendshipRequest));
+		return friendshipRequestDTOs;
 	}
 }

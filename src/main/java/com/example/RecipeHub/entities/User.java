@@ -57,6 +57,17 @@ public class User implements UserDetails {
 	@JoinTable(name = "friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
 	private List<User> friends = new ArrayList<>();
 
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+	private List<FriendshipRequest> friendshipRequests = new ArrayList<>();
+	
+	public List<FriendshipRequest> getFriendshipRequests() {
+		return friendshipRequests;
+	}
+
+	public void setFriendshipRequests(List<FriendshipRequest> friendshipRequests) {
+		this.friendshipRequests = friendshipRequests;
+	}
+
 	public User() {
 		super();
 	}
