@@ -76,9 +76,9 @@ public class ApplicationConfig {
 //				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(), userRepository.findById(3l).get(), Friendship_status.ACCEPTED));
 //				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(), userRepository.findById(4l).get(), Friendship_status.ACCEPTED));
 //				
-				friendService.addFriend(2l, 1l);
-				friendService.addFriend(2l, 3l);
-				friendService.addFriend(2l, 4l);
+//				friendService.addFriend(2l, 1l);
+//				friendService.addFriend(2l, 3l);
+//				friendService.addFriend(2l, 4l);
 			}
 		};
 	}

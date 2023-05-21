@@ -61,7 +61,7 @@ public class FriendshipController {
 	public ResponseEntity<String> addFriend(@PathVariable("friend_id") Long friend_id, @AuthenticationPrincipal User user) {
 		if (user == null)
 			throw new UnauthorizedExeption("");
-		
+		friendService.addFriend(user.getUser_id(), friend_id);
 		return new ResponseEntity<String>("", HttpStatus.OK);
 	}
 
