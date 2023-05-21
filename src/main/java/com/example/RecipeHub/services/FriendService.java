@@ -25,13 +25,15 @@ public class FriendService {
 	}
 
 	public void addFriend(Long user_id, Long friend_id) {
-		Optional<User> user = userRepository.findById(user_id);
-		Optional<User> friend = userRepository.findById(friend_id);
-		if(user.isPresent() && friend.isPresent()) {
-			user.get().getFriends().add(friend.get());
-			friend.get().getFriends().add(user.get());
-			userRepository.save(friend.get());
-			userRepository.save(user.get());
+		Optional<User> userOp = userRepository.findById(user_id);
+		Optional<User> friendOp = userRepository.findById(friend_id);
+		if(userOp.isPresent() && friendOp.isPresent()) {
+			User user = userOp.get();
+			User friend = friendOp.get();
+			user.getFriends().add(friend);
+			friend.getFriends().add(user);
+			userRepository.save(friend);
+			userRepository.save(user);
 		} else {
 			throw new UserNotFoundExeption("");
 		}
