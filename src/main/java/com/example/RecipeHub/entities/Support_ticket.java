@@ -22,7 +22,7 @@ public class Support_ticket {
 	@JoinColumn(name = "user_id")
 	private User user;
 //	private Long user_id;
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "text")
 	private String message;
 	@Column(nullable = false)
 	private Long status;

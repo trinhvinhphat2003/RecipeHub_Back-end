@@ -50,7 +50,6 @@ public class FriendshipController {
 	}
 
 	@GetMapping("friends/requests")
-	@PostMapping("friend/request/{friend_id}")
 	public ResponseEntity<String> getAllRequest(@PathVariable("friend_id") Long friend_id, @AuthenticationPrincipal User user) {
 		if (user == null)
 			throw new UnauthorizedExeption("");
