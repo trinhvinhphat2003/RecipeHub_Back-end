@@ -33,6 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		String JwtHeader = request.getHeader("JWT");
 		if (JwtHeader == null || !JwtHeader.startsWith("Bearer")) {
+			// rememberme
 			filterChain.doFilter(request, response);
 			return;
 		}

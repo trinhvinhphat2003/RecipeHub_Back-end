@@ -12,4 +12,8 @@ public class ErrorHandler {
 	public ResponseEntity<String> accessDenied(UnauthorizedExeption ex){
 		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.UNAUTHORIZED);
 	}
+	@ExceptionHandler(UserNotFoundExeption.class)
+	public ResponseEntity<String> accessDenied(UserNotFoundExeption ex){
+		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.NOT_FOUND);
+	}
 }
