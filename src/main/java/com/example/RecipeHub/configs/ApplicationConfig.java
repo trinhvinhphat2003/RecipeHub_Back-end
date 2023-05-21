@@ -70,9 +70,11 @@ public class ApplicationConfig {
 				userRepository.save(new User("user1@gmail.com", getPasswordEncoder().encode("123456"), Role.USER, "user1", Gender.FEMALE));
 				userRepository.save(new User("user2@gmail.com", getPasswordEncoder().encode("123456"), Role.USER, "user2", Gender.FEMALE));
 				
-				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(), userRepository.findById(1l).get(), Friendship_status.ACCEPTED));
-				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(), userRepository.findById(3l).get(), Friendship_status.ACCEPTED));
-				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(), userRepository.findById(4l).get(), Friendship_status.ACCEPTED));
+				
+				
+//				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(), userRepository.findById(1l).get(), Friendship_status.ACCEPTED));
+//				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(), userRepository.findById(3l).get(), Friendship_status.ACCEPTED));
+//				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(), userRepository.findById(4l).get(), Friendship_status.ACCEPTED));
 				
 				friendService.addFriend(2l, 1l);
 				friendService.addFriend(2l, 3l);
