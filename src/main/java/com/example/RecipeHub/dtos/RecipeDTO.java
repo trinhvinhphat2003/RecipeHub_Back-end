@@ -1,58 +1,31 @@
-package com.example.RecipeHub.entities;
+package com.example.RecipeHub.dtos;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "recipe")
-public class Recipe {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RecipeDTO {
 	private Long recipe_id;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
-//	private Long user_id;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
-	private List<Recipe_HAVE_Ingredient> ingredients = new ArrayList<>();
-
-//	private Long ingredient_id;
-	private String tags;
+	private Long user_id;
+	private ArrayList<IngredientDTO> ingredients;
+	private String recipe_tag;
 	private String title;
 	private Integer pre_time;
 	private Integer cook_time;
 	private Integer recipe_yield;
 	private Integer rating;
 	private boolean is_favourite;
-	@Column(columnDefinition = "text")
 	private String description;
 	private String unit;
-	@Column(columnDefinition = "text")
 	private String steps;
-	@Column(columnDefinition = "text")
 	private String nutrition;
 
-	public Recipe(Long recipe_id, User user, List<Recipe_HAVE_Ingredient> ingredients, String recipe_tag, String title,
-			Integer pre_time, Integer cook_time, Integer recipe_yield, Integer rating, boolean is_favourite,
-			String description, String unit, String steps, String nutrition) {
+	public RecipeDTO(Long recipe_id, Long user_id, ArrayList<IngredientDTO> ingredients, String recipe_tag,
+			String title, Integer pre_time, Integer cook_time, Integer recipe_yield, Integer rating,
+			boolean is_favourite, String description, String unit, String steps, String nutrition) {
 		super();
 		this.recipe_id = recipe_id;
-		this.user = user;
+		this.user_id = user_id;
 		this.ingredients = ingredients;
-		this.tags = recipe_tag;
+		this.recipe_tag = recipe_tag;
 		this.title = title;
 		this.pre_time = pre_time;
 		this.cook_time = cook_time;
@@ -65,7 +38,7 @@ public class Recipe {
 		this.nutrition = nutrition;
 	}
 
-	public Recipe() {
+	public RecipeDTO() {
 		super();
 	}
 
@@ -77,28 +50,28 @@ public class Recipe {
 		this.recipe_id = recipe_id;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getUser_id() {
+		return user_id;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
 	}
 
-	public List<Recipe_HAVE_Ingredient> getIngredients() {
+	public ArrayList<IngredientDTO> getIngredients() {
 		return ingredients;
 	}
 
-	public void setIngredients(List<Recipe_HAVE_Ingredient> ingredients) {
+	public void setIngredients(ArrayList<IngredientDTO> ingredients) {
 		this.ingredients = ingredients;
 	}
 
 	public String getRecipe_tag() {
-		return tags;
+		return recipe_tag;
 	}
 
 	public void setRecipe_tag(String recipe_tag) {
-		this.tags = recipe_tag;
+		this.recipe_tag = recipe_tag;
 	}
 
 	public String getTitle() {
@@ -178,23 +151,6 @@ public class Recipe {
 	}
 
 	public void setNutrition(String nutrition) {
-		this.nutrition = nutrition;
-	}
-
-	public Recipe(User user, String recipe_tag, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
-			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition) {
-		super();
-		this.user = user;
-		this.tags = recipe_tag;
-		this.title = title;
-		this.pre_time = pre_time;
-		this.cook_time = cook_time;
-		this.recipe_yield = recipe_yield;
-		this.rating = rating;
-		this.is_favourite = is_favourite;
-		this.description = description;
-		this.unit = unit;
-		this.steps = steps;
 		this.nutrition = nutrition;
 	}
 

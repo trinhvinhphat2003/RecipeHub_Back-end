@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.GeneratorType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,9 +56,20 @@ public class User implements UserDetails {
 	@JoinTable(name = "friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
 	private List<User> friends = new ArrayList<>();
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private List<Recipe> recipes = new ArrayList<>();
+
+	public List<Recipe> getRecipes() {
+		return recipes;
+	}
+
+	public void setRecipes(List<Recipe> recipes) {
+		this.recipes = recipes;
+	}
+
 	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<FriendshipRequest> friendshipRequests = new ArrayList<>();
-	
+
 	public List<FriendshipRequest> getFriendshipRequests() {
 		return friendshipRequests;
 	}
