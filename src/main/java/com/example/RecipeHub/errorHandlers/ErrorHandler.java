@@ -22,6 +22,6 @@ public class ErrorHandler {
 	}
 	@ExceptionHandler(BadRequestExeption.class)
 	public ResponseEntity<String> accessDenied(BadRequestExeption ex){
-		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.BAD_REQUEST);
 	}
 }

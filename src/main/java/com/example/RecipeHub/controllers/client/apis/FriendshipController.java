@@ -56,6 +56,7 @@ public class FriendshipController {
 		if (user == null)
 			throw new UnauthorizedExeption("");
 		User receiver = userService.getUserById(receiver_id);
+		if(receiver.getUser_id() == user.getUser_id()) throw new BadRequestExeption("you can not request to yourself");
 		FriendshipRequest friendshipRequest = new FriendshipRequest(user, receiver, Friendship_status.WAITING);
 		friendshipRequestService.save(friendshipRequest);
 		return new ResponseEntity<String>("you have send friend's request to " + receiver.getFull_name(),
@@ -94,6 +95,7 @@ public class FriendshipController {
 		if (user == null)
 			throw new UnauthorizedExeption("");
 		User friend = userService.getUserById(friend_id);
+		if(friend.getUser_id() == user.getUser_id()) throw new BadRequestExeption("you can not remove yourself");
 		user = userService.getUserById(user.getUser_id());
 
 		user.getFriends().remove(friend);
