@@ -95,9 +95,9 @@ public class ApplicationConfig {
 //						userRepository.findById(4l).get(), Friendship_status.ACCEPTED));
 
 				// sample add friend
-				friendService.addFriend(2l, 1l);
-				friendService.addFriend(2l, 3l);
-				friendService.addFriend(2l, 4l);
+//				friendService.addFriend(2l, 1l);
+//				friendService.addFriend(2l, 3l);
+//				friendService.addFriend(2l, 4l);
 				
 				// create ingredient
 				Ingredient ingredient1 = new Ingredient("Beaf");
