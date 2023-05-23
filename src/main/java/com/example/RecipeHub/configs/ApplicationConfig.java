@@ -85,14 +85,14 @@ public class ApplicationConfig {
 						"user2", Gender.FEMALE));
 
 				// create friend request
-				friendshipRepository.save(new FriendshipRequest(userRepository.findById(3l).get(),
-						userRepository.findById(1l).get(), Friendship_status.WAITING));
-				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(),
-						userRepository.findById(1l).get(), Friendship_status.WAITING));
-				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(),
-						userRepository.findById(3l).get(), Friendship_status.ACCEPTED));
-				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(),
-						userRepository.findById(4l).get(), Friendship_status.ACCEPTED));
+//				friendshipRepository.save(new FriendshipRequest(userRepository.findById(3l).get(),
+//						userRepository.findById(1l).get(), Friendship_status.WAITING));
+//				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(),
+//						userRepository.findById(1l).get(), Friendship_status.WAITING));
+//				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(),
+//						userRepository.findById(3l).get(), Friendship_status.ACCEPTED));
+//				friendshipRepository.save(new FriendshipRequest(userRepository.findById(2l).get(),
+//						userRepository.findById(4l).get(), Friendship_status.ACCEPTED));
 
 				// sample add friend
 				friendService.addFriend(2l, 1l);
