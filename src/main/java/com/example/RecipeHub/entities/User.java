@@ -33,10 +33,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Builder
 public class User implements UserDetails {
 
 	@Id
@@ -119,5 +119,114 @@ public class User implements UserDetails {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+	public Long getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getFull_name() {
+		return full_name;
+	}
+
+	public void setFull_name(String full_name) {
+		this.full_name = full_name;
+	}
+
+	public String getProfile_image() {
+		return profile_image;
+	}
+
+	public void setProfile_image(String profile_image) {
+		this.profile_image = profile_image;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public List<User> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
+	}
+
+	public List<Recipe> getRecipes() {
+		return recipes;
+	}
+
+	public void setRecipes(List<Recipe> recipes) {
+		this.recipes = recipes;
+	}
+
+	public List<FriendshipRequest> getFriendshipRequests() {
+		return friendshipRequests;
+	}
+
+	public void setFriendshipRequests(List<FriendshipRequest> friendshipRequests) {
+		this.friendshipRequests = friendshipRequests;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public User(Long user_id, String email, String password, String full_name, String profile_image, Date birthday,
+			Role role, Gender gender, List<User> friends, List<Recipe> recipes,
+			List<FriendshipRequest> friendshipRequests) {
+		super();
+		this.user_id = user_id;
+		this.email = email;
+		this.password = password;
+		this.full_name = full_name;
+		this.profile_image = profile_image;
+		this.birthday = birthday;
+		this.role = role;
+		this.gender = gender;
+		this.friends = friends;
+		this.recipes = recipes;
+		this.friendshipRequests = friendshipRequests;
+	}
+
+	public User() {
+		super();
+	}
+	
+	//
+	
+	
 
 }
