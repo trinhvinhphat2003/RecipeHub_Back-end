@@ -99,6 +99,14 @@
 			<version>1.18.26</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.freefair.lombok/io.freefair.lombok.gradle.plugin -->
+<dependency>
+    <groupId>io.freefair.lombok</groupId>
+    <artifactId>io.freefair.lombok.gradle.plugin</artifactId>
+    <version>8.0.1</version>
+    <type>pom</type>
+</dependency>
+
 
 
 	</dependencies>
