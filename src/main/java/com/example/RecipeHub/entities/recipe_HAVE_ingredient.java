@@ -15,7 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "recipe_HAVE_ingredient")
+@Table(name = "Recipe_HAVE_Ingredient")
 //@Data
 //@AllArgsConstructor
 //@NoArgsConstructor
