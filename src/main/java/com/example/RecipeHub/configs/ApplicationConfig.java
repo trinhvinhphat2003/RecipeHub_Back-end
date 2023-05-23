@@ -18,7 +18,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.example.RecipeHub.entities.FriendshipRequest;
 import com.example.RecipeHub.entities.Ingredient;
 import com.example.RecipeHub.entities.Recipe;
-import com.example.RecipeHub.entities.Recipe_Ingredient;
+import com.example.RecipeHub.entities.Recipe_HAVE_Ingredient;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Friendship_status;
@@ -126,9 +126,9 @@ public class ApplicationConfig {
 				Recipe recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
 						description, unit, steps, nutrition);
 
-				recipe.getIngredients().add(new Recipe_Ingredient(recipe, ingredient1, "1 gram"));
-				recipe.getIngredients().add(new Recipe_Ingredient(recipe, ingredient2, "1 gram"));
-				recipe.getIngredients().add(new Recipe_Ingredient(recipe, ingredient3, "1 gram"));
+				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient1, "1 gram"));
+				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
+				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 
 				recipeService.save(recipe);
 
@@ -147,8 +147,8 @@ public class ApplicationConfig {
 				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
 						description, unit, steps, nutrition);
 
-				recipe.getIngredients().add(new Recipe_Ingredient(recipe, ingredient2, "1 gram"));
-				recipe.getIngredients().add(new Recipe_Ingredient(recipe, ingredient3, "1 gram"));
+				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
+				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 				
 				recipe.getTags().add(new Tag(null, recipeTag, null));
 				//1
@@ -169,7 +169,7 @@ public class ApplicationConfig {
 				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
 						description, unit, steps, nutrition);
 
-				recipe.getIngredients().add(new Recipe_Ingredient(recipe, ingredient3, "1 gram"));
+				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
 				//2
@@ -192,9 +192,9 @@ public class ApplicationConfig {
 				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
 						description, unit, steps, nutrition);
 
-				recipe.getIngredients().add(new Recipe_Ingredient(recipe, ingredient1, "1 gram"));
-				recipe.getIngredients().add(new Recipe_Ingredient(recipe, ingredient2, "1 gram"));
-				recipe.getIngredients().add(new Recipe_Ingredient(recipe, ingredient3, "1 gram"));
+				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient1, "1 gram"));
+				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
+				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
 				//3

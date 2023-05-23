@@ -13,7 +13,7 @@ import com.example.RecipeHub.dtos.IngredientDTO;
 import com.example.RecipeHub.dtos.RecipeDTO;
 import com.example.RecipeHub.dtos.TagDTO;
 import com.example.RecipeHub.entities.Recipe;
-import com.example.RecipeHub.entities.Recipe_Ingredient;
+import com.example.RecipeHub.entities.Recipe_HAVE_Ingredient;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 
@@ -28,9 +28,9 @@ public interface RecipeMapper {
 	}
 
 	@Named("mapIngredients")
-	static ArrayList<IngredientDTO> mapIngredients(List<Recipe_Ingredient> ingredients) {
+	static ArrayList<IngredientDTO> mapIngredients(List<Recipe_HAVE_Ingredient> ingredients) {
 		ArrayList<IngredientDTO> ingredientDTOs = new ArrayList<>();
-		for (Recipe_Ingredient ingredient : ingredients)
+		for (Recipe_HAVE_Ingredient ingredient : ingredients)
 			ingredientDTOs.add(IngregientMapper.INSTANCE.ingredientToIngredientDto(ingredient.getIngredient(),
 					ingredient.getAmount()));
 		return ingredientDTOs;

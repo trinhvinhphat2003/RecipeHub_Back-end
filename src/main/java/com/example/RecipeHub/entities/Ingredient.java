@@ -29,7 +29,7 @@ public class Ingredient {
 	private Long ingredient_id;
 
 	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
-	private List<Recipe_Ingredient> recipes = new ArrayList<>();
+	private List<Recipe_HAVE_Ingredient> recipes = new ArrayList<>();
 
 	@Column(name = "ingredient_name", nullable = false)
 	private String ingredientName;
@@ -47,11 +47,11 @@ public class Ingredient {
 		this.ingredient_id = ingredient_id;
 	}
 
-	public List<Recipe_Ingredient> getRecipes() {
+	public List<Recipe_HAVE_Ingredient> getRecipes() {
 		return recipes;
 	}
 
-	public void setRecipes(List<Recipe_Ingredient> recipes) {
+	public void setRecipes(List<Recipe_HAVE_Ingredient> recipes) {
 		this.recipes = recipes;
 	}
 
@@ -63,7 +63,7 @@ public class Ingredient {
 		this.ingredientName = ingredientName;
 	}
 
-	public Ingredient(Long ingredient_id, List<Recipe_Ingredient> recipes, String ingredientName) {
+	public Ingredient(Long ingredient_id, List<Recipe_HAVE_Ingredient> recipes, String ingredientName) {
 		super();
 		this.ingredient_id = ingredient_id;
 		this.recipes = recipes;
