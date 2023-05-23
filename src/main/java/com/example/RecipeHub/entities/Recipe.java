@@ -68,7 +68,7 @@ public class Recipe {
 	private User user;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
-	private List<Recipe_HAVE_Ingredient> ingredients = new ArrayList<>();
+	private List<Recipe_Ingredient> ingredients = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "recipe_HAVE_tag", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
@@ -186,11 +186,11 @@ public class Recipe {
 		this.user = user;
 	}
 
-	public List<Recipe_HAVE_Ingredient> getIngredients() {
+	public List<Recipe_Ingredient> getIngredients() {
 		return ingredients;
 	}
 
-	public void setIngredients(List<Recipe_HAVE_Ingredient> ingredients) {
+	public void setIngredients(List<Recipe_Ingredient> ingredients) {
 		this.ingredients = ingredients;
 	}
 
@@ -204,7 +204,7 @@ public class Recipe {
 
 	public Recipe(Long recipe_id, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
 			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
-			User user, List<Recipe_HAVE_Ingredient> ingredients, List<Tag> tags) {
+			User user, List<Recipe_Ingredient> ingredients, List<Tag> tags) {
 		super();
 		this.recipe_id = recipe_id;
 		this.title = title;

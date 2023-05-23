@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Builder
-public class Recipe_HAVE_Ingredient {
+public class Recipe_Ingredient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long recipe_HAVE_ingredient_id;
@@ -36,7 +36,7 @@ public class Recipe_HAVE_Ingredient {
 	@Column(name = "amount")
 	private String amount;
 
-	public Recipe_HAVE_Ingredient(Recipe recipe, Ingredient ingredient, String amount) {
+	public Recipe_Ingredient(Recipe recipe, Ingredient ingredient, String amount) {
 		super();
 		this.recipe = recipe;
 		this.ingredient = ingredient;
@@ -75,7 +75,7 @@ public class Recipe_HAVE_Ingredient {
 		this.amount = amount;
 	}
 
-	public Recipe_HAVE_Ingredient(Long recipe_HAVE_ingredient_id, Recipe recipe, Ingredient ingredient, String amount) {
+	public Recipe_Ingredient(Long recipe_HAVE_ingredient_id, Recipe recipe, Ingredient ingredient, String amount) {
 		super();
 		this.recipe_HAVE_ingredient_id = recipe_HAVE_ingredient_id;
 		this.recipe = recipe;
@@ -83,7 +83,7 @@ public class Recipe_HAVE_Ingredient {
 		this.amount = amount;
 	}
 
-	public Recipe_HAVE_Ingredient() {
+	public Recipe_Ingredient() {
 		super();
 	}
 
