@@ -3,13 +3,14 @@ package com.example.RecipeHub.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,25 +18,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "ingredient")
+@Table(name = "tags")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class Ingredient {
+public class Tag {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ingredient_id")
-	private Long ingredient_id;
+	@Column(name = "tag_id")
+	private Long tagId;
 
-	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
-	private List<Recipe_HAVE_Ingredient> recipes = new ArrayList<>();
+	@Column(name = "tag_name")
+	private String tagName;
 
-	@Column(name = "ingredient_name", nullable = false)
-	private String ingredientName;
-
-	public Ingredient(String ingredientName) {
-		super();
-		this.ingredientName = ingredientName;
-	}
+	@ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Recipe> recipes = new ArrayList<>();
 }

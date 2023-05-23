@@ -39,9 +39,6 @@ public class SecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authenticationProvider(authenticationProvider)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-//			.exceptionHandling()
-//        	.accessDeniedHandler(customAccessDeniedHandler)
-//        	.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 		return http.build();
 	}
 }

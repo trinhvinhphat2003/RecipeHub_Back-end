@@ -1,5 +1,10 @@
 package com.example.RecipeHub.dtos;
 
+import java.util.List;
+
+import com.example.RecipeHub.entities.Recipe;
+import com.example.RecipeHub.entities.Tag;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResponseObject {
-	private String email;
-	private String picture;
-	private String given_name;
-	private String family_name;
-	private String name;
+
+public class TagDTO {
+	private Long tagId;
+	private String tagName;
 }

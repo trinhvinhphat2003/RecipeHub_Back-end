@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,9 +26,17 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User implements UserDetails {
 
 	@Id
@@ -59,41 +66,8 @@ public class User implements UserDetails {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Recipe> recipes = new ArrayList<>();
 
-	public List<Recipe> getRecipes() {
-		return recipes;
-	}
-
-	public void setRecipes(List<Recipe> recipes) {
-		this.recipes = recipes;
-	}
-
 	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<FriendshipRequest> friendshipRequests = new ArrayList<>();
-
-	public List<FriendshipRequest> getFriendshipRequests() {
-		return friendshipRequests;
-	}
-
-	public void setFriendshipRequests(List<FriendshipRequest> friendshipRequests) {
-		this.friendshipRequests = friendshipRequests;
-	}
-
-	public User() {
-		super();
-	}
-
-	public User(Long user_id, String email, String password) {
-		super();
-		this.user_id = user_id;
-		this.email = email;
-		this.password = password;
-
-	}
-
-	public User(Long user_id) {
-		super();
-		this.user_id = user_id;
-	}
 
 	public User(String email, String password, Role role, String fullname, Gender gender) {
 		super();
@@ -102,75 +76,6 @@ public class User implements UserDetails {
 		this.role = role;
 		this.full_name = fullname;
 		this.gender = gender;
-	}
-
-	public String getFull_name() {
-		return full_name;
-	}
-
-	public void setFull_name(String full_name) {
-		this.full_name = full_name;
-	}
-
-	public String getProfile_image() {
-		return profile_image;
-	}
-
-	public void setProfile_image(String profile_image) {
-		this.profile_image = profile_image;
-	}
-
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	public Gender getGender() {
-		return gender;
-	}
-
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
-
-	public List<User> getFriends() {
-		Hibernate.initialize(friends);
-		return friends;
-	}
-
-	public void setFriends(List<User> friends) {
-		this.friends = friends;
-	}
-
-	public Long getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(Long user_id) {
-		this.user_id = user_id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	@Override

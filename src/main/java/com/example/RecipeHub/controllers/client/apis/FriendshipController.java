@@ -42,7 +42,7 @@ public class FriendshipController {
 		this.friendshipRequestService = friendshipRequestService;
 	}
 
-	@GetMapping("friends")
+	@GetMapping("user/friends")
 	public ResponseEntity<ArrayList<UserDTO>> getFriends(@AuthenticationPrincipal User user) {
 		if (user == null)
 			throw new UnauthorizedExeption("");
@@ -50,7 +50,7 @@ public class FriendshipController {
 		return new ResponseEntity<>(friends, HttpStatus.OK);
 	}
 
-	@PostMapping("friend/request/{receiver_id}")
+	@PostMapping("user/request-friend/{receiver_id}")
 	public ResponseEntity<String> getAllRequest(@PathVariable("receiver_id") Long receiver_id,
 			@AuthenticationPrincipal User user) {
 		if (user == null)
@@ -62,7 +62,7 @@ public class FriendshipController {
 				HttpStatus.OK);
 	}
 
-	@PostMapping("friend/accept/{request_id}")
+	@PostMapping("user/accept-friend/{request_id}")
 	public ResponseEntity<String> accptRequest(@PathVariable("request_id") Long request_id,
 			@AuthenticationPrincipal User user) {
 		if (user == null)
@@ -80,7 +80,7 @@ public class FriendshipController {
 				HttpStatus.OK);
 	}
 
-	@GetMapping("friend/requests")
+	@GetMapping("user/friend/requests")
 	public ResponseEntity<ArrayList<FriendshipRequestDTO>> requestFriend(@AuthenticationPrincipal User user) {
 		if (user == null)
 			throw new UnauthorizedExeption("");
@@ -88,7 +88,7 @@ public class FriendshipController {
 		return new ResponseEntity<>(friendshipRequestDTOs, HttpStatus.OK);
 	}
 
-	@DeleteMapping("friend/remove/{friend_id}")
+	@DeleteMapping("user/remove-friend/{friend_id}")
 	public ResponseEntity<String> removeFriend(@PathVariable("friend_id") Long friend_id,
 			@AuthenticationPrincipal User user) {
 		if (user == null)

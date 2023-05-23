@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.RecipeHub.dtos.LoginDTO;
+import com.example.RecipeHub.dtos.LoginResponseDTO;
 import com.example.RecipeHub.dtos.ResponseObject;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.Role;
 import com.example.RecipeHub.errorHandlers.UnauthorizedExeption;
+import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.repositories.UserRepository;
 
 @Service
@@ -36,15 +38,16 @@ public class AuthenticateService {
 		this.webClient = webClient;
 	}
 	
-	public String authenticateBasic(LoginDTO loginDTO) {
+	public LoginResponseDTO authenticateBasic(LoginDTO loginDTO) {
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-		UserDetails userDetails = userRepository.findByEmail(loginDTO.getEmail()).get();
-		String JwtToken = jwtService.generateToken(userDetails);
-		return JwtToken;
+		User user = userRepository.findByEmail(loginDTO.getEmail()).get();
+		String JwtToken = "Bearer " + jwtService.generateToken(user);
+		LoginResponseDTO responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user));
+		return responseDto;
 	}
 	
-	public String authenticationOauth(String googleToken) {
+	public LoginResponseDTO authenticateOauth(String googleToken) {
 		String url = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" + googleToken;
 		final String[] emailRes = new String[1];
 		ResponseObject responseObject;
@@ -62,7 +65,9 @@ public class AuthenticateService {
 			emailRes[0] = email;
 			user = userRepository.findByEmail(email);
 		}
-		String JwtToken = jwtService.generateToken(user.get());
-		return JwtToken;
+		String JwtToken = "Bearer " + jwtService.generateToken(user.get());
+		LoginResponseDTO responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user.get()));
+		
+		return responseDto;
 	}
 }
