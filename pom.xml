@@ -109,11 +109,11 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok-maven-plugin</artifactId>
-				<version>1.18.26</version>
-			</plugin>
+				<version>1.18.20.0</version>
+			</plugin>-->
 		</plugins>
 	</build>
 
