@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "recipe_HAVE_ingredient")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+//@Data
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Builder
 public class Recipe_HAVE_Ingredient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +41,50 @@ public class Recipe_HAVE_Ingredient {
 		this.recipe = recipe;
 		this.ingredient = ingredient;
 		this.amount = amount;
+	}
+
+	public Long getRecipe_HAVE_ingredient_id() {
+		return recipe_HAVE_ingredient_id;
+	}
+
+	public void setRecipe_HAVE_ingredient_id(Long recipe_HAVE_ingredient_id) {
+		this.recipe_HAVE_ingredient_id = recipe_HAVE_ingredient_id;
+	}
+
+	public Recipe getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
+	}
+
+	public Ingredient getIngredient() {
+		return ingredient;
+	}
+
+	public void setIngredient(Ingredient ingredient) {
+		this.ingredient = ingredient;
+	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+
+	public Recipe_HAVE_Ingredient(Long recipe_HAVE_ingredient_id, Recipe recipe, Ingredient ingredient, String amount) {
+		super();
+		this.recipe_HAVE_ingredient_id = recipe_HAVE_ingredient_id;
+		this.recipe = recipe;
+		this.ingredient = ingredient;
+		this.amount = amount;
+	}
+
+	public Recipe_HAVE_Ingredient() {
+		super();
 	}
 
 	

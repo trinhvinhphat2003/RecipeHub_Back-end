@@ -23,10 +23,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "meal_planner")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+//@Data
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Builder
 public class Meal_planner {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +43,52 @@ public class Meal_planner {
 
 	@Column(name = "date",nullable = false)
 	private Date date;
+
+	public Long getMeal_planner_id() {
+		return meal_planner_id;
+	}
+
+	public void setMeal_planner_id(Long meal_planner_id) {
+		this.meal_planner_id = meal_planner_id;
+	}
+
+	public List<Recipe> getRecipes() {
+		return recipes;
+	}
+
+	public void setRecipes(List<Recipe> recipes) {
+		this.recipes = recipes;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Meal_planner(Long meal_planner_id, List<Recipe> recipes, User user, Date date) {
+		super();
+		this.meal_planner_id = meal_planner_id;
+		this.recipes = recipes;
+		this.user = user;
+		this.date = date;
+	}
+
+	public Meal_planner() {
+		super();
+	}
+	
+	//
+	
+	
 }

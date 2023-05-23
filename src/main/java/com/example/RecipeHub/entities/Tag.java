@@ -19,10 +19,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tags")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Builder
 public class Tag {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +34,43 @@ public class Tag {
 
 	@ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Recipe> recipes = new ArrayList<>();
+
+	public Long getTagId() {
+		return tagId;
+	}
+
+	public void setTagId(Long tagId) {
+		this.tagId = tagId;
+	}
+
+	public String getTagName() {
+		return tagName;
+	}
+
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
+	}
+
+	public List<Recipe> getRecipes() {
+		return recipes;
+	}
+
+	public void setRecipes(List<Recipe> recipes) {
+		this.recipes = recipes;
+	}
+
+	public Tag(Long tagId, String tagName, List<Recipe> recipes) {
+		super();
+		this.tagId = tagId;
+		this.tagName = tagName;
+		this.recipes = recipes;
+	}
+
+	public Tag() {
+		super();
+	}
+	
+	//
+	
+	
 }

@@ -150,7 +150,7 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 				
-				recipe.getTags().add(Tag.builder().tagName(recipeTag).build());
+				recipe.getTags().add(new Tag(null, recipeTag, null));
 				//1
 				recipeService.save(recipe);
 
@@ -171,7 +171,7 @@ public class ApplicationConfig {
 
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 
-				recipe.getTags().add(Tag.builder().tagName(recipeTag).build());
+				recipe.getTags().add(new Tag(null, recipeTag, null));
 				//2
 				recipeService.save(recipe);
 
@@ -196,7 +196,7 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 
-				recipe.getTags().add(Tag.builder().tagName(recipeTag).build());
+				recipe.getTags().add(new Tag(null, recipeTag, null));
 				//3
 				recipeService.save(recipe);
 				//3

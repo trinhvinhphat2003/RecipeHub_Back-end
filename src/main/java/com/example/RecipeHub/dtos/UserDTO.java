@@ -7,10 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Builder
 public class UserDTO {
 	private Long user_id;
 	private String full_name;
@@ -18,4 +18,54 @@ public class UserDTO {
 	private Date birthday;
 	private String gender;
 	private String role;
+	public Long getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
+	}
+	public String getFull_name() {
+		return full_name;
+	}
+	public void setFull_name(String full_name) {
+		this.full_name = full_name;
+	}
+	public String getProfile_image() {
+		return profile_image;
+	}
+	public void setProfile_image(String profile_image) {
+		this.profile_image = profile_image;
+	}
+	public Date getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public UserDTO(Long user_id, String full_name, String profile_image, Date birthday, String gender, String role) {
+		super();
+		this.user_id = user_id;
+		this.full_name = full_name;
+		this.profile_image = profile_image;
+		this.birthday = birthday;
+		this.gender = gender;
+		this.role = role;
+	}
+	public UserDTO() {
+		super();
+	}
+	
+	
 }
