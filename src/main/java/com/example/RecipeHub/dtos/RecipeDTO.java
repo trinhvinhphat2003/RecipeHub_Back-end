@@ -15,6 +15,7 @@ public class RecipeDTO {
 	private Long recipe_id;
 	private Long user_id;
 	private ArrayList<IngredientDTO> ingredients;
+	private ArrayList<ImageDTO> images;
 	private ArrayList<TagDTO> tags;
 	private String title;
 	private Integer pre_time;
@@ -26,6 +27,13 @@ public class RecipeDTO {
 	private String unit;
 	private String steps;
 	private String nutrition;
+	private String privacyStatus;
+	public String getPrivacyStatus() {
+		return privacyStatus;
+	}
+	public void setPrivacyStatus(String privacyStatus) {
+		this.privacyStatus = privacyStatus;
+	}
 	public Long getRecipe_id() {
 		return recipe_id;
 	}
@@ -110,13 +118,23 @@ public class RecipeDTO {
 	public void setNutrition(String nutrition) {
 		this.nutrition = nutrition;
 	}
-	public RecipeDTO(Long recipe_id, Long user_id, ArrayList<IngredientDTO> ingredients, ArrayList<TagDTO> tags,
-			String title, Integer pre_time, Integer cook_time, Integer recipe_yield, Integer rating,
-			boolean is_favourite, String description, String unit, String steps, String nutrition) {
+	
+	public ArrayList<ImageDTO> getImages() {
+		return images;
+	}
+	public void setImages(ArrayList<ImageDTO> images) {
+		this.images = images;
+	}
+	
+	public RecipeDTO(Long recipe_id, Long user_id, ArrayList<IngredientDTO> ingredients, ArrayList<ImageDTO> images,
+			ArrayList<TagDTO> tags, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
+			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
+			String privacyStatus) {
 		super();
 		this.recipe_id = recipe_id;
 		this.user_id = user_id;
 		this.ingredients = ingredients;
+		this.images = images;
 		this.tags = tags;
 		this.title = title;
 		this.pre_time = pre_time;
@@ -128,6 +146,7 @@ public class RecipeDTO {
 		this.unit = unit;
 		this.steps = steps;
 		this.nutrition = nutrition;
+		this.privacyStatus = privacyStatus;
 	}
 	public RecipeDTO() {
 		super();

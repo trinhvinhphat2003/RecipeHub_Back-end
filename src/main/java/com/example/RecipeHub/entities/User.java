@@ -26,10 +26,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user")
@@ -47,18 +43,21 @@ public class User implements UserDetails {
 	@Column(nullable = true)
 	private String password;
 
+	@Column(name = "full_name")
 	private String full_name;
 
+	@Column(name = "profile_image")
 	private String profile_image;
 
-	private Date birthday;
+	@Column(name = "birthday")
+	private Date birthDay;
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
-
+	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
 	private List<User> friends = new ArrayList<>();
@@ -153,11 +152,11 @@ public class User implements UserDetails {
 	}
 
 	public Date getBirthday() {
-		return birthday;
+		return birthDay;
 	}
 
 	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
+		this.birthDay = birthday;
 	}
 
 	public Role getRole() {
@@ -213,7 +212,7 @@ public class User implements UserDetails {
 		this.password = password;
 		this.full_name = full_name;
 		this.profile_image = profile_image;
-		this.birthday = birthday;
+		this.birthDay = birthday;
 		this.role = role;
 		this.gender = gender;
 		this.friends = friends;

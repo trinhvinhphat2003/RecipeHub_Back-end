@@ -1,5 +1,7 @@
 package com.example.RecipeHub.configs;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.RecipeHub.entities.FriendshipRequest;
+import com.example.RecipeHub.entities.Image;
 import com.example.RecipeHub.entities.Ingredient;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.Recipe_HAVE_Ingredient;
@@ -23,6 +26,7 @@ import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Friendship_status;
 import com.example.RecipeHub.enums.Gender;
+import com.example.RecipeHub.enums.PrivacyStatus;
 import com.example.RecipeHub.enums.Role;
 import com.example.RecipeHub.repositories.FriendshipRepository;
 import com.example.RecipeHub.repositories.IngredientRepository;
@@ -101,8 +105,8 @@ public class ApplicationConfig {
 				
 				// create ingredient
 				Ingredient ingredient1 = new Ingredient("Beaf");
-				Ingredient ingredient2 = new Ingredient("Beaf 1");
-				Ingredient ingredient3 = new Ingredient("Beaf 2");
+				Ingredient ingredient2 = new Ingredient("carrot");
+				Ingredient ingredient3 = new Ingredient("onion");
 
 				ingredientRepository.save(ingredient1);
 				ingredientRepository.save(ingredient2);
@@ -122,13 +126,14 @@ public class ApplicationConfig {
 				String unit = "grams";
 				String steps = "Step 1\nStep 2\nStep 3";
 				String nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
+				PrivacyStatus privacyStatus = PrivacyStatus.PUBLIC;
 
 				Recipe recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
-						description, unit, steps, nutrition);
+						description, unit, steps, nutrition, privacyStatus);
 
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient1, "1 gram"));
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
-				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
+//				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 
 				recipeService.save(recipe);
 
@@ -143,9 +148,10 @@ public class ApplicationConfig {
 				unit = "grams";
 				steps = "Step 1\nStep 2\nStep 3";
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
+				privacyStatus = PrivacyStatus.PUBLIC;
 
 				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
-						description, unit, steps, nutrition);
+						description, unit, steps, nutrition, privacyStatus);
 
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
@@ -165,11 +171,12 @@ public class ApplicationConfig {
 				unit = "grams";
 				steps = "Step 1\nStep 2\nStep 3";
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
+				privacyStatus = PrivacyStatus.PUBLIC;
 
 				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
-						description, unit, steps, nutrition);
+						description, unit, steps, nutrition, privacyStatus);
 
-				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
+				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient1, "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
 				//2
@@ -188,15 +195,17 @@ public class ApplicationConfig {
 				unit = "grams";
 				steps = "Step 1\nStep 2\nStep 3";
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
+				privacyStatus = PrivacyStatus.PRIVATE;
 
 				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
-						description, unit, steps, nutrition);
+						description, unit, steps, nutrition, privacyStatus);
 
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient1, "1 gram"));
-				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
+//				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
+				recipe.getImages().add(new Image(null, "this is url for image"));
 				//3
 				recipeService.save(recipe);
 				//3

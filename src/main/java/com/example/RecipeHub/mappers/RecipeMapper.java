@@ -9,15 +9,18 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
+import com.example.RecipeHub.dtos.ImageDTO;
 import com.example.RecipeHub.dtos.IngredientDTO;
 import com.example.RecipeHub.dtos.RecipeDTO;
 import com.example.RecipeHub.dtos.TagDTO;
+import com.example.RecipeHub.entities.Image;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.Recipe_HAVE_Ingredient;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
+import com.example.RecipeHub.enums.PrivacyStatus;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface RecipeMapper {
 
 	RecipeMapper INSTANCE = Mappers.getMapper(RecipeMapper.class);
@@ -35,7 +38,8 @@ public interface RecipeMapper {
 					ingredient.getAmount()));
 		return ingredientDTOs;
 	}
-	@Named("mapTag")
+
+	@Named("mapTags")
 	static ArrayList<TagDTO> mapTag(List<Tag> tags) {
 		ArrayList<TagDTO> tagDTOs = new ArrayList<>();
 		for (Tag tag : tags)
@@ -43,19 +47,26 @@ public interface RecipeMapper {
 		return tagDTOs;
 	}
 
+	@Named("mapImages")
+	static ArrayList<ImageDTO> mapImages(List<Image> images) {
+		ArrayList<ImageDTO> imageDTOs = new ArrayList<>();
+		for (Image image : images)
+			imageDTOs.add(ImageMapper.INSTANCE.imageToImageDto(image));
+		return imageDTOs;
+	}
+	@Named("mapPrivacyStatus")
+	static String mapPrivacyStatus(PrivacyStatus privacyStatus) {
+		return privacyStatus.name();
+	}
+
 	@Mappings({ @Mapping(target = "user_id", qualifiedByName = "mapUser", source = "user"),
 			@Mapping(target = "ingredients", qualifiedByName = "mapIngredients", source = "ingredients"),
-			@Mapping(target = "tags", qualifiedByName = "mapTag", source = "tags")})
+			@Mapping(target = "images", qualifiedByName = "mapImages", source = "images") ,
+			@Mapping(target = "tags", qualifiedByName = "mapTags", source = "tags"),
+			@Mapping(target = "privacyStatus", qualifiedByName = "mapPrivacyStatus", source = "privacyStatus")
+			})
 	RecipeDTO recipeToRecipeDto(Recipe recipe);
 
 //	@AfterMapping
-//	@Autowired
-//	static void attachAmount(Recipe_IngredientRepository recipe_IngredientRepository, Recipe recipe, @MappingTarget RecipeDTO recipeDTO) {
-//		List<Ingredient> ingredients = recipe.getIngredients();
-//		ArrayList<IngredientDTO> ingredientDTOs = recipeDTO.getIngredients();
-//		for(IngredientDTO ingredientDTO : ingredientDTOs) {
-//			ingredientDTO.setAmount(recipe_IngredientRepository.findAmountByRecipe_idAndIngredient_id(recipe.getRecipe_id(), ingredientDTO.getIngredient_id()).get());
-//		}
-//    }
 
 }

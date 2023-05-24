@@ -3,6 +3,8 @@ package com.example.RecipeHub.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.RecipeHub.enums.PrivacyStatus;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -66,6 +68,9 @@ public class Recipe {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	@Column(name = "privacy_status")
+	private PrivacyStatus privacyStatus;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
 	private List<Recipe_HAVE_Ingredient> ingredients = new ArrayList<>();
@@ -74,10 +79,22 @@ public class Recipe {
 	@JoinTable(name = "recipe_HAVE_tag", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<Tag> tags = new ArrayList<>();
 
-	public Recipe(User user, String title, Integer pre_time, Integer cook_time, Integer recipe_yield, Integer rating,
-			boolean is_favourite, String description, String unit, String steps, String nutrition) {
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "recipe_HAVE_image",
+			joinColumns = @JoinColumn(name = "recipe_id"),
+			inverseJoinColumns = @JoinColumn(name = "image_id")
+			)
+	private List<Image> images = new ArrayList<>();
+
+	
+
+	public Recipe(Long recipe_id, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
+			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
+			User user, PrivacyStatus privacyStatus, List<Recipe_HAVE_Ingredient> ingredients, List<Tag> tags,
+			List<Image> images) {
 		super();
-		this.user = user;
+		this.recipe_id = recipe_id;
 		this.title = title;
 		this.pre_time = pre_time;
 		this.cook_time = cook_time;
@@ -88,6 +105,27 @@ public class Recipe {
 		this.unit = unit;
 		this.steps = steps;
 		this.nutrition = nutrition;
+		this.user = user;
+		this.privacyStatus = privacyStatus;
+		this.ingredients = ingredients;
+		this.tags = tags;
+		this.images = images;
+	}
+
+	public PrivacyStatus getPrivacyStatus() {
+		return privacyStatus;
+	}
+
+	public void setPrivacyStatus(PrivacyStatus privacyStatus) {
+		this.privacyStatus = privacyStatus;
+	}
+
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 
 	public Long getRecipe_id() {
@@ -224,6 +262,23 @@ public class Recipe {
 
 	public Recipe() {
 		super();
+	}
+
+	public Recipe(User user, String title, Integer pre_time, Integer cook_time, Integer recipe_yield, Integer rating,
+			boolean is_favourite, String description, String unit, String steps, String nutrition, PrivacyStatus privacyStatus) {
+		super();
+		this.title = title;
+		this.pre_time = pre_time;
+		this.cook_time = cook_time;
+		this.recipe_yield = recipe_yield;
+		this.rating = rating;
+		this.is_favourite = is_favourite;
+		this.description = description;
+		this.unit = unit;
+		this.steps = steps;
+		this.nutrition = nutrition;
+		this.user = user;
+		this.privacyStatus = privacyStatus;
 	}
 
 	//

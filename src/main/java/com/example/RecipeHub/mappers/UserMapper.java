@@ -25,7 +25,7 @@ public interface UserMapper {
     }
 
     @Mappings({
-        @Mapping(target = "role", qualifiedByName = "mapRole"),
+        @Mapping(target = "role", qualifiedByName = "mapRole", source = "role"),
         @Mapping(target = "gender", qualifiedByName = "mapGender")
     })
     UserDTO userToUserDTO(User user);

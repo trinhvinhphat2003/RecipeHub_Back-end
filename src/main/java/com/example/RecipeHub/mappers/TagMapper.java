@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 import com.example.RecipeHub.dtos.TagDTO;
 import com.example.RecipeHub.entities.Tag;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface TagMapper {
 	TagMapper INSTANCE = Mappers.getMapper(TagMapper.class);
 	

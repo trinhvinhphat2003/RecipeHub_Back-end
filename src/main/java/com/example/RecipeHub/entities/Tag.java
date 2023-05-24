@@ -18,7 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tags")
+@Table(name = "tag")
 //@Data
 //@NoArgsConstructor
 //@AllArgsConstructor
@@ -65,11 +65,15 @@ public class Tag {
 		this.tagName = tagName;
 		this.recipes = recipes;
 	}
+	
+	public Tag(String tagName) {
+		super();
+		this.tagName = tagName;
+	}
 
 	public Tag() {
 		super();
 	}
-	
 	//
 	
 	
