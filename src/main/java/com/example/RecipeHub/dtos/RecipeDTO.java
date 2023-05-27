@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 //@Builder
 public class RecipeDTO {
 	private Long recipe_id;
-	private Long user_id;
+	private Long userId;
 	private ArrayList<IngredientDTO> ingredients;
 	private ArrayList<ImageDTO> images;
 	private ArrayList<TagDTO> tags;
@@ -39,12 +39,6 @@ public class RecipeDTO {
 	}
 	public void setRecipe_id(Long recipe_id) {
 		this.recipe_id = recipe_id;
-	}
-	public Long getUser_id() {
-		return user_id;
-	}
-	public void setUser_id(Long user_id) {
-		this.user_id = user_id;
 	}
 	public ArrayList<IngredientDTO> getIngredients() {
 		return ingredients;
@@ -126,13 +120,14 @@ public class RecipeDTO {
 		this.images = images;
 	}
 	
-	public RecipeDTO(Long recipe_id, Long user_id, ArrayList<IngredientDTO> ingredients, ArrayList<ImageDTO> images,
+
+	public RecipeDTO(Long recipe_id, Long userId, ArrayList<IngredientDTO> ingredients, ArrayList<ImageDTO> images,
 			ArrayList<TagDTO> tags, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
 			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
 			String privacyStatus) {
 		super();
 		this.recipe_id = recipe_id;
-		this.user_id = user_id;
+		this.userId = userId;
 		this.ingredients = ingredients;
 		this.images = images;
 		this.tags = tags;
@@ -147,6 +142,12 @@ public class RecipeDTO {
 		this.steps = steps;
 		this.nutrition = nutrition;
 		this.privacyStatus = privacyStatus;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	public RecipeDTO() {
 		super();

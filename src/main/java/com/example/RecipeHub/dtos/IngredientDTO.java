@@ -10,26 +10,26 @@ import lombok.NoArgsConstructor;
 //@AllArgsConstructor
 //@Builder
 public class IngredientDTO {
-	private Long ingredient_id;
+	private Long ingredientId;
 	private String ingredientName;
 	private String amount;
-	public Long getIngredient_id() {
-		return ingredient_id;
+	
+	public IngredientDTO(Long ingredientId, String ingredientName, String amount) {
+		super();
+		this.ingredientId = ingredientId;
+		this.ingredientName = ingredientName;
+		this.amount = amount;
 	}
-	public void setIngredient_id(Long ingredient_id) {
-		this.ingredient_id = ingredient_id;
+	public Long getIngredientId() {
+		return ingredientId;
+	}
+	public void setIngredientId(Long ingredientId) {
+		this.ingredientId = ingredientId;
 	}
 	public String getAmount() {
 		return amount;
 	}
 	public void setAmount(String amount) {
-		this.amount = amount;
-	}
-
-	public IngredientDTO(Long ingredient_id, String ingredientName, String amount) {
-		super();
-		this.ingredient_id = ingredient_id;
-		this.ingredientName = ingredientName;
 		this.amount = amount;
 	}
 	public String getIngredientName() {

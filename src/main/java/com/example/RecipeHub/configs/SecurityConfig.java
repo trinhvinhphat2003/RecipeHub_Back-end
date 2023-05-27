@@ -32,11 +32,9 @@ public class SecurityConfig {
 
 		http.authorizeHttpRequests()
 //			.requestMatchers("/api/user").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
-				.requestMatchers("/admin/api/v1/**").hasAuthority(Role.ADMIN.name()).requestMatchers("/api/v1/auth/**")
-				.permitAll()
-//			.requestMatchers("/api/v1/**").permitAll()
-				.anyRequest().authenticated().and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.requestMatchers("/api/v1/admin/**").hasAuthority(Role.ADMIN.name()).requestMatchers("/api/v1/auth/**")
+				.permitAll().requestMatchers("/api/v1/global/**").permitAll().anyRequest().authenticated().and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authenticationProvider(authenticationProvider)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();

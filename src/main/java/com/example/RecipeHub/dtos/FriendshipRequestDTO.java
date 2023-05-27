@@ -12,16 +12,11 @@ import lombok.NoArgsConstructor;
 //@AllArgsConstructor
 //@Builder
 public class FriendshipRequestDTO {
-	private Long friendship_request_id;
+	private Long friendshipRequestId;
 	private UserDTO sender;
 	private UserDTO receiver;
 	private String status;
-	public Long getFriendship_request_id() {
-		return friendship_request_id;
-	}
-	public void setFriendship_request_id(Long friendship_request_id) {
-		this.friendship_request_id = friendship_request_id;
-	}
+
 	public UserDTO getSender() {
 		return sender;
 	}
@@ -40,12 +35,19 @@ public class FriendshipRequestDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public FriendshipRequestDTO(Long friendship_request_id, UserDTO sender, UserDTO receiver, String status) {
+
+	public FriendshipRequestDTO(Long friendshipRequestId, UserDTO sender, UserDTO receiver, String status) {
 		super();
-		this.friendship_request_id = friendship_request_id;
+		this.friendshipRequestId = friendshipRequestId;
 		this.sender = sender;
 		this.receiver = receiver;
 		this.status = status;
+	}
+	public Long getFriendshipRequestId() {
+		return friendshipRequestId;
+	}
+	public void setFriendshipRequestId(Long friendshipRequestId) {
+		this.friendshipRequestId = friendshipRequestId;
 	}
 	public FriendshipRequestDTO() {
 		super();

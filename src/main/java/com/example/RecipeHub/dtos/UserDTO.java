@@ -12,30 +12,15 @@ import lombok.NoArgsConstructor;
 //@AllArgsConstructor
 //@Builder
 public class UserDTO {
-	private Long user_id;
-	private String full_name;
-	private String profile_image;
+	private Long userId;
+	private String fullName;
+	private String profileImage;
 	private Date birthday;
 	private String gender;
 	private String role;
-	public Long getUser_id() {
-		return user_id;
-	}
-	public void setUser_id(Long user_id) {
-		this.user_id = user_id;
-	}
-	public String getFull_name() {
-		return full_name;
-	}
-	public void setFull_name(String full_name) {
-		this.full_name = full_name;
-	}
-	public String getProfile_image() {
-		return profile_image;
-	}
-	public void setProfile_image(String profile_image) {
-		this.profile_image = profile_image;
-	}
+
+
+
 	public Date getBirthday() {
 		return birthday;
 	}
@@ -54,17 +39,36 @@ public class UserDTO {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	public UserDTO(Long user_id, String full_name, String profile_image, Date birthday, String gender, String role) {
-		super();
-		this.user_id = user_id;
-		this.full_name = full_name;
-		this.profile_image = profile_image;
-		this.birthday = birthday;
-		this.gender = gender;
-		this.role = role;
+
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public String getFullName() {
+		return fullName;
+	}
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	public String getProfileImage() {
+		return profileImage;
+	}
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
 	}
 	public UserDTO() {
 		super();
+	}
+	public UserDTO(Long userId, String fullName, String profileImage, Date birthday, String gender, String role) {
+		super();
+		this.userId = userId;
+		this.fullName = fullName;
+		this.profileImage = profileImage;
+		this.birthday = birthday;
+		this.gender = gender;
+		this.role = role;
 	}
 	
 	

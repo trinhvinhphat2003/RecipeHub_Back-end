@@ -12,8 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.RecipeHub.dtos.IngredientDTO;
 import com.example.RecipeHub.dtos.RecipeDTO;
@@ -83,6 +86,19 @@ public class FileController {
         workbook.write(outputStream);
         workbook.close();
         outputStream.close();
+		
+		return new ResponseEntity<String>("", HttpStatus.OK);
+	}
+	
+	@PostMapping("user/upload-image")
+	public ResponseEntity<String> uploadRecipeImage(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file) {
+		try {
+			if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("No image file provided");
+            }
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
 		return new ResponseEntity<String>("", HttpStatus.OK);
 	}

@@ -122,7 +122,7 @@ public class ApplicationConfig {
 				Integer recipeYield = 4;
 				Integer rating = 5;
 				boolean isFavourite = true;
-				String description = "This recipe is amazing!";
+				String description = "This recipe 0 is amazing!";
 				String unit = "grams";
 				String steps = "Step 1\nStep 2\nStep 3";
 				String nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
@@ -135,16 +135,18 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
 //				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 
+				//recipe.getTags().add(new Tag(null, recipeTag, null));
+				
 				recipeService.save(recipe);
 
-				recipeTag = "Dinner 1";
+				recipeTag = "Dinner1";
 				title = "admin Recipe 2";
 				preTime = 30;
 				cookTime = 60;
 				recipeYield = 4;
 				rating = 5;
 				isFavourite = true;
-				description = "This recipe is amazing!";
+				description = "This recipe 1 is amazing!";
 				unit = "grams";
 				steps = "Step 1\nStep 2\nStep 3";
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
@@ -160,18 +162,18 @@ public class ApplicationConfig {
 				//1
 				recipeService.save(recipe);
 
-				recipeTag = "Dinner 2";
+				recipeTag = "Dinner2";
 				title = "admin Recipe 3";
 				preTime = 30;
 				cookTime = 60;
 				recipeYield = 4;
 				rating = 5;
 				isFavourite = true;
-				description = "This recipe is amazing!";
+				description = "This recipe 2 is amazing!";
 				unit = "grams";
 				steps = "Step 1\nStep 2\nStep 3";
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
-				privacyStatus = PrivacyStatus.PUBLIC;
+				privacyStatus = PrivacyStatus.PRIVATE;
 
 				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
 						description, unit, steps, nutrition, privacyStatus);
@@ -182,20 +184,20 @@ public class ApplicationConfig {
 				//2
 				recipeService.save(recipe);
 
-				user = userRepository.findByEmail("user@gmail.com").get();
+				//user = userRepository.findByEmail("user@gmail.com").get();
 
-				recipeTag = "Dinner 3";
+				recipeTag = "Dinner3";
 				title = "user Recipe 1";
 				preTime = 30;
 				cookTime = 60;
 				recipeYield = 4;
 				rating = 5;
 				isFavourite = true;
-				description = "This recipe is amazing!";
+				description = "This recipe 3 is amazing!";
 				unit = "grams";
 				steps = "Step 1\nStep 2\nStep 3";
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
-				privacyStatus = PrivacyStatus.PRIVATE;
+				privacyStatus = PrivacyStatus.PUBLIC;
 
 				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
 						description, unit, steps, nutrition, privacyStatus);
@@ -209,7 +211,7 @@ public class ApplicationConfig {
 				//3
 				recipeService.save(recipe);
 				//3
-				recipeTag = "Dinner 2";
+				recipeTag = "Dinner2";
 				recipe = recipeRepository.findByTitle(title).get();
 				Tag tag = tagRepository.findByTagName(recipeTag).get();
 				recipe.getTags().add(tag);

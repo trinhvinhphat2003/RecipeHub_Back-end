@@ -26,7 +26,7 @@ public class Ingredient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ingredient_id")
-	private Long ingredient_id;
+	private Long ingredientId;
 
 	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
 	private List<Recipe_HAVE_Ingredient> recipes = new ArrayList<>();
@@ -38,15 +38,7 @@ public class Ingredient {
 		super();
 		this.ingredientName = ingredientName;
 	}
-
-	public Long getIngredient_id() {
-		return ingredient_id;
-	}
-
-	public void setIngredient_id(Long ingredient_id) {
-		this.ingredient_id = ingredient_id;
-	}
-
+	
 	public List<Recipe_HAVE_Ingredient> getRecipes() {
 		return recipes;
 	}
@@ -63,11 +55,20 @@ public class Ingredient {
 		this.ingredientName = ingredientName;
 	}
 
-	public Ingredient(Long ingredient_id, List<Recipe_HAVE_Ingredient> recipes, String ingredientName) {
+
+	public Ingredient(Long ingredientId, List<Recipe_HAVE_Ingredient> recipes, String ingredientName) {
 		super();
-		this.ingredient_id = ingredient_id;
+		this.ingredientId = ingredientId;
 		this.recipes = recipes;
 		this.ingredientName = ingredientName;
+	}
+
+	public Long getIngredientId() {
+		return ingredientId;
+	}
+
+	public void setIngredientId(Long ingredientId) {
+		this.ingredientId = ingredientId;
 	}
 
 	public Ingredient() {

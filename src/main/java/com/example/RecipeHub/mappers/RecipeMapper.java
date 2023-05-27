@@ -27,7 +27,7 @@ public interface RecipeMapper {
 
 	@Named("mapUser")
 	static Long mapSender(User user) {
-		return user.getUser_id();
+		return user.getUserId();
 	}
 
 	@Named("mapIngredients")
@@ -59,7 +59,7 @@ public interface RecipeMapper {
 		return privacyStatus.name();
 	}
 
-	@Mappings({ @Mapping(target = "user_id", qualifiedByName = "mapUser", source = "user"),
+	@Mappings({ @Mapping(target = "userId", qualifiedByName = "mapUser", source = "user"),
 			@Mapping(target = "ingredients", qualifiedByName = "mapIngredients", source = "ingredients"),
 			@Mapping(target = "images", qualifiedByName = "mapImages", source = "images") ,
 			@Mapping(target = "tags", qualifiedByName = "mapTags", source = "tags"),

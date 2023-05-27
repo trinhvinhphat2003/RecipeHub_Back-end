@@ -31,7 +31,7 @@ public interface FriendshipRequestMapper {
 	
 	
 	@Mappings({
-		@Mapping(target = "friendship_request_id", source = "friendship_request_id"),
+		@Mapping(target = "friendshipRequestId", source = "friendshipRequestId"),
 		@Mapping(target = "sender", qualifiedByName = "mapSender", source = "sender"),
 		@Mapping(target = "receiver", qualifiedByName = "mapReceiver", source = "receiver"),
 		@Mapping(target = "status", qualifiedByName = "mapStatus")

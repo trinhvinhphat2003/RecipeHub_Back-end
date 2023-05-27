@@ -31,7 +31,7 @@ public class Meal_planner {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "meal_planner_id")
-	private Long meal_planner_id;
+	private Long mealPlannerId;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "planner_HAVE_recipe", joinColumns = @JoinColumn(name = "meal_planner_id"), inverseJoinColumns = @JoinColumn(name = "recipe_id"))
@@ -44,12 +44,20 @@ public class Meal_planner {
 	@Column(name = "date",nullable = false)
 	private Date date;
 
-	public Long getMeal_planner_id() {
-		return meal_planner_id;
+	public Long getMealPlannerId() {
+		return mealPlannerId;
 	}
 
-	public void setMeal_planner_id(Long meal_planner_id) {
-		this.meal_planner_id = meal_planner_id;
+	public void setMealPlannerId(Long mealPlannerId) {
+		this.mealPlannerId = mealPlannerId;
+	}
+
+	public Meal_planner(Long mealPlannerId, List<Recipe> recipes, User user, Date date) {
+		super();
+		this.mealPlannerId = mealPlannerId;
+		this.recipes = recipes;
+		this.user = user;
+		this.date = date;
 	}
 
 	public List<Recipe> getRecipes() {
@@ -73,14 +81,6 @@ public class Meal_planner {
 	}
 
 	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public Meal_planner(Long meal_planner_id, List<Recipe> recipes, User user, Date date) {
-		super();
-		this.meal_planner_id = meal_planner_id;
-		this.recipes = recipes;
-		this.user = user;
 		this.date = date;
 	}
 

@@ -37,24 +37,25 @@ public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long user_id;
+	@Column(name = "user_id")
+	private Long userId;
 	@Column(nullable = false, unique = true)
 	private String email;
 	@Column(nullable = true)
 	private String password;
 
 	@Column(name = "full_name")
-	private String full_name;
+	private String fullName;
 
 	@Column(name = "profile_image")
-	private String profile_image;
+	private String profileImage;
 
 	@Column(name = "birthday")
-	private Date birthDay;
+	private Date birthday;
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
-
+ 
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
@@ -65,15 +66,15 @@ public class User implements UserDetails {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Recipe> recipes = new ArrayList<>();
 
-	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL) 
 	private List<FriendshipRequest> friendshipRequests = new ArrayList<>();
 
-	public User(String email, String password, Role role, String fullname, Gender gender) {
+	public User(String email, String password, Role role, String fullName, Gender gender) {
 		super();
 		this.email = email;
 		this.password = password;
 		this.role = role;
-		this.full_name = fullname;
+		this.fullName = fullName;
 		this.gender = gender;
 	}
 
@@ -119,44 +120,12 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	public Long getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(Long user_id) {
-		this.user_id = user_id;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getFull_name() {
-		return full_name;
-	}
-
-	public void setFull_name(String full_name) {
-		this.full_name = full_name;
-	}
-
-	public String getProfile_image() {
-		return profile_image;
-	}
-
-	public void setProfile_image(String profile_image) {
-		this.profile_image = profile_image;
-	}
-
-	public Date getBirthday() {
-		return birthDay;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthDay = birthday;
 	}
 
 	public Role getRole() {
@@ -203,21 +172,54 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
-	public User(Long user_id, String email, String password, String full_name, String profile_image, Date birthday,
+
+	public User(Long userId, String email, String password, String fullName, String profileImage, Date birthday,
 			Role role, Gender gender, List<User> friends, List<Recipe> recipes,
 			List<FriendshipRequest> friendshipRequests) {
 		super();
-		this.user_id = user_id;
+		this.userId = userId;
 		this.email = email;
 		this.password = password;
-		this.full_name = full_name;
-		this.profile_image = profile_image;
-		this.birthDay = birthday;
+		this.fullName = fullName;
+		this.profileImage = profileImage;
+		this.birthday = birthday;
 		this.role = role;
 		this.gender = gender;
 		this.friends = friends;
 		this.recipes = recipes;
 		this.friendshipRequests = friendshipRequests;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	public User() {

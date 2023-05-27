@@ -28,7 +28,7 @@ public class FriendshipRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "friendship_request_id")
-    private Long friendship_request_id;
+    private Long friendshipRequestId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
@@ -49,13 +49,6 @@ public class FriendshipRequest {
 		this.status = status;
 	}
 
-	public Long getFriendship_request_id() {
-		return friendship_request_id;
-	}
-
-	public void setFriendship_request_id(Long friendship_request_id) {
-		this.friendship_request_id = friendship_request_id;
-	}
 
 	public User getSender() {
 		return sender;
@@ -81,13 +74,26 @@ public class FriendshipRequest {
 		this.status = status;
 	}
 
-	public FriendshipRequest(Long friendship_request_id, User sender, User receiver, Friendship_status status) {
+
+
+	public FriendshipRequest(Long friendshipRequestId, User sender, User receiver, Friendship_status status) {
 		super();
-		this.friendship_request_id = friendship_request_id;
+		this.friendshipRequestId = friendshipRequestId;
 		this.sender = sender;
 		this.receiver = receiver;
 		this.status = status;
 	}
+
+
+	public Long getFriendshipRequestId() {
+		return friendshipRequestId;
+	}
+
+
+	public void setFriendshipRequestId(Long friendshipRequestId) {
+		this.friendshipRequestId = friendshipRequestId;
+	}
+
 
 	public FriendshipRequest() {
 		super();

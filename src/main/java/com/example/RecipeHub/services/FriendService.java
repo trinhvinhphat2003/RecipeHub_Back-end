@@ -62,7 +62,7 @@ public class FriendService {
 	}
 
 	public ArrayList<FriendshipRequestDTO> getAllFriendshipRequest(User user) {
-		user = userRepository.findById(user.getUser_id()).orElseThrow(() -> new NotFoundExeption(""));
+		user = userRepository.findById(user.getUserId()).orElseThrow(() -> new NotFoundExeption(""));
 		ArrayList<FriendshipRequestDTO> friendshipRequestDTOs = new ArrayList<>();
 		List<FriendshipRequest> friendshipRequests = friendshipRequestRepository.findAllByReceiverAndStatus(user, Friendship_status.WAITING);
 		for(FriendshipRequest friendshipRequest : friendshipRequests) friendshipRequestDTOs.add(FriendshipRequestMapper.INSTANCE.friendshipRequestToFriendshipRequestDTO(friendshipRequest));

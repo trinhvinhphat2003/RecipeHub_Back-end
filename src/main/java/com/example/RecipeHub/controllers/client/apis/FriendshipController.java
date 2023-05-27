@@ -46,7 +46,7 @@ public class FriendshipController {
 	public ResponseEntity<ArrayList<UserDTO>> getFriends(@AuthenticationPrincipal User user) {
 		if (user == null)
 			throw new UnauthorizedExeption("");
-		ArrayList<UserDTO> friends = friendService.getAllFriend(user.getUser_id());
+		ArrayList<UserDTO> friends = friendService.getAllFriend(user.getUserId());
 		return new ResponseEntity<>(friends, HttpStatus.OK);
 	}
 
@@ -56,10 +56,10 @@ public class FriendshipController {
 		if (user == null)
 			throw new UnauthorizedExeption("");
 		User receiver = userService.getUserById(receiver_id);
-		if(receiver.getUser_id() == user.getUser_id()) throw new BadRequestExeption("you can not request to yourself");
+		if(receiver.getUserId() == user.getUserId()) throw new BadRequestExeption("you can not request to yourself");
 		FriendshipRequest friendshipRequest = new FriendshipRequest(user, receiver, Friendship_status.WAITING);
 		friendshipRequestService.save(friendshipRequest);
-		return new ResponseEntity<String>("you have send friend's request to " + receiver.getFull_name(),
+		return new ResponseEntity<String>("you have send friend's request to " + receiver.getFullName(),
 				HttpStatus.OK);
 	}
 
@@ -74,10 +74,10 @@ public class FriendshipController {
 			throw new BadRequestExeption("");
 		else if (friendshipRequest.getStatus() == Friendship_status.WAITING) {
 			friendshipRequest.setStatus(Friendship_status.ACCEPTED);
-			friendService.addFriend(user.getUser_id(), friendshipRequest.getSender().getUser_id());
+			friendService.addFriend(user.getUserId(), friendshipRequest.getSender().getUserId());
 			friendshipRequestService.save(friendshipRequest);
 		}
-		return new ResponseEntity<String>("you become " + friendshipRequest.getSender().getFull_name() + "'s friend",
+		return new ResponseEntity<String>("you become " + friendshipRequest.getSender().getFullName() + "'s friend",
 				HttpStatus.OK);
 	}
 
@@ -95,8 +95,8 @@ public class FriendshipController {
 		if (user == null)
 			throw new UnauthorizedExeption("");
 		User friend = userService.getUserById(friend_id);
-		if(friend.getUser_id() == user.getUser_id()) throw new BadRequestExeption("you can not remove yourself");
-		user = userService.getUserById(user.getUser_id());
+		if(friend.getUserId() == user.getUserId()) throw new BadRequestExeption("you can not remove yourself");
+		user = userService.getUserById(user.getUserId());
 
 		user.getFriends().remove(friend);
 		friend.getFriends().remove(user);

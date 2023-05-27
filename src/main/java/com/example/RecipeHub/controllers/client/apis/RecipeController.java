@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,13 +44,25 @@ public class RecipeController {
 	
 	@GetMapping("global/recipes")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipes() {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllRecipesByOrivacyStatus(PrivacyStatus.PUBLIC);
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllRecipesByPrivacyStatus(PrivacyStatus.PUBLIC);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 	
 	@PostMapping("global/recipes/filter")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO) {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllRecipesWithFilter(fIlterDTO);
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllPublicRecipesWithFilter(fIlterDTO);
+		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+	}
+	
+	@PostMapping("user/recipes/filter")
+	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesByUserWithFilter(@AuthenticationPrincipal User user ,@RequestBody FIlterDTO fIlterDTO) {
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllUserRecipesWithFilter(fIlterDTO, user);
+		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+	}
+	
+	@PostMapping("global/recipes/filter/{user_id}")
+	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO, @PathVariable("user_id") User user) {
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllPublicRecipesWithFilter(fIlterDTO);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 }

@@ -10,6 +10,13 @@ public class FIlterDTO {
 	private boolean favorite;
 	private String sortBy;
 	private String title;
+	private String privacyStatus;
+	public String getPrivacyStatus() {
+		return privacyStatus;
+	}
+	public void setPrivacyStatus(String privacyStatus) {
+		this.privacyStatus = privacyStatus;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -41,14 +48,16 @@ public class FIlterDTO {
 		this.sortBy = sortBy;
 	}
 	
+
 	public FIlterDTO(ArrayList<String> tags, ArrayList<String> ingredients, boolean favorite, String sortBy,
-			String title) {
+			String title, String privacyStatus) {
 		super();
 		this.tags = tags;
 		this.ingredients = ingredients;
 		this.favorite = favorite;
 		this.sortBy = sortBy;
 		this.title = title;
+		this.privacyStatus = privacyStatus;
 	}
 	public FIlterDTO() {
 		super();
