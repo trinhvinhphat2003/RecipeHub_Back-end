@@ -56,13 +56,14 @@ public class RecipeController {
 	
 	@PostMapping("user/recipes/filter")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesByUserWithFilter(@AuthenticationPrincipal User user ,@RequestBody FIlterDTO fIlterDTO) {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllUserRecipesWithFilter(fIlterDTO, user);
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllUserRecipesWithFilter(fIlterDTO, user.getUserId());
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 	
 	@PostMapping("global/recipes/filter/{user_id}")
-	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO, @PathVariable("user_id") User user) {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllPublicRecipesWithFilter(fIlterDTO);
+	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO, @PathVariable("user_id") Long user_id) {
+		fIlterDTO.setPrivacyStatus("PUBLIC");
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllUserRecipesWithFilter(fIlterDTO, user_id);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 }

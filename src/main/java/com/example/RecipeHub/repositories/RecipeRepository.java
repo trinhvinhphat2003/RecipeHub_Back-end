@@ -19,6 +19,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 	
 	@Query("SELECT r FROM Recipe r WHERE (r.privacyStatus = :privacyStatus OR :privacyStatus IS NULL)")
 	public List<Recipe> findAllByPrivacyStatus(@Param("privacyStatus") PrivacyStatus privacyStatus);
+	
+	@Query("SELECT r FROM Recipe r LEFT JOIN r.user u WHERE (r.privacyStatus = :privacyStatus OR :privacyStatus IS NULL) AND u.userId = :userId")
+	public List<Recipe> findAllUserRecipesByPrivacyStatus(@Param("privacyStatus") PrivacyStatus privacyStatus, @Param("userId") Long userId);
 
 	Optional<Recipe> findByTitle(String title);
 

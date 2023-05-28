@@ -82,7 +82,7 @@ public class RecipeService {
 		return recipeDTOs;
 	}
 
-	public ArrayList<RecipeDTO> getAllUserRecipesWithFilter(FIlterDTO fIlterDTO, User user) {
+	public ArrayList<RecipeDTO> getAllUserRecipesWithFilter(FIlterDTO fIlterDTO, Long user_id) {
 		List<Recipe> recipes = new ArrayList<>();
 		PrivacyStatus privacyStatus;
 		
@@ -101,15 +101,15 @@ public class RecipeService {
 		
 //		recipes = recipeRepository.findByTagsAndIngredientsAndUser(tags, tagCount, ingredients, ingredientCount, fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user.getUserId());
 		if(fIlterDTO.getTags().size() == 0 && fIlterDTO.getIngredients().size() == 0) {
-			recipes = recipeRepository.findAllByPrivacyStatus(privacyStatus);
+			recipes = recipeRepository.findAllUserRecipesByPrivacyStatus(privacyStatus, user_id);
 		}
 		else if(fIlterDTO.getTags().size() != 0 && fIlterDTO.getIngredients().size() != 0) {
-			recipes = recipeRepository.findByTagsAndIngredientsAndUser(fIlterDTO.getTags(), fIlterDTO.getTags().size(), fIlterDTO.getIngredients(), fIlterDTO.getIngredients().size(), fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user.getUserId());
+			recipes = recipeRepository.findByTagsAndIngredientsAndUser(fIlterDTO.getTags(), fIlterDTO.getTags().size(), fIlterDTO.getIngredients(), fIlterDTO.getIngredients().size(), fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user_id);
 		}
 		else if(fIlterDTO.getTags().size() != 0)
-		recipes = recipeRepository.findByTagsAndUser(fIlterDTO.getTags(), fIlterDTO.getTags().size(), fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user.getUserId());
+		recipes = recipeRepository.findByTagsAndUser(fIlterDTO.getTags(), fIlterDTO.getTags().size(), fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user_id);
 		else if(fIlterDTO.getIngredients().size() != 0)
-			recipes = recipeRepository.findByIngredientsAndUser(fIlterDTO.getIngredients(), fIlterDTO.getIngredients().size(), fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user.getUserId());
+			recipes = recipeRepository.findByIngredientsAndUser(fIlterDTO.getIngredients(), fIlterDTO.getIngredients().size(), fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user_id);
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for(Recipe recipe : recipes) recipeDTOs.add(RecipeMapper.INSTANCE.recipeToRecipeDto(recipe));
 		return recipeDTOs;

@@ -29,7 +29,7 @@ public class Tag {
 	@Column(name = "tag_id")
 	private Long tagId;
 
-	@Column(name = "tagName")
+	@Column(name = "tag_name")
 	private String tagName;
 
 	@ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
