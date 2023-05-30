@@ -18,7 +18,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                 		.allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedOrigins("https://recipehub-g3.vercel.app", "http://localhost")
+                        .allowedOrigins("https://recipehub-g3.vercel.app", "http://localhost:3000")
                         .allowCredentials(true)
                         .allowedHeaders("*")
                         .maxAge(3600);
