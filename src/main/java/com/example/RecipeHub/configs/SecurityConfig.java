@@ -31,6 +31,13 @@ public class SecurityConfig {
 		http.csrf().disable();
 		http.formLogin().disable();
 //		http.cors(cors -> cors.disable());
+		http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(request -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.addAllowedMethod("POST");
+            configuration.addAllowedHeader("Content-Type");
+
+            return configuration;
+        }));
 		http.authorizeHttpRequests()
 //			.requestMatchers("/api/user").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
 				.requestMatchers("/api/v1/admin/**").hasAuthority(Role.ADMIN.name()).requestMatchers("/api/v1/auth/**")
@@ -43,13 +50,8 @@ public class SecurityConfig {
 	
 //	@Bean
 //    CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("https://recipehub-g3.vercel.app", "http://localhost:3000"));
-//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-//        configuration.setAllowedHeaders(Arrays.asList("*"));
-//        configuration.setAllowCredentials(true);
 //        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
+//        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
 //        return source;
 //    }
 }
