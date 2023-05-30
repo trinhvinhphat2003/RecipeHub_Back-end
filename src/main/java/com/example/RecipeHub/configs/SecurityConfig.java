@@ -31,13 +31,6 @@ public class SecurityConfig {
 		http.csrf().disable();
 		http.formLogin().disable();
 //		http.cors(cors -> cors.disable());
-		http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(request -> {
-            CorsConfiguration configuration = new CorsConfiguration();
-            configuration.addAllowedMethod("POST");
-            configuration.addAllowedHeader("Content-Type");
-
-            return configuration;
-        }));
 		http.authorizeHttpRequests()
 //			.requestMatchers("/api/user").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
 				.requestMatchers("/api/v1/admin/**").hasAuthority(Role.ADMIN.name()).requestMatchers("/api/v1/auth/**")
