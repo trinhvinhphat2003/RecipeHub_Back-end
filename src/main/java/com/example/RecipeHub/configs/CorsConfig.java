@@ -11,7 +11,9 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://recipehub-g3.vercel.app", "http://http://127.0.0.1:3000/");       
+                        .allowedOrigins("https://recipehub-g3.vercel.app", "http://localhost:3000")
+                        .allowCredentials(true)
+                        .allowedHeaders("*");
             }
         };
     }
