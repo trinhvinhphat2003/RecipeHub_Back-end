@@ -24,7 +24,6 @@ import com.example.RecipeHub.enums.PrivacyStatus;
 import com.example.RecipeHub.errorHandlers.UnauthorizedExeption;
 import com.example.RecipeHub.services.RecipeService;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/")
 public class RecipeController {
