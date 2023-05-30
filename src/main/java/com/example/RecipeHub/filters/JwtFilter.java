@@ -2,6 +2,7 @@ package com.example.RecipeHub.filters;
 
 import java.io.IOException;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,13 +21,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Service
+@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-	@Autowired
-	private UserDetailsService userDetailsService;
+	private final UserDetailsService userDetailsService;
 
-	@Autowired
-	private JwtService jwtService;
+	private final JwtService jwtService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

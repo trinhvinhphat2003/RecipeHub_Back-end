@@ -5,8 +5,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.GeneratorType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,26 +28,34 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long user_id;
-	@Column(nullable = false, unique = true)
+	@Column(name="email", nullable = false, unique = true)
 	private String email;
 	@Column(nullable = true)
 	private String password;
 
-	private String full_name;
+	@Column(name = "full_name", nullable = true)
+	private String fullName;
 
-	private String profile_image;
+	@Column(name="profile_image")
+	private String profileImage;
 
+	@Column(name="birthday")
 	private Date birthday;
+
+	@Column(name="enable")
+	private boolean enable;
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -57,9 +67,9 @@ public class User implements UserDetails {
 	@JoinTable(name = "friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
 	private List<User> friends = new ArrayList<>();
 
-	public User() {
-		super();
-	}
+//	public User() {
+//		super();
+//	}
 
 	public User(Long user_id, String email, String password) {
 		super();
@@ -79,24 +89,24 @@ public class User implements UserDetails {
 		this.email = email;
 		this.password = password;
 		this.role = role;
-		this.full_name = fullname;
+		this.fullName = fullname;
 		this.gender = gender;
 	}
 
-	public String getFull_name() {
-		return full_name;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public void setFull_name(String full_name) {
-		this.full_name = full_name;
+	public void setFullName(String full_name) {
+		this.fullName = full_name;
 	}
 
-	public String getProfile_image() {
-		return profile_image;
+	public String getProfileImage() {
+		return profileImage;
 	}
 
-	public void setProfile_image(String profile_image) {
-		this.profile_image = profile_image;
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
 	}
 
 	public Date getBirthday() {
