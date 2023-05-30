@@ -2,12 +2,18 @@ package com.example.RecipeHub.controllers.client.apis;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,6 +42,9 @@ public class FileController {
 		super();
 		this.recipeService = recipeService;
 	}
+	
+	@Value("${image.upload.directory}")
+    private String uploadDirectory;
 
 	@GetMapping("user/export-recipes/excel")
 	public ResponseEntity<String> exportRecipesExcel(@AuthenticationPrincipal User user, HttpServletResponse response) throws IOException {
@@ -96,10 +105,14 @@ public class FileController {
 			if (file.isEmpty()) {
                 return ResponseEntity.badRequest().body("No image file provided");
             }
+            String fileName = UUID.randomUUID().toString();
+            Path filePath = Paths.get(uploadDirectory, fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            
+            return ResponseEntity.ok("Image uploaded successfully");
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body("internal error");
 		}
-		
-		return new ResponseEntity<String>("", HttpStatus.OK);
 	}
 }
