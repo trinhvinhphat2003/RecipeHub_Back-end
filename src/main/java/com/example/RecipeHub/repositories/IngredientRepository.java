@@ -1,12 +1,11 @@
 package com.example.RecipeHub.repositories;
 
-import java.util.ArrayList;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.RecipeHub.entities.FriendshipRequest;
+import com.example.RecipeHub.entities.Ingredient;
 
 @Repository
-public interface FriendshipRepository extends JpaRepository<FriendshipRequest, Long>{
+public interface IngredientRepository extends JpaRepository<Ingredient, Long>{
+
 }

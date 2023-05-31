@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.RecipeHub.dtos.LoginDTO;
+import com.example.RecipeHub.dtos.LoginResponseDTO;
+import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.services.AuthenticateService;
 
 @RestController
@@ -23,15 +25,13 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/basic/login")
-	public ResponseEntity<String> handleBasicLogin(@RequestBody LoginDTO loginDTO) {
-		String JwtToken = authenticateService.authenticateBasic(loginDTO);
-		return new ResponseEntity<String>("Bearer " + JwtToken, HttpStatus.OK);
+	public ResponseEntity<LoginResponseDTO> handleBasicLogin(@RequestBody LoginDTO loginDTO) {
+		return new ResponseEntity<>(authenticateService.authenticateBasic(loginDTO), HttpStatus.OK);
 	}
 
 	@PostMapping("/google/oauth/login/{token}")
-	public ResponseEntity<String> handleOauthLogin(@PathVariable("token") String googleToken) {
-		String JwtToken = authenticateService.authenticationOauth(googleToken);
-		return new ResponseEntity<String>("Bearer " + JwtToken, HttpStatus.OK);
+	public ResponseEntity<LoginResponseDTO> handleOauthLogin(@PathVariable("token") String googleToken) {
+		return new ResponseEntity<>(authenticateService.authenticateOauth(googleToken), HttpStatus.OK);
 
 	}
 }
