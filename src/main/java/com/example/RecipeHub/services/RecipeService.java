@@ -50,31 +50,21 @@ public class RecipeService {
 
 	public ArrayList<RecipeDTO> getAllPublicRecipesWithFilter(FIlterDTO fIlterDTO) {
 		List<Recipe> recipes = new ArrayList<>();
-//		ArrayList<String> tags = fIlterDTO.getTags();
-//		ArrayList<String> ingredients = fIlterDTO.getIngredients();
-//		long tagCount = 0;
-//		long ingredientCount = 0;
-//		
-//		if(tags.size() == 0) {
-//			tags = null;
-//		} else {
-//			tagCount = tags.size();
-//		}
-//		if(ingredients.size() == 0) {
-//			ingredients = null;
-//		} else {
-//			ingredientCount = ingredients.size();
-//		}
-//		
-//		recipes = recipeRepository.findByTagsAndIngredients(tags, tagCount, ingredients, ingredientCount, fIlterDTO.getTitle(), fIlterDTO.isFavorite(), PrivacyStatus.PUBLIC);
-//		
+		/*the logic below is mainly to deal with tag and ingredient, the additional information
+		 * as title, sort by, ... is attached already
+		 * the logic of getAllUserRecipesWithFilter is also the same but it have user_id as additional
+		*/
+		//if client not filter with tag and ingredient
 		if(fIlterDTO.getTags().size() == 0 && fIlterDTO.getIngredients().size() == 0) {
 			recipes = recipeRepository.findAllByPrivacyStatus(PrivacyStatus.PUBLIC);
 		}
+		//if client filter with both tag and ingredient
 		else if(fIlterDTO.getTags().size() != 0 && fIlterDTO.getIngredients().size() != 0)
 			recipes = recipeRepository.findByTagsAndIngredients(fIlterDTO.getTags(), fIlterDTO.getTags().size(), fIlterDTO.getIngredients(), fIlterDTO.getIngredients().size(), fIlterDTO.getTitle(), fIlterDTO.isFavorite(), PrivacyStatus.PUBLIC);
+		//if client filter with only tag
 		else if(fIlterDTO.getTags().size() != 0)
 			recipes = recipeRepository.findByTags(fIlterDTO.getTags(), fIlterDTO.getTags().size(), fIlterDTO.getTitle(), fIlterDTO.isFavorite(), PrivacyStatus.PUBLIC);
+		//if client filter with only ingredient
 		else if(fIlterDTO.getIngredients().size() != 0)
 			recipes = recipeRepository.findByIngredients(fIlterDTO.getIngredients(), fIlterDTO.getIngredients().size(), fIlterDTO.getTitle(), fIlterDTO.isFavorite(), PrivacyStatus.PUBLIC);
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();

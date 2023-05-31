@@ -50,10 +50,13 @@ public class FileController {
 	public ResponseEntity<String> exportRecipesExcel(@AuthenticationPrincipal User user, HttpServletResponse response) throws IOException {
 		ArrayList<RecipeDTO> recipes = recipeService.getAllRecipesByUser(user);
 		
+		//create a excel file holder
 		Workbook workbook = new XSSFWorkbook();
 		
+		//create a sheet
 		Sheet sheet = workbook.createSheet("Recipes");
 		
+		//set header
 		Row headerRow = sheet.createRow(0);
 		headerRow.createCell(0).setCellValue("Recipe ID");
         headerRow.createCell(1).setCellValue("Title");
@@ -67,7 +70,10 @@ public class FileController {
         headerRow.createCell(9).setCellValue("steps");
         headerRow.createCell(10).setCellValue("nutrition");
 		
+        //initial row
 		int rowNum = 1;
+		
+		//get data from db and push into sheet
 		for (RecipeDTO recipe : recipes) {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(recipe.getRecipe_id());
@@ -88,14 +94,19 @@ public class FileController {
             row.createCell(10).setCellValue(recipe.getNutrition());
         }
 		
+		//set response type for excel file
 		response.setHeader("Content-Disposition", "attachment; filename=recipes.xlsx");
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         
+        //write from holder to actual file
         OutputStream outputStream = response.getOutputStream();
         workbook.write(outputStream);
+        
+        //close holder
         workbook.close();
         outputStream.close();
 		
+        //return
 		return new ResponseEntity<String>("", HttpStatus.OK);
 	}
 	

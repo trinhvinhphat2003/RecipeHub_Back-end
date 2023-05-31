@@ -33,8 +33,11 @@ public class FriendService {
 	}
 
 	public void addFriend(Long user_id, Long friend_id) {
+		//get persist of user and friend
 		Optional<User> userOp = userRepository.findById(user_id);
 		Optional<User> friendOp = userRepository.findById(friend_id);
+		
+		//user to friend and friend to user
 		if(userOp.isPresent() && friendOp.isPresent()) {
 			User user = userOp.get();
 			User friend = friendOp.get();

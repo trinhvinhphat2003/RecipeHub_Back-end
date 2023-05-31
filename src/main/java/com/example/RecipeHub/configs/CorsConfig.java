@@ -11,6 +11,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
 @Configuration
 @EnableWebMvc
 public class CorsConfig {
+	//cors config to deal with cors error
 	@Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
