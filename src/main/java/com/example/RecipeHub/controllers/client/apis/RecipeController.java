@@ -18,10 +18,12 @@ import com.example.RecipeHub.dtos.IngredientDTO;
 import com.example.RecipeHub.dtos.RecipeDTO;
 import com.example.RecipeHub.dtos.TagDTO;
 import com.example.RecipeHub.entities.Ingredient;
+import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.PrivacyStatus;
 import com.example.RecipeHub.errorHandlers.UnauthorizedExeption;
+import com.example.RecipeHub.mappers.RecipeMapper;
 import com.example.RecipeHub.services.RecipeService;
 
 @RestController
@@ -35,6 +37,14 @@ public class RecipeController {
 		this.recipeService = recipeService;
 	}
 
+	@PostMapping("user/recipe")
+	public ResponseEntity<String> addNewRecipe(@RequestBody RecipeDTO dto, @AuthenticationPrincipal User user) {
+		recipeService.addNewRecipe(dto);
+		
+		
+		return ResponseEntity.ok("ok");
+	}
+	
 	@GetMapping("user/recipes")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesForUser(@AuthenticationPrincipal User user) {
 		if (user == null)

@@ -108,9 +108,9 @@ public class ApplicationConfig {
 				Ingredient ingredient2 = new Ingredient("carrot");
 				Ingredient ingredient3 = new Ingredient("onion");
 
-				ingredientRepository.save(ingredient1);
-				ingredientRepository.save(ingredient2);
-				ingredientRepository.save(ingredient3);
+				ingredient1 = ingredientRepository.save(ingredient1);
+				ingredient2 = ingredientRepository.save(ingredient2);
+				ingredient3 = ingredientRepository.save(ingredient3);
 
 				// create recipe
 				User user = userRepository.findByEmail("admin@gmail.com").get();
