@@ -36,7 +36,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/v1/admin/**").hasAuthority(Role.ADMIN.name())
 				.requestMatchers("/api/v1/auth/**").permitAll()
 				.requestMatchers("/api/v1/global/**").permitAll()
-				.requestMatchers("/").permitAll()
+				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/api-docs/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
