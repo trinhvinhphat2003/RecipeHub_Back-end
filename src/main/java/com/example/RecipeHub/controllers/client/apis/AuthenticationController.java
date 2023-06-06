@@ -2,7 +2,6 @@ package com.example.RecipeHub.controllers.client.apis;
 
 import com.example.RecipeHub.dtos.RegisterRequest;
 import com.example.RecipeHub.dtos.RegisterResponse;
-import com.example.RecipeHub.dtos.VerificationTokenRequest;
 import com.example.RecipeHub.eventListeners.RegistrationCompletionEvent;
 import com.example.RecipeHub.services.RegisterService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,20 +26,20 @@ public class AuthenticationController {
 	@PostMapping("/basic/login")
 	public ResponseEntity<String> handleBasicLogin(@RequestBody LoginDTO loginDTO) {
 		String JwtToken = authenticateService.authenticateBasic(loginDTO);
-		return new ResponseEntity<String>("Bearer " + JwtToken, HttpStatus.OK);
+		return new ResponseEntity<>("Bearer " + JwtToken, HttpStatus.OK);
 	}
 
 	@PostMapping("/google/oauth/login/{token}")
 	public ResponseEntity<String> handleOauthLogin(@PathVariable("token") String googleToken) {
 		String JwtToken = authenticateService.authenticationOauth(googleToken);
-		return new ResponseEntity<String>("Bearer " + JwtToken, HttpStatus.OK);
+		return new ResponseEntity<>("Bearer " + JwtToken, HttpStatus.OK);
 
 	}
 
 	@PostMapping(path = "/register")
 	public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest, HttpServletRequest request) throws Exception {
-		RegisterResponse registerResponse = accountService.register(registerRequest, getApplicationPath(request));
-//		eventPublisher.publishEvent(new RegistrationCompletionEvent(this));
+		RegisterResponse registerResponse = accountService.register(registerRequest);
+		eventPublisher.publishEvent(new RegistrationCompletionEvent(registerRequest, getApplicationPath(request)));
 		return ResponseEntity.ok(registerResponse);
 	}
 

@@ -3,18 +3,25 @@ package com.example.RecipeHub.eventListeners;
 
 import com.example.RecipeHub.services.RegisterService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
+import lombok.SneakyThrows;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RegistrationListener {
+public class RegistrationListener implements ApplicationListener<RegistrationCompletionEvent> {
     private final RegisterService registerService;
 
-    @EventListener
-    public void completeRegistration(RegistrationCompletionEvent registrationCompletionEvent){
-        // create token, send email
-//        registerService.createVerificationToken();
+    @SneakyThrows
+    @Override
+    public void onApplicationEvent(RegistrationCompletionEvent event) {
+        completeRegistration(event);
+    }
 
+    private void completeRegistration(RegistrationCompletionEvent event) throws Exception {
+        // create token
+        String token = registerService.createVerificationToken(event.getRequest().getEmail());
+        // send email
+        registerService.sendVerificationEmail(event.getRequest(), event.getApplicationPath(), token);
     }
 }

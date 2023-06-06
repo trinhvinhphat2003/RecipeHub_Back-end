@@ -1,10 +1,8 @@
 package com.example.RecipeHub.services.impl;
 
-import com.example.RecipeHub.dtos.VerificationTokenRequest;
 import com.example.RecipeHub.entities.MailInfo;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.entities.VerificationToken;
-import com.example.RecipeHub.eventListeners.RegistrationCompletionEvent;
 import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.dtos.RegisterRequest;
 import com.example.RecipeHub.dtos.RegisterResponse;
@@ -14,7 +12,6 @@ import com.example.RecipeHub.services.RegisterService;
 import com.example.RecipeHub.services.EmailService;
 import com.example.RecipeHub.services.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,22 +38,17 @@ public class RegisterServiceImpl implements RegisterService {
     private final EmailService emailService;
 
     @Override
-    public RegisterResponse register(RegisterRequest registerRequest, String applicationPath) throws Exception {
+    public RegisterResponse register(RegisterRequest registerRequest) throws Exception {
 
         // check if email has been register
         if(userRepository.findByEmail(registerRequest.getEmail()).isPresent()){
             throw new RuntimeException("Email " + registerRequest.getEmail() + " has been registered.");
         }
 
-        // save account to data base
+        // save account to database
         registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         User user = userMapper.registerRequestToUser(registerRequest);
         user = userRepository.save(user);
-
-        String token = createVerificationToken(user);
-        sendVerificationEmail(registerRequest, applicationPath, token);
-
-
 
         String jwtToken = jwtService.generateToken(user);
         return RegisterResponse.builder()
@@ -79,9 +71,11 @@ public class RegisterServiceImpl implements RegisterService {
         return TOKEN_VALID;
     }
 
-    private String createVerificationToken(User user){
+    @Override
+    public String createVerificationToken(String userEmail){
         String token = UUID.randomUUID().toString();
         Date expirationDate = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
         VerificationToken verificationToken = VerificationToken.builder()
                 .token(token)
                 .expirationDate(expirationDate)
@@ -91,7 +85,8 @@ public class RegisterServiceImpl implements RegisterService {
         return token;
     }
 
-    private void sendVerificationEmail(RegisterRequest registerRequest, String applicationPath, String token) throws Exception {
+    @Override
+    public void sendVerificationEmail(RegisterRequest registerRequest, String applicationPath, String token) throws Exception {
         final String subject = "Verify your email address";
         String verificationPath = applicationPath + "/api/v1/auth/verify-user?token=" + token;
         Map<String, Object> properties = new HashMap<>();
