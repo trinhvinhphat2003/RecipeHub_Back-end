@@ -7,6 +7,9 @@ import java.util.Collections;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.example.RecipeHub.dtos.FIlterDTO;
@@ -36,6 +39,13 @@ public class RecipeService {
 		this.tagService = tagService;
 	}
 
+	public Pageable generatePageable(Integer page, Integer size, String sortBy, String direction) {
+		if(sortBy == null || sortBy.isEmpty()) return PageRequest.of(page, size);
+		else if(direction.equals("desc")) return PageRequest.of(page, size, Sort.by(Direction.DESC ,sortBy));
+		else if(direction.equals("asc")) return PageRequest.of(page, size, Sort.by(Direction.ASC ,sortBy));
+		else return PageRequest.of(page, size, Sort.by(sortBy));
+	} 
+	
 	public ArrayList<RecipeDTO> getAllRecipesByUser(User user) {
 		List<Recipe> recipes = user.getRecipes();
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
@@ -49,7 +59,7 @@ public class RecipeService {
 	}
 
 	public ArrayList<RecipeDTO> getAllRecipesByPrivacyStatus(PrivacyStatus privacyStatus) {
-		List<Recipe> recipes = recipeRepository.findAllByPrivacyStatus(privacyStatus);
+		Page<Recipe> recipes = recipeRepository.findAllByPrivacyStatus(privacyStatus, generatePageable(0, 3, "recipe_id", "as"));
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for (Recipe recipe : recipes)
 			recipeDTOs.add(RecipeMapper.INSTANCE.recipeToRecipeDto(recipe));
@@ -66,7 +76,8 @@ public class RecipeService {
 		 */
 		// if client not filter with tag and ingredient
 		if (fIlterDTO.getTags().size() == 0 && fIlterDTO.getIngredients().size() == 0) {
-			recipes = recipeRepository.findAllByPrivacyStatus(PrivacyStatus.PUBLIC);
+			recipes = recipeRepository.findAllGlobalRecipeByPrivacyStatus(fIlterDTO.getTitle(), fIlterDTO.isFavorite(),
+					PrivacyStatus.PUBLIC);
 		}
 		// if client filter with both tag and ingredient
 		else if (fIlterDTO.getTags().size() != 0 && fIlterDTO.getIngredients().size() != 0)
@@ -106,7 +117,8 @@ public class RecipeService {
 
 //		recipes = recipeRepository.findByTagsAndIngredientsAndUser(tags, tagCount, ingredients, ingredientCount, fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user.getUserId());
 		if (fIlterDTO.getTags().size() == 0 && fIlterDTO.getIngredients().size() == 0) {
-			recipes = recipeRepository.findAllUserRecipesByPrivacyStatus(privacyStatus, user_id);
+			recipes = recipeRepository.findAllUserRecipesByPrivacyStatus(fIlterDTO.getTitle(), fIlterDTO.isFavorite(),
+					privacyStatus, user_id);
 		} else if (fIlterDTO.getTags().size() != 0 && fIlterDTO.getIngredients().size() != 0) {
 			recipes = recipeRepository.findByTagsAndIngredientsAndUser(fIlterDTO.getTags(), fIlterDTO.getTags().size(),
 					fIlterDTO.getIngredients(), fIlterDTO.getIngredients().size(), fIlterDTO.getTitle(),
@@ -137,13 +149,13 @@ public class RecipeService {
 		}
 
 		for (ImageDTO imageDTO : imageDTOs) {
-
+			
 		}
 
 		for (IngredientDTO ingredientDTO : ingredientDTOs) {
 
 		}
-		
+
 		recipeRepository.save(recipe);
 	}
 
