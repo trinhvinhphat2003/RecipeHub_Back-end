@@ -55,10 +55,21 @@ public class User implements UserDetails {
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
- 
+
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
-	
+
+	@Column(name = "enable")
+	private boolean enable;
+
+	public boolean isEnable() {
+		return enable;
+	}
+
+	public void setEnable(boolean enable) {
+		this.enable = enable;
+	}
+
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
 	private List<User> friends = new ArrayList<>();
@@ -66,16 +77,17 @@ public class User implements UserDetails {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Recipe> recipes = new ArrayList<>();
 
-	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL) 
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<FriendshipRequest> friendshipRequests = new ArrayList<>();
 
-	public User(String email, String password, Role role, String fullName, Gender gender) {
+	public User(String email, String password, Role role, String fullName, Gender gender, boolean enable) {
 		super();
 		this.email = email;
 		this.password = password;
 		this.role = role;
 		this.fullName = fullName;
 		this.gender = gender;
+		this.enable = enable;
 	}
 
 	@Override
@@ -172,24 +184,6 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
-
-	public User(Long userId, String email, String password, String fullName, String profileImage, Date birthday,
-			Role role, Gender gender, List<User> friends, List<Recipe> recipes,
-			List<FriendshipRequest> friendshipRequests) {
-		super();
-		this.userId = userId;
-		this.email = email;
-		this.password = password;
-		this.fullName = fullName;
-		this.profileImage = profileImage;
-		this.birthday = birthday;
-		this.role = role;
-		this.gender = gender;
-		this.friends = friends;
-		this.recipes = recipes;
-		this.friendshipRequests = friendshipRequests;
-	}
-
 	public Long getUserId() {
 		return userId;
 	}
@@ -225,9 +219,25 @@ public class User implements UserDetails {
 	public User() {
 		super();
 	}
-	
+
+	public User(Long userId, String email, String password, String fullName, String profileImage, Date birthday,
+			Role role, Gender gender, boolean enable, List<User> friends, List<Recipe> recipes,
+			List<FriendshipRequest> friendshipRequests) {
+		super();
+		this.userId = userId;
+		this.email = email;
+		this.password = password;
+		this.fullName = fullName;
+		this.profileImage = profileImage;
+		this.birthday = birthday;
+		this.role = role;
+		this.gender = gender;
+		this.enable = enable;
+		this.friends = friends;
+		this.recipes = recipes;
+		this.friendshipRequests = friendshipRequests;
+	}
+
 	//
-	
-	
 
 }

@@ -5,13 +5,15 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.example.RecipeHub.dtos.RegisterRequest;
 import com.example.RecipeHub.dtos.UserDTO;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.Role;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 	@Named("mapRole")
@@ -29,4 +31,19 @@ public interface UserMapper {
         @Mapping(target = "gender", qualifiedByName = "mapGender")
     })
     UserDTO userToUserDTO(User user);
+    
+    @Named("mapPassword")
+    static String mapPassword(String password, PasswordEncoder passwordEncoder){
+        return passwordEncoder.encode(password);
+    }
+    
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "fullName", target = "fullName")
+    @Mapping(source = "profileImage", target = "profileImage")
+    @Mapping(source = "birthday", target = "birthday")
+    @Mapping(target = "role", constant = "USER")
+    @Mapping(source = "gender", target = "gender")
+    @Mapping(target = "enable", constant = "false")
+    User registerRequestToUser(RegisterRequest registerRequest);
 }
