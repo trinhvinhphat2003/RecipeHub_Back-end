@@ -80,13 +80,13 @@ public class ApplicationConfig {
 			public void run(String... args) throws Exception {
 				// create user
 				userRepository.save(new User("admin@gmail.com", getPasswordEncoder().encode("123456"), Role.ADMIN,
-						"admin", Gender.MALE));
+						"admin", Gender.MALE,true));
 				userRepository.save(new User("user@gmail.com", getPasswordEncoder().encode("123456"), Role.USER, "user",
-						Gender.MALE));
+						Gender.MALE, true));
 				userRepository.save(new User("user1@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
-						"user1", Gender.FEMALE));
+						"user1", Gender.FEMALE, true));
 				userRepository.save(new User("user2@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
-						"user2", Gender.FEMALE));
+						"user2", Gender.FEMALE, true));
 
 				// create friend request
 //				friendshipRepository.save(new FriendshipRequest(userRepository.findById(3l).get(),
@@ -108,9 +108,9 @@ public class ApplicationConfig {
 				Ingredient ingredient2 = new Ingredient("carrot");
 				Ingredient ingredient3 = new Ingredient("onion");
 
-				ingredientRepository.save(ingredient1);
-				ingredientRepository.save(ingredient2);
-				ingredientRepository.save(ingredient3);
+				ingredient1 = ingredientRepository.save(ingredient1);
+				ingredient2 = ingredientRepository.save(ingredient2);
+				ingredient3 = ingredientRepository.save(ingredient3);
 
 				// create recipe
 				User user = userRepository.findByEmail("admin@gmail.com").get();

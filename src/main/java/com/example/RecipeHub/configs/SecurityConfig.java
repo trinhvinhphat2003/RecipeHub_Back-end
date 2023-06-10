@@ -32,9 +32,13 @@ public class SecurityConfig {
 		http.formLogin().disable();
 		http.cors();
 		http.authorizeHttpRequests()
-//			.requestMatchers("/api/user").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
-				.requestMatchers("/api/v1/admin/**").hasAuthority(Role.ADMIN.name()).requestMatchers("/api/v1/auth/**")
-				.permitAll().requestMatchers("/api/v1/global/**").permitAll().anyRequest().authenticated().and()
+				.requestMatchers("/api/v1/user/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+				.requestMatchers("/api/v1/admin/**").hasAuthority(Role.ADMIN.name())
+				.requestMatchers("/api/v1/auth/**").permitAll()
+				.requestMatchers("/api/v1/global/**").permitAll()
+				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/api-docs/**").permitAll()
+				.anyRequest().authenticated()
+				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authenticationProvider(authenticationProvider)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

@@ -14,16 +14,20 @@ import com.example.RecipeHub.dtos.IngredientDTO;
 import com.example.RecipeHub.dtos.RecipeDTO;
 import com.example.RecipeHub.dtos.TagDTO;
 import com.example.RecipeHub.entities.Image;
+import com.example.RecipeHub.entities.Ingredient;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.Recipe_HAVE_Ingredient;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.PrivacyStatus;
+import com.example.RecipeHub.repositories.UserRepository;
 
 @Mapper(componentModel = "spring")
 public interface RecipeMapper {
 
 	RecipeMapper INSTANCE = Mappers.getMapper(RecipeMapper.class);
+	
+	public static final UserRepository userRepository = null;
 
 	@Named("mapUser")
 	static Long mapSender(User user) {
@@ -66,6 +70,48 @@ public interface RecipeMapper {
 			@Mapping(target = "privacyStatus", qualifiedByName = "mapPrivacyStatus", source = "privacyStatus")
 			})
 	RecipeDTO recipeToRecipeDto(Recipe recipe);
+	
+	@Named("mapUserFromDto")
+	static User mapUserFromDto(Long userId) {
+		return new User(userId, null, null, null, null, null, null, null, true, null, null, null);
+	}
+	
+	@Named("mapIngredientsFromDto")
+	static ArrayList<Recipe_HAVE_Ingredient> mapIngredientsFromDto(ArrayList<IngredientDTO> ingredientDtos) {
+		ArrayList<Recipe_HAVE_Ingredient> ingredients = new ArrayList<>();
+		return ingredients;
+	}
+	
+	@Named("mapImagesFromDto")
+	static ArrayList<Image> mapImagesFromDto(ArrayList<ImageDTO> imageDTOs) {
+		ArrayList<Image> images = new ArrayList<>();
+		return images;
+	}
+	
+	@Named("mapTagsFromDto")
+	static ArrayList<Tag> mapTagsFromDto(ArrayList<TagDTO> tagDTOs) {
+		ArrayList<Tag> tags = new ArrayList<>();
+		return tags;
+	}
+	
+	@Named("mapPrivacyStatusFromDto")
+	static PrivacyStatus mapPrivacyStatusFromDto(String privatecyStatus) {
+		switch (privatecyStatus) {
+		case "PRIVATE": {
+			return PrivacyStatus.PRIVATE;
+		}
+		default:
+			return PrivacyStatus.PUBLIC;
+		}
+	}
+	
+	@Mappings({ @Mapping(target = "user", qualifiedByName = "mapUserFromDto", source = "userId"),
+		@Mapping(target = "ingredients", qualifiedByName = "mapIngredientsFromDto", source = "ingredients"),
+		@Mapping(target = "images", qualifiedByName = "mapImagesFromDto", source = "images") ,
+		@Mapping(target = "tags", qualifiedByName = "mapTagsFromDto", source = "tags"),
+		@Mapping(target = "privacyStatus", qualifiedByName = "mapPrivacyStatusFromDto", source = "privacyStatus")
+		})
+	Recipe recipeDtoToRecipe(RecipeDTO recipeDTO);
 
 //	@AfterMapping
 

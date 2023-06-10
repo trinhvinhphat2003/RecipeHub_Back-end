@@ -75,7 +75,7 @@ public class AuthenticateService {
 		Optional<User> user = userRepository.findByEmail(email);
 		//if user not exist, create a new
 		if (!user.isPresent()) {
-			User newUser = new User(email, "", Role.USER, responseObject.getName(), Gender.UNKNOW);
+			User newUser = new User(email, "", Role.USER, responseObject.getName(), Gender.UNKNOW, true);
 			userRepository.save(newUser);
 			emailRes[0] = email;
 			user = userRepository.findByEmail(email);

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,10 +20,13 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 	public List<Recipe> findAllByUser(User user);
 	
 	@Query("SELECT r FROM Recipe r WHERE (r.privacyStatus = :privacyStatus OR :privacyStatus IS NULL)")
-	public List<Recipe> findAllByPrivacyStatus(@Param("privacyStatus") PrivacyStatus privacyStatus);
+	public Page<Recipe> findAllByPrivacyStatus(@Param("privacyStatus") PrivacyStatus privacyStatus, Pageable pageable);
 	
-	@Query("SELECT r FROM Recipe r LEFT JOIN r.user u WHERE (r.privacyStatus = :privacyStatus OR :privacyStatus IS NULL) AND u.userId = :userId")
-	public List<Recipe> findAllUserRecipesByPrivacyStatus(@Param("privacyStatus") PrivacyStatus privacyStatus, @Param("userId") Long userId);
+	@Query("SELECT r FROM Recipe r WHERE (r.privacyStatus = :privacyStatus OR :privacyStatus IS NULL) AND r.title like %:title% AND r.is_favourite = :isFavourite")
+	public List<Recipe> findAllGlobalRecipeByPrivacyStatus(@Param("title") String title, @Param("isFavourite") boolean isFavourite, @Param("privacyStatus") PrivacyStatus privacyStatus);
+	
+	@Query("SELECT r FROM Recipe r LEFT JOIN r.user u WHERE (r.privacyStatus = :privacyStatus OR :privacyStatus IS NULL) AND r.title like %:title% AND r.is_favourite = :isFavourite AND u.userId = :userId")
+	public List<Recipe> findAllUserRecipesByPrivacyStatus(@Param("title") String title, @Param("isFavourite") boolean isFavourite, @Param("privacyStatus") PrivacyStatus privacyStatus, @Param("userId") Long userId);
 
 	Optional<Recipe> findByTitle(String title);
 
