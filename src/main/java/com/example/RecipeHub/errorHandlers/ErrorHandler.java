@@ -24,4 +24,8 @@ public class ErrorHandler {
 	public ResponseEntity<String> accessDenied(BadRequestExeption ex){
 		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.BAD_REQUEST);
 	}
+	@ExceptionHandler(ForbiddenExeption.class)
+	public ResponseEntity<String> accessDenied(ForbiddenExeption ex){
+		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.FORBIDDEN);
+	}
 }

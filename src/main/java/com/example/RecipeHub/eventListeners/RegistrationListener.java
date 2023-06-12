@@ -1,21 +1,28 @@
 package com.example.RecipeHub.eventListeners;
 
 
-import com.example.RecipeHub.services.RegisterService;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import com.example.RecipeHub.services.RegisterService;
+
 @Component
-@RequiredArgsConstructor
 public class RegistrationListener implements ApplicationListener<RegistrationCompletionEvent> {
     private final RegisterService registerService;
 
-    @SneakyThrows
+    public RegistrationListener(RegisterService registerService) {
+		super();
+		this.registerService = registerService;
+	}
+
     @Override
     public void onApplicationEvent(RegistrationCompletionEvent event) {
-        completeRegistration(event);
+        try {
+			completeRegistration(event);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     private void completeRegistration(RegistrationCompletionEvent event) throws Exception {

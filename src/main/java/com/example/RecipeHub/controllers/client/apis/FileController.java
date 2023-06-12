@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +30,7 @@ import com.example.RecipeHub.dtos.IngredientDTO;
 import com.example.RecipeHub.dtos.RecipeDTO;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.User;
+import com.example.RecipeHub.services.FileService;
 import com.example.RecipeHub.services.RecipeService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,92 +38,61 @@ import jakarta.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/api/v1/")
 public class FileController {
-	
+
 	private final RecipeService recipeService;
-	
-	public FileController(RecipeService recipeService) {
+	private final FileService fileService;
+
+	public FileController(RecipeService recipeService, FileService fileService) {
 		super();
 		this.recipeService = recipeService;
+		this.fileService = fileService;
 	}
-	
-	@Value("${image.upload.directory}")
-    private String uploadDirectory;
 
-	@GetMapping("user/export-recipes/excel")
-	public ResponseEntity<String> exportRecipesExcel(@AuthenticationPrincipal User user, HttpServletResponse response) throws IOException {
-		ArrayList<RecipeDTO> recipes = recipeService.getAllRecipesByUser(user);
-		
-		//create a excel file holder
-		Workbook workbook = new XSSFWorkbook();
-		
-		//create a sheet
-		Sheet sheet = workbook.createSheet("Recipes");
-		
-		//set header
-		Row headerRow = sheet.createRow(0);
-		headerRow.createCell(0).setCellValue("Recipe ID");
-        headerRow.createCell(1).setCellValue("Title");
-        headerRow.createCell(2).setCellValue("Preparation Time");
-        headerRow.createCell(3).setCellValue("Cooking Time");
-        headerRow.createCell(4).setCellValue("ingredients");
-        headerRow.createCell(5).setCellValue("recipe yield");
-        headerRow.createCell(6).setCellValue("rating");
-        headerRow.createCell(7).setCellValue("description");
-        headerRow.createCell(8).setCellValue("unit");
-        headerRow.createCell(9).setCellValue("steps");
-        headerRow.createCell(10).setCellValue("nutrition");
-		
-        //initial row
-		int rowNum = 1;
-		
-		//get data from db and push into sheet
-		for (RecipeDTO recipe : recipes) {
-            Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(recipe.getRecipe_id());
-            row.createCell(1).setCellValue(recipe.getTitle());
-            row.createCell(2).setCellValue(recipe.getPre_time());
-            row.createCell(3).setCellValue(recipe.getCook_time());
-            StringBuilder ingredients = new StringBuilder();
-            ArrayList<IngredientDTO> ingredientDTOs = recipe.getIngredients();
-            for(IngredientDTO ingredientDTO : ingredientDTOs) ingredients.append(ingredientDTO.getIngredientName() + ": " + ingredientDTO.getAmount() + ", ");
-            String ingredientString = ingredients.toString();
-            ingredientString = ingredientString.substring(0, ingredientString.length() - 2);
-            row.createCell(4).setCellValue(ingredientString);
-            row.createCell(5).setCellValue(recipe.getRecipe_yield());
-            row.createCell(6).setCellValue(recipe.getRating());
-            row.createCell(7).setCellValue(recipe.getDescription());
-            row.createCell(8).setCellValue(recipe.getUnit());
-            row.createCell(9).setCellValue(recipe.getSteps());
-            row.createCell(10).setCellValue(recipe.getNutrition());
-        }
-		
-		//set response type for excel file
-		response.setHeader("Content-Disposition", "attachment; filename=recipes.xlsx");
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        
-        //write from holder to actual file
-        OutputStream outputStream = response.getOutputStream();
-        workbook.write(outputStream);
-        
-        //close holder
-        workbook.close();
-        outputStream.close();
-		
-        //return
-		return new ResponseEntity<String>("", HttpStatus.OK);
+	@Value("${image.upload.directory}")
+	private String uploadDirectory;
+
+	@GetMapping("user/file/recipe/excel")
+	public void exportAllRecipesExcel(@AuthenticationPrincipal User user, HttpServletResponse response)
+			throws IOException {
+		fileService.extractAllRecipeToexcel(user, response);
 	}
-	
-	@PostMapping("user/upload-image")
-	public ResponseEntity<String> uploadRecipeImage(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile file) {
+
+	@PostMapping("user/file/recipe/excel")
+	public void exportRecipesExcelByIds(@AuthenticationPrincipal User user, HttpServletResponse response, @RequestBody Long[] ids)
+			throws IOException {
+		fileService.extractRecipeToexcelByIds(user, response, ids);
+	}
+
+	@PostMapping("user/image/avatar")
+	public ResponseEntity<String> uploadAvatar(@AuthenticationPrincipal User user,
+			@RequestParam("file") MultipartFile file) {
 		try {
 			if (file.isEmpty()) {
-                return ResponseEntity.badRequest().body("No image file provided");
-            }
-            String fileName = UUID.randomUUID().toString();
-            Path filePath = Paths.get(uploadDirectory, fileName);
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-            
-            return ResponseEntity.ok("Image uploaded successfully");
+				return ResponseEntity.badRequest().body("No image file provided");
+			}
+			String fileName = UUID.randomUUID().toString();
+			Path filePath = Paths.get(uploadDirectory, fileName);
+			Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+			return ResponseEntity.ok("Image uploaded successfully");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body("internal error");
+		}
+	}
+	
+	@PutMapping("user/image/avatar")
+	public ResponseEntity<String> changeAvatar(@AuthenticationPrincipal User user,
+			@RequestParam("file") MultipartFile file) {
+		try {
+			if (file.isEmpty()) {
+				return ResponseEntity.badRequest().body("No image file provided");
+			}
+			String fileName = UUID.randomUUID().toString();
+			Path filePath = Paths.get(uploadDirectory, fileName);
+			Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+			return ResponseEntity.ok("Image uploaded successfully");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.internalServerError().body("internal error");
