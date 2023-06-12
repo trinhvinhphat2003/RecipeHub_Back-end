@@ -1,27 +1,26 @@
 package com.example.RecipeHub.services.impl;
 
-import com.example.RecipeHub.entities.MailInfo;
-import com.example.RecipeHub.entities.User;
-import com.example.RecipeHub.entities.VerificationToken;
-import com.example.RecipeHub.mappers.UserMapper;
-import com.example.RecipeHub.dtos.RegisterRequest;
-import com.example.RecipeHub.dtos.RegisterResponse;
-import com.example.RecipeHub.repositories.UserRepository;
-import com.example.RecipeHub.repositories.VerificationTokenRepository;
-import com.example.RecipeHub.services.RegisterService;
-import com.example.RecipeHub.services.EmailService;
-import com.example.RecipeHub.services.JwtService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.RecipeHub.dtos.RegisterRequest;
+import com.example.RecipeHub.dtos.RegisterResponse;
+import com.example.RecipeHub.entities.MailInfo;
+import com.example.RecipeHub.entities.User;
+import com.example.RecipeHub.entities.VerificationToken;
+import com.example.RecipeHub.mappers.UserMapper;
+import com.example.RecipeHub.repositories.UserRepository;
+import com.example.RecipeHub.repositories.VerificationTokenRepository;
+import com.example.RecipeHub.services.EmailService;
+import com.example.RecipeHub.services.JwtService;
+import com.example.RecipeHub.services.RegisterService;
+
 @Service
-@RequiredArgsConstructor
 public class RegisterServiceImpl implements RegisterService {
 
     private static final long EXPIRATION_TIME = 86400000L;
@@ -37,7 +36,20 @@ public class RegisterServiceImpl implements RegisterService {
     private final JwtService jwtService;
     private final EmailService emailService;
 
-    @Override
+    
+    
+    public RegisterServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, UserRepository userRepository,
+			VerificationTokenRepository verificationTokenRepository, JwtService jwtService, EmailService emailService) {
+		super();
+		this.userMapper = userMapper;
+		this.passwordEncoder = passwordEncoder;
+		this.userRepository = userRepository;
+		this.verificationTokenRepository = verificationTokenRepository;
+		this.jwtService = jwtService;
+		this.emailService = emailService;
+	}
+
+	@Override
     public RegisterResponse register(RegisterRequest registerRequest) throws Exception {
 
         // check if email has been register
