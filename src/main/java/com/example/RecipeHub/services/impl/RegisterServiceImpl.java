@@ -51,9 +51,10 @@ public class RegisterServiceImpl implements RegisterService {
         user = userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user);
-        return RegisterResponse.builder()
-                .jwtToken(jwtToken)
-                .build();
+//        return RegisterResponse.builder()
+//                .jwtToken(jwtToken)
+//                .build();
+        return new RegisterResponse(jwtToken);
     }
 
     @Override
@@ -76,11 +77,12 @@ public class RegisterServiceImpl implements RegisterService {
         String token = UUID.randomUUID().toString();
         Date expirationDate = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
         User user = userRepository.findByEmail(userEmail).orElseThrow();
-        VerificationToken verificationToken = VerificationToken.builder()
-                .token(token)
-                .expirationDate(expirationDate)
-                .user(user)
-                .build();
+//        VerificationToken verificationToken = VerificationToken.builder()
+//                .token(token)
+//                .expirationDate(expirationDate)
+//                .user(user)
+//                .build();
+        VerificationToken verificationToken = new VerificationToken(null, token, expirationDate, user);
         verificationTokenRepository.save(verificationToken);
         return token;
     }

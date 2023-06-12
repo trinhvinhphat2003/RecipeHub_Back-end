@@ -46,6 +46,11 @@ public class RecipeService {
 		else return PageRequest.of(page, size, Sort.by(sortBy));
 	} 
 	
+	public RecipeDTO getRecipeById(Long recipeId) {
+		Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new NotFoundExeption("recipe not found"));
+		return RecipeMapper.INSTANCE.recipeToRecipeDto(recipe);
+	}
+	
 	public ArrayList<RecipeDTO> getAllRecipesByUser(User user) {
 		List<Recipe> recipes = user.getRecipes();
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
