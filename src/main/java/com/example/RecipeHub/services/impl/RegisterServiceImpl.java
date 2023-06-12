@@ -94,12 +94,7 @@ public class RegisterServiceImpl implements RegisterService {
         Map<String, Object> properties = new HashMap<>();
         properties.put("name", registerRequest.getFullName());
         properties.put("verificationUrl", verificationPath);
-        MailInfo mailInfo = MailInfo.builder()
-                .receiver(registerRequest.getEmail())
-                .subject(subject)
-                .htmlTemplateName(VERIFICATION_EMAIL_HTML_TEMPLATE)
-                .properties(properties)
-                .build();
+        MailInfo mailInfo = new MailInfo(registerRequest.getEmail(), subject, VERIFICATION_EMAIL_HTML_TEMPLATE, properties);
         emailService.sendEmailUsingHTMLTemplate(mailInfo);
     }
 }

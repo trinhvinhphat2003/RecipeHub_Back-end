@@ -1,13 +1,11 @@
 package com.example.RecipeHub.dtos;
 
+import java.util.Date;
+
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.Role;
-import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import jakarta.validation.constraints.Email;
 
 public class RegisterRequest {
     @Email
