@@ -14,13 +14,18 @@ import org.thymeleaf.context.Context;
 import java.nio.charset.StandardCharsets;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
-    private static final String APPLICATION_URL = "";
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
 
-    @Override
+    public EmailServiceImpl(JavaMailSender javaMailSender, SpringTemplateEngine templateEngine) {
+		super();
+		this.javaMailSender = javaMailSender;
+		this.templateEngine = templateEngine;
+	}
+
+	@Override
     public void sendEmailUsingHTMLTemplate(MailInfo mailInfo) throws Exception{
         MimeMessage mailMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(

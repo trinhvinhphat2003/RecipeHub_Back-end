@@ -1,15 +1,17 @@
 package com.example.RecipeHub.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Builder
 public class LoginDTO {
 	private String email;
 	private String password;
-	//constructors
-	public LoginDTO(String email, String password) {
-		super();
-		this.email = email;
-		this.password = password;
-	}
-	//getters, setters
 	public String getEmail() {
 		return email;
 	}
@@ -22,8 +24,14 @@ public class LoginDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public LoginDTO(String email, String password) {
+		super();
+		this.email = email;
+		this.password = password;
+	}
 	public LoginDTO() {
 		super();
 	}
+	
 	
 }

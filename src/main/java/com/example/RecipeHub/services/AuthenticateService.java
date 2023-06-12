@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.RecipeHub.dtos.LoginDTO;
+import com.example.RecipeHub.dtos.LoginResponseDTO;
 import com.example.RecipeHub.dtos.ResponseObject;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.Role;
 import com.example.RecipeHub.errorHandlers.UnauthorizedExeption;
+import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.repositories.UserRepository;
 
 @Service
@@ -25,6 +27,7 @@ public class AuthenticateService {
 
 	private final UserRepository userRepository;
 
+	//this is used to make a http request to google
 	private final WebClient.Builder webClient;
 
 	public AuthenticateService(AuthenticationManager authenticationManager, JwtService jwtService,
@@ -36,17 +39,29 @@ public class AuthenticateService {
 		this.webClient = webClient;
 	}
 	
-	public String authenticateBasic(LoginDTO loginDTO) {
+	public LoginResponseDTO authenticateBasic(LoginDTO loginDTO) {
+		//check if user exist or not
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-		UserDetails userDetails = userRepository.findByEmail(loginDTO.getEmail()).get();
-		String JwtToken = jwtService.generateToken(userDetails);
-		return JwtToken;
+		//get user
+		User user = userRepository.findByEmail(loginDTO.getEmail()).get();
+		
+		//generate jwt token
+		String JwtToken = "Bearer " + jwtService.generateToken(user);
+		
+		//map to dto and send to client
+		LoginResponseDTO responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user));
+		return responseDto;
 	}
 	
-	public String authenticationOauth(String googleToken) {
+	public LoginResponseDTO authenticateOauth(String googleToken) {
+		//merge google url with token
 		String url = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" + googleToken;
+		
+		
 		final String[] emailRes = new String[1];
+		
+		//object obtain google's response
 		ResponseObject responseObject;
 		try {
 			responseObject = webClient.build().get().uri(url).retrieve().bodyToMono(ResponseObject.class)
@@ -54,15 +69,23 @@ public class AuthenticateService {
 		} catch (Exception e) {
 			throw new UnauthorizedExeption("");
 		}
+		
+		//get email from google's response and check if exist
 		String email = responseObject.getEmail();
 		Optional<User> user = userRepository.findByEmail(email);
+		//if user not exist, create a new
 		if (!user.isPresent()) {
-			User newUser = new User(email, "", Role.USER, responseObject.getName(), Gender.UNKNOWN);
+			User newUser = new User(email, "", Role.USER, responseObject.getName(), Gender.UNKNOWN, true);
 			userRepository.save(newUser);
 			emailRes[0] = email;
 			user = userRepository.findByEmail(email);
 		}
-		String JwtToken = jwtService.generateToken(user.get());
-		return JwtToken;
+		//generate jwt token
+		String JwtToken = "Bearer " + jwtService.generateToken(user.get());
+		
+		//response
+		LoginResponseDTO responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user.get()));
+		
+		return responseDto;
 	}
 }

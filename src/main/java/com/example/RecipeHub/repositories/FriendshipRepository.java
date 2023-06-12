@@ -9,5 +9,4 @@ import com.example.RecipeHub.entities.FriendshipRequest;
 
 @Repository
 public interface FriendshipRepository extends JpaRepository<FriendshipRequest, Long>{
-//	ArrayList<Friendship>
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class RegisterServiceImpl implements RegisterService {
 
     private static final long EXPIRATION_TIME = 86400000L;
@@ -37,7 +37,18 @@ public class RegisterServiceImpl implements RegisterService {
     private final JwtService jwtService;
     private final EmailService emailService;
 
-    @Override
+    public RegisterServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, UserRepository userRepository,
+			VerificationTokenRepository verificationTokenRepository, JwtService jwtService, EmailService emailService) {
+		super();
+		this.userMapper = userMapper;
+		this.passwordEncoder = passwordEncoder;
+		this.userRepository = userRepository;
+		this.verificationTokenRepository = verificationTokenRepository;
+		this.jwtService = jwtService;
+		this.emailService = emailService;
+	}
+
+	@Override
     public RegisterResponse register(RegisterRequest registerRequest) throws Exception {
 
         // check if email has been register
@@ -81,6 +92,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .expirationDate(expirationDate)
                 .user(user)
                 .build();
+        //VerificationToken verificationToken = new VerificationToken(null, token, expirationDate, user);
         verificationTokenRepository.save(verificationToken);
         return token;
     }
@@ -98,6 +110,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .htmlTemplateName(VERIFICATION_EMAIL_HTML_TEMPLATE)
                 .properties(properties)
                 .build();
+        // MailInfo mailInfo = new MailInfo(registerRequest.getEmail(), subject, VERIFICATION_EMAIL_HTML_TEMPLATE, properties);
         emailService.sendEmailUsingHTMLTemplate(mailInfo);
     }
 }

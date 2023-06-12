@@ -16,4 +16,16 @@ public class ErrorHandler {
 	public ResponseEntity<String> accessDenied(UserNotFoundExeption ex){
 		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.NOT_FOUND);
 	}
+	@ExceptionHandler(NotFoundExeption.class)
+	public ResponseEntity<String> accessDenied(NotFoundExeption ex){
+		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.NOT_FOUND);
+	}
+	@ExceptionHandler(BadRequestExeption.class)
+	public ResponseEntity<String> accessDenied(BadRequestExeption ex){
+		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(ForbiddenExeption.class)
+	public ResponseEntity<String> accessDenied(ForbiddenExeption ex){
+		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.FORBIDDEN);
+	}
 }

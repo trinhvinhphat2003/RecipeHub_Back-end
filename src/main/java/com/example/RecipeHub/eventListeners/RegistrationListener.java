@@ -8,14 +8,21 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class RegistrationListener implements ApplicationListener<RegistrationCompletionEvent> {
     private final RegisterService registerService;
 
-    @SneakyThrows
+    public RegistrationListener(RegisterService registerService) {
+        super();
+        this.registerService = registerService;
+    }
+
     @Override
     public void onApplicationEvent(RegistrationCompletionEvent event) {
-        completeRegistration(event);
+        try {
+			completeRegistration(event);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     private void completeRegistration(RegistrationCompletionEvent event) throws Exception {

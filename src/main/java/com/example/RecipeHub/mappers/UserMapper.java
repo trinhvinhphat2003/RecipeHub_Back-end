@@ -4,7 +4,9 @@ import com.example.RecipeHub.dtos.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.example.RecipeHub.dtos.RegisterRequest;
 import com.example.RecipeHub.dtos.UserDTO;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
@@ -30,7 +32,7 @@ public interface UserMapper {
     }
 
     @Mappings({
-        @Mapping(target = "role", qualifiedByName = "mapRole"),
+        @Mapping(target = "role", qualifiedByName = "mapRole", source = "role"),
         @Mapping(target = "gender", qualifiedByName = "mapGender")
     })
     UserDTO userToUserDTO(User user);
@@ -44,6 +46,4 @@ public interface UserMapper {
     @Mapping(source = "gender", target = "gender")
     @Mapping(target = "enable", constant = "false")
     User registerRequestToUser(RegisterRequest registerRequest);
-
-
 }

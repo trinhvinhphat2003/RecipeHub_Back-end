@@ -12,12 +12,23 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "friendship_request")
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Builder
 public class FriendshipRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long friendship_id;
+    @Column(name = "friendship_request_id")
+    private Long friendshipRequestId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
@@ -28,7 +39,7 @@ public class FriendshipRequest {
     private User receiver;
     
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status" ,nullable = false)
     private Friendship_status status;
 
 	public FriendshipRequest(User sender, User receiver, Friendship_status status) {
@@ -38,33 +49,6 @@ public class FriendshipRequest {
 		this.status = status;
 	}
 
-	public FriendshipRequest(Long friendship_id, User sender, User receiver, Friendship_status status) {
-		super();
-		this.friendship_id = friendship_id;
-		this.sender = sender;
-		this.receiver = receiver;
-		this.status = status;
-	}
-
-	public FriendshipRequest() {
-		super();
-	}
-
-	public Friendship_status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Friendship_status status) {
-		this.status = status;
-	}
-
-	public Long getFriendship_id() {
-		return friendship_id;
-	}
-
-	public void setFriendship_id(Long friendship_id) {
-		this.friendship_id = friendship_id;
-	}
 
 	public User getSender() {
 		return sender;
@@ -81,6 +65,41 @@ public class FriendshipRequest {
 	public void setReceiver(User receiver) {
 		this.receiver = receiver;
 	}
-    
-    
+
+	public Friendship_status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Friendship_status status) {
+		this.status = status;
+	}
+
+
+
+	public FriendshipRequest(Long friendshipRequestId, User sender, User receiver, Friendship_status status) {
+		super();
+		this.friendshipRequestId = friendshipRequestId;
+		this.sender = sender;
+		this.receiver = receiver;
+		this.status = status;
+	}
+
+
+	public Long getFriendshipRequestId() {
+		return friendshipRequestId;
+	}
+
+
+	public void setFriendshipRequestId(Long friendshipRequestId) {
+		this.friendshipRequestId = friendshipRequestId;
+	}
+
+
+	public FriendshipRequest() {
+		super();
+	}
+	
+	//
+	
+	
 }
