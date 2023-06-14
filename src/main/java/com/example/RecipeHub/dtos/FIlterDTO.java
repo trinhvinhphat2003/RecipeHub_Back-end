@@ -9,8 +9,16 @@ public class FIlterDTO {
 	private ArrayList<String> ingredients;
 	private boolean favorite;
 	private String sortBy;
+	private String direction;
 	private String title;
 	private String privacyStatus;
+	
+	public String getDirection() {
+		return direction;
+	}
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
 	public String getPrivacyStatus() {
 		return privacyStatus;
 	}
@@ -48,19 +56,19 @@ public class FIlterDTO {
 		this.sortBy = sortBy;
 	}
 	
-
+	public FIlterDTO() {
+		super();
+	}
 	public FIlterDTO(ArrayList<String> tags, ArrayList<String> ingredients, boolean favorite, String sortBy,
-			String title, String privacyStatus) {
+			String direction, String title, String privacyStatus) {
 		super();
 		this.tags = tags;
 		this.ingredients = ingredients;
 		this.favorite = favorite;
 		this.sortBy = sortBy;
+		this.direction = direction;
 		this.title = title;
 		this.privacyStatus = privacyStatus;
-	}
-	public FIlterDTO() {
-		super();
 	}
 	
 	

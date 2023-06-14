@@ -15,16 +15,26 @@ public class UserDTO {
 	private Long userId;
 	private String fullName;
 	private String profileImage;
-	private Date birthday;
+	private Long birthday;
 	private String gender;
 	private String role;
-
-
-
-	public Date getBirthday() {
+	
+	public UserDTO() {
+		super();
+	}
+	public UserDTO(Long userId, String fullName, String profileImage, Long birthday, String gender, String role) {
+		super();
+		this.userId = userId;
+		this.fullName = fullName;
+		this.profileImage = profileImage;
+		this.birthday = birthday;
+		this.gender = gender;
+		this.role = role;
+	}
+	public Long getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(Date birthday) {
+	public void setBirthday(Long birthday) {
 		this.birthday = birthday;
 	}
 	public String getGender() {
@@ -57,18 +67,6 @@ public class UserDTO {
 	}
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
-	}
-	public UserDTO() {
-		super();
-	}
-	public UserDTO(Long userId, String fullName, String profileImage, Date birthday, String gender, String role) {
-		super();
-		this.userId = userId;
-		this.fullName = fullName;
-		this.profileImage = profileImage;
-		this.birthday = birthday;
-		this.gender = gender;
-		this.role = role;
 	}
 	
 	

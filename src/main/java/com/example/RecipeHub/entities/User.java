@@ -80,7 +80,7 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<FriendshipRequest> friendshipRequests = new ArrayList<>();
 
-	public User(String email, String password, Role role, String fullName, Gender gender, boolean enable) {
+	public User(String email, String password, Role role, String fullName, Gender gender, boolean enable, Date birthday, String profileImage) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -88,6 +88,8 @@ public class User implements UserDetails {
 		this.fullName = fullName;
 		this.gender = gender;
 		this.enable = enable;
+		this.birthday = birthday;
+		this.profileImage = profileImage;
 	}
 
 	@Override

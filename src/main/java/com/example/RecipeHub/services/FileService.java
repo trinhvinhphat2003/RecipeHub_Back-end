@@ -2,18 +2,27 @@ package com.example.RecipeHub.services;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.RecipeHub.dtos.IngredientDTO;
 import com.example.RecipeHub.dtos.RecipeDTO;
 import com.example.RecipeHub.entities.User;
+import com.example.RecipeHub.errorHandlers.BadRequestExeption;
 import com.example.RecipeHub.errorHandlers.ForbiddenExeption;
+import com.example.RecipeHub.errorHandlers.InternalExeption;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -153,5 +162,55 @@ public class FileService {
 		// close holder
 		workbook.close();
 		outputStream.close();
+	}
+	
+	public String uploadImage(String path, MultipartFile file) {
+		try {
+			if (file.isEmpty()) {
+				throw new BadRequestExeption("No image file provided");
+			}
+			//create UUID
+			UUID uuid = UUID.randomUUID();
+			
+			//get original name and extension of file
+			String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
+			String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+			
+			//merge uuid with extension to create a new file name
+			String newFileName = uuid.toString() + fileExtension;
+			
+			//get file path
+//			File directory = new ClassPathResource(avatarDirectory).getFile();
+			String filePath = path + newFileName;
+			
+			Files.copy(file.getInputStream(), Paths.get(filePath));
+
+			//write file to above file path
+//            FileOutputStream fos = new FileOutputStream(filePath);
+//            fos.write(file.getBytes());
+//            fos.close();
+			return newFileName;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new InternalExeption("No image file provided");
+		}
+	}
+	
+	public void deleteImage(String path, String fileName) {
+		try {
+			Files.delete(Paths.get(path + fileName));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public byte[] getAllByteOfImage(String path, String fileName) {
+		String filepath = path + fileName;
+		try {
+			return Files.readAllBytes(Paths.get(filepath));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new BadRequestExeption("internal error");
+		}
 	}
 }

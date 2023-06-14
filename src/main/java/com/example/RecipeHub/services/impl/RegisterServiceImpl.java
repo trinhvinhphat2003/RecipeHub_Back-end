@@ -19,6 +19,9 @@ import com.example.RecipeHub.repositories.VerificationTokenRepository;
 import com.example.RecipeHub.services.EmailService;
 import com.example.RecipeHub.services.JwtService;
 import com.example.RecipeHub.services.RegisterService;
+import com.example.RecipeHub.utils.SystemUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -50,7 +53,7 @@ public class RegisterServiceImpl implements RegisterService {
 	}
 
 	@Override
-    public RegisterResponse register(RegisterRequest registerRequest) throws Exception {
+    public RegisterResponse register(RegisterRequest registerRequest, HttpServletRequest httpServletRequest) throws Exception {
 
         // check if email has been register
         if(userRepository.findByEmail(registerRequest.getEmail()).isPresent()){
@@ -60,6 +63,7 @@ public class RegisterServiceImpl implements RegisterService {
         // save account to database
         registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         User user = userMapper.registerRequestToUser(registerRequest);
+        user.setProfileImage(SystemUtil.getApplicationPath(httpServletRequest) + "/api/v1/global/image/avatar/default.jpg");
         user = userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user);

@@ -1,6 +1,7 @@
 package com.example.RecipeHub.configs;
 
 import java.util.ArrayList;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.RecipeHub.entities.FriendshipRequest;
@@ -35,8 +37,12 @@ import com.example.RecipeHub.repositories.TagRepository;
 import com.example.RecipeHub.repositories.UserRepository;
 import com.example.RecipeHub.services.FriendService;
 import com.example.RecipeHub.services.RecipeService;
+import com.example.RecipeHub.utils.DateTimeUtil;
+import com.example.RecipeHub.utils.SystemUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
 public class ApplicationConfig {
@@ -58,10 +64,10 @@ public class ApplicationConfig {
 
 	@Autowired
 	private TagRepository tagRepository;
-	
+
 	@Autowired
 	private RecipeRepository recipeRepository;
-	
+
 	@Bean
 	public WebClient.Builder webClient() {
 		return WebClient.builder();
@@ -80,13 +86,13 @@ public class ApplicationConfig {
 			public void run(String... args) throws Exception {
 				// create user
 				userRepository.save(new User("admin@gmail.com", getPasswordEncoder().encode("123456"), Role.ADMIN,
-						"admin", Gender.MALE,true));
+						"admin", Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), "http://localhost:8080/api/v1/global/image/avatar/default.jpg"));
 				userRepository.save(new User("user@gmail.com", getPasswordEncoder().encode("123456"), Role.USER, "user",
-						Gender.MALE, true));
+						Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), "http://localhost:8080/api/v1/global/image/avatar/default.jpg"));
 				userRepository.save(new User("user1@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
-						"user1", Gender.FEMALE, true));
+						"user1", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), "http://localhost:8080/api/v1/global/image/avatar/default.jpg"));
 				userRepository.save(new User("user2@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
-						"user2", Gender.FEMALE, true));
+						"user2", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), "http://localhost:8080/api/v1/global/image/avatar/default.jpg"));
 
 				// create friend request
 //				friendshipRepository.save(new FriendshipRequest(userRepository.findById(3l).get(),
@@ -102,7 +108,7 @@ public class ApplicationConfig {
 //				friendService.addFriend(2l, 1l);
 //				friendService.addFriend(2l, 3l);
 //				friendService.addFriend(2l, 4l);
-				
+
 				// create ingredient
 				Ingredient ingredient1 = new Ingredient("Beaf");
 				Ingredient ingredient2 = new Ingredient("carrot");
@@ -135,8 +141,8 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
 //				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 
-				//recipe.getTags().add(new Tag(null, recipeTag, null));
-				
+				// recipe.getTags().add(new Tag(null, recipeTag, null));
+
 				recipeService.save(recipe);
 
 				recipeTag = "Dinner1";
@@ -152,14 +158,14 @@ public class ApplicationConfig {
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
 				privacyStatus = PrivacyStatus.PUBLIC;
 
-				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
-						description, unit, steps, nutrition, privacyStatus);
+				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite, description, unit,
+						steps, nutrition, privacyStatus);
 
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
-				
+
 				recipe.getTags().add(new Tag(null, recipeTag, null));
-				//1
+				// 1
 				recipeService.save(recipe);
 
 				recipeTag = "Dinner2";
@@ -173,25 +179,25 @@ public class ApplicationConfig {
 				unit = "grams";
 				steps = "Step 1\nStep 2\nStep 3";
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
-				privacyStatus = PrivacyStatus.PRIVATE;
+				privacyStatus = PrivacyStatus.PUBLIC;
 
-				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
-						description, unit, steps, nutrition, privacyStatus);
+				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite, description, unit,
+						steps, nutrition, privacyStatus);
 
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient1, "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
-				//2
+				// 2
 				recipeService.save(recipe);
 
-				//user = userRepository.findByEmail("user@gmail.com").get();
+				// user = userRepository.findByEmail("user@gmail.com").get();
 
 				recipeTag = "Dinner3";
 				title = "user Recipe 1";
 				preTime = 30;
 				cookTime = 60;
 				recipeYield = 4;
-				rating = 5;
+				rating = 4;
 				isFavourite = true;
 				description = "This recipe 3 is amazing!";
 				unit = "grams";
@@ -199,8 +205,8 @@ public class ApplicationConfig {
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
 				privacyStatus = PrivacyStatus.PUBLIC;
 
-				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
-						description, unit, steps, nutrition, privacyStatus);
+				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite, description, unit,
+						steps, nutrition, privacyStatus);
 
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient1, "1 gram"));
 //				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
@@ -208,9 +214,9 @@ public class ApplicationConfig {
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
 				recipe.getImages().add(new Image(null, "this is url for image"));
-				//3
+				// 3
 				recipeService.save(recipe);
-				//3
+				// 3
 				recipeTag = "Dinner2";
 				recipe = recipeRepository.findByTitle(title).get();
 				Tag tag = tagRepository.findByTagName(recipeTag).get();

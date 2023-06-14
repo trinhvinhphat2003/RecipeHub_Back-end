@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -63,16 +64,70 @@ public class RecipeService {
 		recipeRepository.save(recipe);
 	}
 
-	public ArrayList<RecipeDTO> getAllRecipesByPrivacyStatus(PrivacyStatus privacyStatus) {
-		Page<Recipe> recipes = recipeRepository.findAllByPrivacyStatus(privacyStatus, generatePageable(0, 3, "recipe_id", "as"));
+	public ArrayList<RecipeDTO> getAllRecipesByPrivacyStatus(PrivacyStatus privacyStatus, Integer page, Integer size, String sortBy, String direction) {
+		Page<Recipe> recipes = recipeRepository.findAllByPrivacyStatus(privacyStatus, generatePageable(page, size, sortBy, direction));
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for (Recipe recipe : recipes)
 			recipeDTOs.add(RecipeMapper.INSTANCE.recipeToRecipeDto(recipe));
 		return recipeDTOs;
 	}
 
-	public ArrayList<RecipeDTO> getAllPublicRecipesWithFilter(FIlterDTO fIlterDTO) {
-		List<Recipe> recipes = new ArrayList<>();
+	public ArrayList<RecipeDTO> getAllPublicRecipesWithFilter(FIlterDTO fIlterDTO, Integer page, Integer size) {
+		Page<Recipe> recipes = new PageImpl<>(Collections.emptyList());
+		PrivacyStatus privacyStatus;
+		String direction;
+		String sortBy;
+		
+		switch (fIlterDTO.getSortBy()) {
+		case "id": {
+			sortBy = "recipe_id";
+			break;
+		}
+		case "title": {
+			sortBy = "title";
+			break;
+		}
+		case "rating": {
+			sortBy = "rating";
+			break;
+		}
+		case "yield": {
+			sortBy = "recipe_yield";
+			break;
+		}
+		case "time": {
+			sortBy = "cook_time";
+			break;
+		}
+		default:
+			sortBy = "recipe_id";
+		}
+		
+		switch (fIlterDTO.getDirection()){
+		case "desc": {
+			direction = "desc";
+			break;
+		}
+		case "asc": {
+			direction = "asc";
+			break;
+		}
+		default:
+			direction = "desc";
+		}
+
+		switch (fIlterDTO.getPrivacyStatus()) {
+		case "PUBLIC": {
+			privacyStatus = PrivacyStatus.PUBLIC;
+			break;
+		}
+		case "PRIVATE": {
+			privacyStatus = PrivacyStatus.PRIVATE;
+			break;
+		}
+		default:
+			privacyStatus = null;
+		}
 		/*
 		 * the logic below is mainly to deal with tag and ingredient, the additional
 		 * information as title, sort by, ... is attached already the logic of
@@ -82,30 +137,70 @@ public class RecipeService {
 		// if client not filter with tag and ingredient
 		if (fIlterDTO.getTags().size() == 0 && fIlterDTO.getIngredients().size() == 0) {
 			recipes = recipeRepository.findAllGlobalRecipeByPrivacyStatus(fIlterDTO.getTitle(), fIlterDTO.isFavorite(),
-					PrivacyStatus.PUBLIC);
+					PrivacyStatus.PUBLIC, generatePageable(page, size, sortBy, direction));
 		}
 		// if client filter with both tag and ingredient
 		else if (fIlterDTO.getTags().size() != 0 && fIlterDTO.getIngredients().size() != 0)
 			recipes = recipeRepository.findByTagsAndIngredients(fIlterDTO.getTags(), fIlterDTO.getTags().size(),
 					fIlterDTO.getIngredients(), fIlterDTO.getIngredients().size(), fIlterDTO.getTitle(),
-					fIlterDTO.isFavorite(), PrivacyStatus.PUBLIC);
+					fIlterDTO.isFavorite(), PrivacyStatus.PUBLIC, generatePageable(page, size, sortBy, direction));
 		// if client filter with only tag
 		else if (fIlterDTO.getTags().size() != 0)
 			recipes = recipeRepository.findByTags(fIlterDTO.getTags(), fIlterDTO.getTags().size(), fIlterDTO.getTitle(),
-					fIlterDTO.isFavorite(), PrivacyStatus.PUBLIC);
+					fIlterDTO.isFavorite(), PrivacyStatus.PUBLIC, generatePageable(page, size, sortBy, direction));
 		// if client filter with only ingredient
 		else if (fIlterDTO.getIngredients().size() != 0)
 			recipes = recipeRepository.findByIngredients(fIlterDTO.getIngredients(), fIlterDTO.getIngredients().size(),
-					fIlterDTO.getTitle(), fIlterDTO.isFavorite(), PrivacyStatus.PUBLIC);
+					fIlterDTO.getTitle(), fIlterDTO.isFavorite(), PrivacyStatus.PUBLIC, generatePageable(page, size, sortBy, direction));
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for (Recipe recipe : recipes)
 			recipeDTOs.add(RecipeMapper.INSTANCE.recipeToRecipeDto(recipe));
 		return recipeDTOs;
 	}
 
-	public ArrayList<RecipeDTO> getAllUserRecipesWithFilter(FIlterDTO fIlterDTO, Long user_id) {
-		List<Recipe> recipes = new ArrayList<>();
+	public ArrayList<RecipeDTO> getAllUserRecipesWithFilter(FIlterDTO fIlterDTO, Long user_id, Integer page, Integer size) {
+		Page<Recipe> recipes = new PageImpl<>(Collections.emptyList());;
 		PrivacyStatus privacyStatus;
+		String direction;
+		String sortBy;
+		
+		switch (fIlterDTO.getSortBy()) {
+		case "id": {
+			sortBy = "recipe_id";
+			break;
+		}
+		case "title": {
+			sortBy = "title";
+			break;
+		}
+		case "rating": {
+			sortBy = "rating";
+			break;
+		}
+		case "yield": {
+			sortBy = "recipe_yield";
+			break;
+		}
+		case "time": {
+			sortBy = "cook_time";
+			break;
+		}
+		default:
+			sortBy = "recipe_id";
+		}
+		
+		switch (fIlterDTO.getDirection()){
+		case "desc": {
+			direction = "desc";
+			break;
+		}
+		case "asc": {
+			direction = "asc";
+			break;
+		}
+		default:
+			direction = "desc";
+		}
 
 		switch (fIlterDTO.getPrivacyStatus()) {
 		case "PUBLIC": {
@@ -123,18 +218,18 @@ public class RecipeService {
 //		recipes = recipeRepository.findByTagsAndIngredientsAndUser(tags, tagCount, ingredients, ingredientCount, fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user.getUserId());
 		if (fIlterDTO.getTags().size() == 0 && fIlterDTO.getIngredients().size() == 0) {
 			recipes = recipeRepository.findAllUserRecipesByPrivacyStatus(fIlterDTO.getTitle(), fIlterDTO.isFavorite(),
-					privacyStatus, user_id);
+					privacyStatus, user_id, generatePageable(page, size, sortBy, direction));
 		} else if (fIlterDTO.getTags().size() != 0 && fIlterDTO.getIngredients().size() != 0) {
 			recipes = recipeRepository.findByTagsAndIngredientsAndUser(fIlterDTO.getTags(), fIlterDTO.getTags().size(),
 					fIlterDTO.getIngredients(), fIlterDTO.getIngredients().size(), fIlterDTO.getTitle(),
-					fIlterDTO.isFavorite(), privacyStatus, user_id);
+					fIlterDTO.isFavorite(), privacyStatus, user_id, generatePageable(page, size, sortBy, direction));
 		} else if (fIlterDTO.getTags().size() != 0)
 			recipes = recipeRepository.findByTagsAndUser(fIlterDTO.getTags(), fIlterDTO.getTags().size(),
-					fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user_id);
+					fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus, user_id, generatePageable(page, size, sortBy, direction));
 		else if (fIlterDTO.getIngredients().size() != 0)
 			recipes = recipeRepository.findByIngredientsAndUser(fIlterDTO.getIngredients(),
 					fIlterDTO.getIngredients().size(), fIlterDTO.getTitle(), fIlterDTO.isFavorite(), privacyStatus,
-					user_id);
+					user_id, generatePageable(page, size, null, null));
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for (Recipe recipe : recipes)
 			recipeDTOs.add(RecipeMapper.INSTANCE.recipeToRecipeDto(recipe));

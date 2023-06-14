@@ -40,45 +40,51 @@ public class RecipeController {
 	}
 
 	@PostMapping("user/recipe")
-	public ResponseEntity<String> addNewRecipe(@RequestParam("images") MultipartFile[] imageFiles, @RequestBody RecipeDTO dto, @AuthenticationPrincipal User user) {
+	public ResponseEntity<String> addNewRecipe(@RequestParam("images") MultipartFile[] imageFiles,
+			@RequestBody RecipeDTO dto, @AuthenticationPrincipal User user) {
 		recipeService.addNewRecipe(dto);
-		
-		
+
 		return ResponseEntity.ok("ok");
 	}
-	
-	@GetMapping("user/recipes")
-	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesForUser(@AuthenticationPrincipal User user) {
-		if (user == null)
-			throw new UnauthorizedExeption("");
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllRecipesByUser(user);
-		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
-	}
-	
-	@GetMapping("global/recipes")
-	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipes(
-			@RequestParam(value = "page", defaultValue = "0") int page,
-	        @RequestParam(value = "size", defaultValue = "2") int size) {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllRecipesByPrivacyStatus(PrivacyStatus.PUBLIC);
-		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
-	}
-	
+
+//	@GetMapping("user/recipes")
+//	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesForUser(@AuthenticationPrincipal User user) {
+//		if (user == null)
+//			throw new UnauthorizedExeption("");
+//		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllRecipesByUser(user);
+//		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+//	}
+//
+//	@GetMapping("global/recipes")
+//	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipes(
+//			@RequestParam(value = "page", defaultValue = "0") int page,
+//			@RequestParam(value = "size", defaultValue = "2") int size) {
+//		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllRecipesByPrivacyStatus(PrivacyStatus.PUBLIC, page, size, "recipe_id", "asc");
+//		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+//	}
+
 	@PostMapping("global/recipes/filter")
-	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO) {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllPublicRecipesWithFilter(fIlterDTO);
+	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO,
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "size", defaultValue = "2") int size) {
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllPublicRecipesWithFilter(fIlterDTO, page, size);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("user/recipes/filter")
-	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesByUserWithFilter(@AuthenticationPrincipal User user ,@RequestBody FIlterDTO fIlterDTO) {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllUserRecipesWithFilter(fIlterDTO, user.getUserId());
+	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesByUserWithFilter(@AuthenticationPrincipal User user,
+			@RequestBody FIlterDTO fIlterDTO, @RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "size", defaultValue = "2") int size) {
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllUserRecipesWithFilter(fIlterDTO, user.getUserId(), page, size);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("global/recipes/filter/{user_id}")
-	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO, @PathVariable("user_id") Long user_id) {
+	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO,
+			@PathVariable("user_id") Long user_id, @RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "size", defaultValue = "2") int size) {
 		fIlterDTO.setPrivacyStatus("PUBLIC");
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllUserRecipesWithFilter(fIlterDTO, user_id);
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllUserRecipesWithFilter(fIlterDTO, user_id, page, size);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 }
