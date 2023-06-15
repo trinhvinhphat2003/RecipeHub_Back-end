@@ -13,6 +13,7 @@ import com.example.RecipeHub.dtos.LoginResponseDTO;
 import com.example.RecipeHub.dtos.ResponseObject;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
+import com.example.RecipeHub.enums.LoginType;
 import com.example.RecipeHub.enums.Role;
 import com.example.RecipeHub.errorHandlers.UnauthorizedExeption;
 import com.example.RecipeHub.mappers.UserMapper;
@@ -76,7 +77,7 @@ public class AuthenticateService {
 		Optional<User> user = userRepository.findByEmail(email);
 		//if user not exist, create a new
 		if (!user.isPresent()) {
-			User newUser = new User(email, "", Role.USER, responseObject.getName(), Gender.UNKNOW, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), responseObject.getPicture());
+			User newUser = new User(email, "", Role.USER, responseObject.getName(), Gender.UNKNOW, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), responseObject.getPicture(), LoginType.GOOGLE);
 			//User newUser2 = new User(null, email, "", responseObject.getName(), responseObject.getPicture(), responseObject.getBirthDay(), Role.USER, Gender.MALE, true, null, null, null);
 			userRepository.save(newUser);
 			emailRes[0] = email;

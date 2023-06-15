@@ -32,7 +32,7 @@ public class Tag {
 	@Column(name = "tag_name")
 	private String tagName;
 
-	@ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
 	private List<Recipe> recipes = new ArrayList<>();
 
 	public Long getTagId() {

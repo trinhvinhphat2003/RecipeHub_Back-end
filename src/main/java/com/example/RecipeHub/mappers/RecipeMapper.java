@@ -73,7 +73,7 @@ public interface RecipeMapper {
 	
 	@Named("mapUserFromDto")
 	static User mapUserFromDto(Long userId) {
-		return new User(userId, null, null, null, null, null, null, null, true, null, null, null);
+		return new User(userId, null, null, null, null, null, null, null, null, true, null, null, null);
 	}
 	
 	@Named("mapIngredientsFromDto")

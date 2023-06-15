@@ -2,6 +2,8 @@ package com.example.RecipeHub.dtos;
 
 import java.util.Date;
 
+import com.example.RecipeHub.enums.LoginType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,11 +20,15 @@ public class UserDTO {
 	private Long birthday;
 	private String gender;
 	private String role;
+	private LoginType loginType;
 	
 	public UserDTO() {
 		super();
 	}
-	public UserDTO(Long userId, String fullName, String profileImage, Long birthday, String gender, String role) {
+	
+	
+	public UserDTO(Long userId, String fullName, String profileImage, Long birthday, String gender, String role,
+			LoginType loginType) {
 		super();
 		this.userId = userId;
 		this.fullName = fullName;
@@ -30,6 +36,15 @@ public class UserDTO {
 		this.birthday = birthday;
 		this.gender = gender;
 		this.role = role;
+		this.loginType = loginType;
+	}
+
+
+	public LoginType getLoginType() {
+		return loginType;
+	}
+	public void setLoginType(LoginType loginType) {
+		this.loginType = loginType;
 	}
 	public Long getBirthday() {
 		return birthday;

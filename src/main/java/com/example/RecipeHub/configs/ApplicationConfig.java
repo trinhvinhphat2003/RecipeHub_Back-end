@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Friendship_status;
 import com.example.RecipeHub.enums.Gender;
+import com.example.RecipeHub.enums.LoginType;
 import com.example.RecipeHub.enums.PrivacyStatus;
 import com.example.RecipeHub.enums.Role;
 import com.example.RecipeHub.repositories.FriendshipRepository;
@@ -78,6 +80,9 @@ public class ApplicationConfig {
 		return new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 	}
 
+	@Value("${avatar.image.api.baseurl}")
+	private String avartarBaseUrl;
+	
 	@Bean
 	public CommandLineRunner getCommandLineRunner() {
 		return new CommandLineRunner() {
@@ -86,13 +91,13 @@ public class ApplicationConfig {
 			public void run(String... args) throws Exception {
 				// create user
 				userRepository.save(new User("admin@gmail.com", getPasswordEncoder().encode("123456"), Role.ADMIN,
-						"admin", Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), "http://localhost:8080/api/v1/global/image/avatar/default.jpg"));
+						"admin", Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC));
 				userRepository.save(new User("user@gmail.com", getPasswordEncoder().encode("123456"), Role.USER, "user",
-						Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), "http://localhost:8080/api/v1/global/image/avatar/default.jpg"));
+						Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC));
 				userRepository.save(new User("user1@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
-						"user1", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), "http://localhost:8080/api/v1/global/image/avatar/default.jpg"));
+						"user1", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC));
 				userRepository.save(new User("user2@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
-						"user2", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), "http://localhost:8080/api/v1/global/image/avatar/default.jpg"));
+						"user2", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC));
 
 				// create friend request
 //				friendshipRepository.save(new FriendshipRequest(userRepository.findById(3l).get(),
@@ -213,7 +218,7 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
-				recipe.getImages().add(new Image(null, "this is url for image"));
+				recipe.getImages().add(new Image(null, "this is url for image", recipe));
 				// 3
 				recipeService.save(recipe);
 				// 3
