@@ -1,7 +1,7 @@
 package com.example.RecipeHub.entities;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -29,7 +29,8 @@ public class MealPlanner {
 	@Column(name = "meal_planner_id")
 	private Long mealPlannerId;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
 	@JoinTable(name = "planner_HAVE_recipe", joinColumns = @JoinColumn(name = "meal_planner_id"), inverseJoinColumns = @JoinColumn(name = "recipe_id"))
 	private List<Recipe> recipes = new ArrayList<>();
 

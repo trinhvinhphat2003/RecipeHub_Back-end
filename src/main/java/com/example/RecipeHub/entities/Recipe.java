@@ -35,7 +35,7 @@ public class Recipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "recipe_id")
-	private Long recipe_id;
+	private Long recipeId;
 
 	@Column(name = "title")
 	private String title;
@@ -90,14 +90,16 @@ public class Recipe {
 			)
 	private List<Image> images = new ArrayList<>();
 
-	
+	public Recipe(Long recipeId){
+		this.recipeId = recipeId;
+	}
 
 	public Recipe(Long recipe_id, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
 			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
 			User user, PrivacyStatus privacyStatus, List<Recipe_HAVE_Ingredient> ingredients, List<Tag> tags,
 			List<Image> images) {
 		super();
-		this.recipe_id = recipe_id;
+		this.recipeId = recipe_id;
 		this.title = title;
 		this.pre_time = pre_time;
 		this.cook_time = cook_time;
@@ -132,11 +134,11 @@ public class Recipe {
 	}
 
 	public Long getRecipe_id() {
-		return recipe_id;
+		return recipeId;
 	}
 
 	public void setRecipe_id(Long recipe_id) {
-		this.recipe_id = recipe_id;
+		this.recipeId = recipe_id;
 	}
 
 	public String getTitle() {
@@ -247,7 +249,7 @@ public class Recipe {
 			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
 			User user, List<Recipe_HAVE_Ingredient> ingredients, List<Tag> tags) {
 		super();
-		this.recipe_id = recipe_id;
+		this.recipeId = recipe_id;
 		this.title = title;
 		this.pre_time = pre_time;
 		this.cook_time = cook_time;
