@@ -40,6 +40,7 @@ import com.example.RecipeHub.repositories.UserRepository;
 import com.example.RecipeHub.services.FileService;
 import com.example.RecipeHub.services.RecipeService;
 import com.example.RecipeHub.services.UserService;
+import com.example.RecipeHub.utils.FileUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -78,14 +79,14 @@ public class FileController {
 	public ResponseEntity<String> uploadAvatar(@AuthenticationPrincipal User user,
 			@RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest) {
 		String newFileName;
-		if(user.getProfileImage().equals("default.jpg")) {
-			newFileName = fileService.uploadImage(avatarDirectory, file);
+		if(user.getProfileImage().substring(user.getProfileImage().lastIndexOf('/')).substring(1).equals("default.jpg")) {
+			newFileName = FileUtil.uploadImage(avatarDirectory, file);
 			User userPersisted = userService.getUserById(user.getUserId());
 			userPersisted.setProfileImage(getApplicationPath(httpServletRequest) + "/api/v1/global/image/avatar/" + newFileName);
 			userService.save(userPersisted);
 		} else {
-			fileService.deleteImage(avatarDirectory, user.getProfileImage());
-			newFileName = fileService.uploadImage(avatarDirectory, file);
+			FileUtil.deleteImage(avatarDirectory, user.getProfileImage().substring(user.getProfileImage().lastIndexOf('/')).substring(1));
+			newFileName = FileUtil.uploadImage(avatarDirectory, file);
 			User userPersisted = userService.getUserById(user.getUserId());
 			userPersisted.setProfileImage(getApplicationPath(httpServletRequest) + "/api/v1/global/image/avatar/" + newFileName);
 			userService.save(userPersisted);
@@ -104,7 +105,28 @@ public class FileController {
             mediaType = MediaType.IMAGE_GIF;
         }
 		
-		byte[] imageBytes = fileService.getAllByteOfImage(avatarDirectory, image);
+		byte[] imageBytes = FileUtil.getAllByteOfImage(avatarDirectory, image);
+		
+		return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(mediaType)
+                .body(imageBytes);
+	}
+	
+	@Value("${recipe.image.upload.directory}")
+	private String recipeImagePath;
+	
+	@GetMapping("global/image/recipe/{image}")
+	public ResponseEntity<byte[]> getRecipeImage(@PathVariable("image") String image) {
+		
+		MediaType mediaType = MediaType.IMAGE_JPEG;
+		if(image.endsWith(".png"))  {
+            mediaType = MediaType.IMAGE_PNG;
+        } else if (image.endsWith(".gif")) {
+            mediaType = MediaType.IMAGE_GIF;
+        }
+		
+		byte[] imageBytes = FileUtil.getAllByteOfImage(recipeImagePath, image);
 		
 		return ResponseEntity
                 .status(HttpStatus.OK)

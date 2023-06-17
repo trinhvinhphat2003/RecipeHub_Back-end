@@ -18,4 +18,8 @@ public class TagService {
 	public Tag getTagByName(String name) {
 		return tagRepository.findByTagName(name).orElseThrow(() -> new NotFoundExeption(""));
 	}
+
+	public Tag getTagByNameAndUserId(String tagName, Long userId) {
+		return (tagRepository.findByUserIdAndName(tagName, userId)).orElse(null);	
+	}
 }

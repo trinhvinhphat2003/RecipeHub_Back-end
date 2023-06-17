@@ -13,6 +13,7 @@ import com.example.RecipeHub.dtos.RegisterResponse;
 import com.example.RecipeHub.entities.MailInfo;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.entities.VerificationToken;
+import com.example.RecipeHub.errorHandlers.BadRequestExeption;
 import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.repositories.UserRepository;
 import com.example.RecipeHub.repositories.VerificationTokenRepository;
@@ -57,7 +58,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         // check if email has been register
         if(userRepository.findByEmail(registerRequest.getEmail()).isPresent()){
-            throw new RuntimeException("Email " + registerRequest.getEmail() + " has been registered.");
+            throw new BadRequestExeption("Email " + registerRequest.getEmail() + " has been registered.");
         }
 
         // save account to database

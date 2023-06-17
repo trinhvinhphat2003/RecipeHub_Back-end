@@ -10,6 +10,6 @@ import com.example.RecipeHub.entities.Ingredient;
 @Mapper
 public interface IngregientMapper {
 	IngregientMapper INSTANCE =  Mappers.getMapper(IngregientMapper.class);
-	@Mapping(target = "amount", source = "amount")
-	IngredientDTO ingredientToIngredientDto(Ingredient ingredient, String amount);
+
+	IngredientDTO ingredientToIngredientDto(Ingredient ingredient);
 }

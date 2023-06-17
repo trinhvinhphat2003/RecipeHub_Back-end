@@ -1,8 +1,5 @@
 package com.example.RecipeHub.configs;
 
-import java.util.ArrayList;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -17,34 +14,28 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.example.RecipeHub.entities.FriendshipRequest;
 import com.example.RecipeHub.entities.Image;
 import com.example.RecipeHub.entities.Ingredient;
 import com.example.RecipeHub.entities.Recipe;
-import com.example.RecipeHub.entities.Recipe_HAVE_Ingredient;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
-import com.example.RecipeHub.enums.Friendship_status;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.LoginType;
 import com.example.RecipeHub.enums.PrivacyStatus;
 import com.example.RecipeHub.enums.Role;
 import com.example.RecipeHub.repositories.FriendshipRepository;
 import com.example.RecipeHub.repositories.IngredientRepository;
+import com.example.RecipeHub.repositories.RecipeCustomRepository;
 import com.example.RecipeHub.repositories.RecipeRepository;
 import com.example.RecipeHub.repositories.TagRepository;
 import com.example.RecipeHub.repositories.UserRepository;
 import com.example.RecipeHub.services.FriendService;
 import com.example.RecipeHub.services.RecipeService;
 import com.example.RecipeHub.utils.DateTimeUtil;
-import com.example.RecipeHub.utils.SystemUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
 public class ApplicationConfig {
@@ -69,6 +60,9 @@ public class ApplicationConfig {
 
 	@Autowired
 	private RecipeRepository recipeRepository;
+	
+	@Autowired
+	private RecipeCustomRepository recipeCustomRepository;
 
 	@Bean
 	public WebClient.Builder webClient() {
@@ -89,6 +83,9 @@ public class ApplicationConfig {
 
 			@Override
 			public void run(String... args) throws Exception {
+				
+				
+				
 				// create user
 				userRepository.save(new User("admin@gmail.com", getPasswordEncoder().encode("123456"), Role.ADMIN,
 						"admin", Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC));
@@ -114,17 +111,9 @@ public class ApplicationConfig {
 //				friendService.addFriend(2l, 3l);
 //				friendService.addFriend(2l, 4l);
 
-				// create ingredient
-				Ingredient ingredient1 = new Ingredient("Beaf");
-				Ingredient ingredient2 = new Ingredient("carrot");
-				Ingredient ingredient3 = new Ingredient("onion");
-
-				ingredient1 = ingredientRepository.save(ingredient1);
-				ingredient2 = ingredientRepository.save(ingredient2);
-				ingredient3 = ingredientRepository.save(ingredient3);
-
 				// create recipe
-				User user = userRepository.findByEmail("admin@gmail.com").get();
+				User admin = userRepository.findByEmail("admin@gmail.com").get();
+				User user = userRepository.findByEmail("user@gmail.com").get();
 
 				String recipeTag = "Dinner";
 				String title = "admin Recipe 1";
@@ -139,15 +128,14 @@ public class ApplicationConfig {
 				String nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
 				PrivacyStatus privacyStatus = PrivacyStatus.PUBLIC;
 
-				Recipe recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
+				Recipe recipe = new Recipe(admin, title, preTime, cookTime, recipeYield, rating, isFavourite,
 						description, unit, steps, nutrition, privacyStatus);
 
-				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient1, "1 gram"));
-				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
-//				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "100 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
 
-				// recipe.getTags().add(new Tag(null, recipeTag, null));
-
+				recipe.getTags().add(new Tag(null, recipeTag, null));
+				
 				recipeService.save(recipe);
 
 				recipeTag = "Dinner1";
@@ -161,20 +149,20 @@ public class ApplicationConfig {
 				unit = "grams";
 				steps = "Step 1\nStep 2\nStep 3";
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
-				privacyStatus = PrivacyStatus.PUBLIC;
+				privacyStatus = PrivacyStatus.PRIVATE;
 
-				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite, description, unit,
+				recipe = new Recipe(admin, title, preTime, cookTime, recipeYield, rating, isFavourite, description, unit,
 						steps, nutrition, privacyStatus);
 
-				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
-				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
 				// 1
 				recipeService.save(recipe);
 
 				recipeTag = "Dinner2";
-				title = "admin Recipe 3";
+				title = "user Recipe 1";
 				preTime = 30;
 				cookTime = 60;
 				recipeYield = 4;
@@ -189,16 +177,15 @@ public class ApplicationConfig {
 				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite, description, unit,
 						steps, nutrition, privacyStatus);
 
-				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient1, "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
 				// 2
 				recipeService.save(recipe);
 
-				// user = userRepository.findByEmail("user@gmail.com").get();
-
 				recipeTag = "Dinner3";
-				title = "user Recipe 1";
+				title = "user Recipe 2";
 				preTime = 30;
 				cookTime = 60;
 				recipeYield = 4;
@@ -208,14 +195,14 @@ public class ApplicationConfig {
 				unit = "grams";
 				steps = "Step 1\nStep 2\nStep 3";
 				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
-				privacyStatus = PrivacyStatus.PUBLIC;
+				privacyStatus = PrivacyStatus.PRIVATE;
 
 				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite, description, unit,
 						steps, nutrition, privacyStatus);
 
-				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient1, "1 gram"));
-//				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
-				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
 				recipe.getImages().add(new Image(null, "this is url for image", recipe));
@@ -228,29 +215,6 @@ public class ApplicationConfig {
 				recipe.getTags().add(tag);
 				recipeService.save(recipe);
 
-//				recipeTag = "Dinner 1";
-//				title = "user Recipe 2";
-//				preTime = 30;
-//				cookTime = 60;
-//				recipeYield = 4;
-//				rating = 5;
-//				isFavourite = true;
-//				description = "This recipe is amazing!";
-//				unit = "grams";
-//				steps = "Step 1\nStep 2\nStep 3";
-//				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
-//
-//				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite,
-//						description, unit, steps, nutrition);
-//
-//				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient2, "1 gram"));
-//				recipe.getIngredients().add(new Recipe_HAVE_Ingredient(recipe, ingredient3, "1 gram"));
-//
-//				Tag tag = tagRepository.findByTagName(recipeTag).get();
-//				
-//				recipe.getTags().add(tag);
-//				
-//				recipeService.save(recipe);
 			}
 		};
 	}
