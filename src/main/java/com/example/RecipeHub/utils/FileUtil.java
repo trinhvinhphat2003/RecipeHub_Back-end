@@ -12,6 +12,8 @@ import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.errorHandlers.BadRequestExeption;
 import com.example.RecipeHub.errorHandlers.InternalExeption;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 public class FileUtil {
 	public static String uploadImage(String path, MultipartFile file) {
 		try {
@@ -63,11 +65,12 @@ public class FileUtil {
 		}
 	}
 	
-	public static void saveRecipeImage(MultipartFile[] imageFiles, Recipe recipe, String recipeImagePath) {
+	public static Recipe saveRecipeImage(MultipartFile[] imageFiles, Recipe recipe, String recipeImagePath, HttpServletRequest httpServletRequest) {
 		if(imageFiles.length > 8) throw new BadRequestExeption("exceed the allowed amount");
 		for(MultipartFile imageFile : imageFiles) {
 			String imageName = uploadImage(recipeImagePath, imageFile);
-			recipe.getImages().add(new Image(null, imageName, recipe));
+			recipe.getImages().add(new Image(null, SystemUtil.getRecipeImagePath(httpServletRequest) + imageName, recipe));
 		}	
+		return recipe;
 	}
 }

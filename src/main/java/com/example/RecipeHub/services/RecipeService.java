@@ -31,6 +31,8 @@ import com.example.RecipeHub.repositories.RecipeRepository;
 import com.example.RecipeHub.utils.FileUtil;
 import com.example.RecipeHub.utils.PaginationUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Service
 public class RecipeService {
 
@@ -134,7 +136,7 @@ public class RecipeService {
 	@Value("${recipe.image.upload.directory}")
 	private String recipeImagePath;
 	
-	public void addNewRecipe(RecipeDTO dto, MultipartFile[] imageFiles, Long userId) {
+	public void addNewRecipe(RecipeDTO dto, MultipartFile[] imageFiles, Long userId, HttpServletRequest httpServletRequest) {
 		Recipe recipe = RecipeMapper.INSTANCE.recipeDtoToRecipe(dto);
 		for(TagDTO tagDTO : dto.getTags()) {
 			Tag tagPersisted = tagService.getTagByNameAndUserId(tagDTO.getTagName(), userId);
@@ -148,8 +150,8 @@ public class RecipeService {
 			recipe.getIngredients().add(new Ingredient(null, recipe, ingredientDTO.getIngredientName(), ingredientDTO.getAmount()));
 		}
 		
+		recipe = FileUtil.saveRecipeImage(imageFiles, recipe, recipeImagePath, httpServletRequest);
 		recipeRepository.save(recipe);
-		//FileUtil.saveRecipeImage(imageFiles, recipe, recipeImagePath);
 		
 	}
 

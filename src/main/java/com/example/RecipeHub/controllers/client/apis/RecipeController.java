@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +29,8 @@ import com.example.RecipeHub.errorHandlers.UnauthorizedExeption;
 import com.example.RecipeHub.mappers.RecipeMapper;
 import com.example.RecipeHub.services.RecipeService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/v1/")
 public class RecipeController {
@@ -40,11 +43,11 @@ public class RecipeController {
 	}
 
 	@PostMapping("user/recipe")
-	public ResponseEntity<String> addNewRecipe(@RequestParam(name = "files", required = false) MultipartFile[] imageFiles,
-			@RequestBody RecipeDTO dto, @AuthenticationPrincipal User user) {
+	public ResponseEntity<String> addNewRecipe(@RequestParam MultipartFile[] files,
+			@RequestPart("data") RecipeDTO dto, @AuthenticationPrincipal User user, HttpServletRequest httpServletRequest) {
 		dto.setRecipe_id(null);
 		dto.setUserId(user.getUserId());
-		recipeService.addNewRecipe(dto, imageFiles, user.getUserId());
+		recipeService.addNewRecipe(dto, files, user.getUserId(), httpServletRequest);
 		return ResponseEntity.ok("ok");
 	}
 
