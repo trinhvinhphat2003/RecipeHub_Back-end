@@ -72,6 +72,7 @@ public class RegisterServiceImpl implements RegisterService {
         // check token co dung voi user do khong
         VerificationToken verificationToken = verificationTokenRepository.findVerificationTokenByToken(token)
                 .orElseThrow(() -> new RuntimeException(TOKEN_INVALID));
+        // check token da expire chua
         if(verificationToken.getExpirationDate().before(new Date(System.currentTimeMillis()))){
             throw new RuntimeException(TOKEN_EXPIRED);
         }

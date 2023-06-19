@@ -2,7 +2,7 @@ package com.example.RecipeHub.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 public class MealPlannerRequest {

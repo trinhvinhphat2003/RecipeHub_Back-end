@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/meal-planner")
@@ -24,13 +24,12 @@ public class MealPlannerController {
         return ResponseEntity.ok(mealPlannerService.getMealPlannerInADay(mealPlannerRequest));
     }
     @GetMapping(path = "/get-meal-planners-in-days-range")
-    public ResponseEntity<MealPlannerResponse> getMealPlannerInDaysRange(@RequestBody MealPlannerDayRangeRequest mealPlannerRequest) throws Exception{
+    public ResponseEntity<List<MealPlannerResponse>> getMealPlannerInDaysRange(@RequestBody MealPlannerDayRangeRequest mealPlannerRequest) throws Exception{
         return ResponseEntity.ok(mealPlannerService.getMealPlannerInDayRange(mealPlannerRequest));
     }
     @PutMapping(path = "/update-meal-planner")
     public ResponseEntity<MealPlannerResponse> updateMealPlanner(@RequestBody MealPlannerRequest mealPlannerRequest) throws Exception{
         return ResponseEntity.ok(mealPlannerService.updateMealPlanner(mealPlannerRequest));
     }
-    //@DeleteMapping(path = "/remove-meal-planner")
 
 }

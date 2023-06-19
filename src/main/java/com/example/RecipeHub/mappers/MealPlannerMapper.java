@@ -39,4 +39,5 @@ public interface MealPlannerMapper {
 
     List<Recipe> mapRecipes(List<Long> recipeIdList);
     List<RecipeDTO> mapRecipeDtos(List<Recipe> recipes);
+    List<MealPlannerResponse> mealPlannersToMealPlannerResponses(List<MealPlanner> mealPlanners);
 }

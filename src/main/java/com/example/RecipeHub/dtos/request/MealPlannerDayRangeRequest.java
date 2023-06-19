@@ -1,11 +1,14 @@
 package com.example.RecipeHub.dtos.request;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class MealPlannerDayRangeRequest {
     private Date afterDate;
     private Date beforeDate;
     private long userId;
+
+    public MealPlannerDayRangeRequest() {
+    }
 
     public MealPlannerDayRangeRequest(Date afterDate, Date beforeDate, long userId) {
         this.afterDate = afterDate;

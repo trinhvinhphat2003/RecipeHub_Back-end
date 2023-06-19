@@ -2,7 +2,7 @@ package com.example.RecipeHub.dtos.response;
 
 import com.example.RecipeHub.dtos.RecipeDTO;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 public class MealPlannerResponse {

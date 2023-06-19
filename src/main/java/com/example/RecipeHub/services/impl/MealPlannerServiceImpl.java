@@ -8,7 +8,15 @@ import com.example.RecipeHub.mappers.MealPlannerMapper;
 import com.example.RecipeHub.repositories.MealPlannerRepository;
 import com.example.RecipeHub.services.MealPlannerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.support.CronExpression;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 @Service
 @RequiredArgsConstructor
@@ -41,15 +49,23 @@ public class MealPlannerServiceImpl implements MealPlannerService {
     }
 
     @Override
-    public MealPlannerResponse getMealPlannerInDayRange(MealPlannerDayRangeRequest mealPlannerRequest) throws Exception{
-        MealPlanner mealPlanner = mealPlannerRepository.findMealPlannerByUser_UserIdAndDateBeforeAndDateAfter(mealPlannerRequest.getUserId(), mealPlannerRequest.getBeforeDate(), mealPlannerRequest.getAfterDate());
-        return mealPlannerMapper.mealPlannerToMealPlannerResponse(mealPlanner);
+    public List<MealPlannerResponse> getMealPlannerInDayRange(MealPlannerDayRangeRequest mealPlannerRequest) throws Exception{
+        List<MealPlanner> mealPlanner = mealPlannerRepository.findMealPlannerByUser_UserIdAndDateBeforeAndDateAfter(mealPlannerRequest.getUserId(), mealPlannerRequest.getBeforeDate(), mealPlannerRequest.getAfterDate());
+        return mealPlannerMapper.mealPlannersToMealPlannerResponses(mealPlanner);
     }
 
     @Override
     public MealPlannerResponse updateMealPlanner(MealPlannerRequest mealPlannerRequest) throws Exception {
         MealPlanner mealPlanner = mealPlannerRepository.findById(mealPlannerRequest.getMealPlannerId()).orElseThrow(() -> new RuntimeException("Meal planner not found"));
-//        mealPlanner.
+//        mealPlannerRepository
         return null;
+    }
+
+    @Scheduled(cron = "0 0 1 15 */3 *", zone = "Asia/Saigon") // 01:00 AM on 15/1, 15/4, 15/7, 15/10
+    public void removeMealPlanner100DaysBeforeCurrentDate(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, -90);
+        Date date = calendar.getTime();
+        mealPlannerRepository.deleteByDateBefore(date);
     }
 }
