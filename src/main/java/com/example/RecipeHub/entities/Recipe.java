@@ -86,12 +86,12 @@ public class Recipe {
 	private List<Image> images = new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
-	private List<Meal_planner> meal_planners = new ArrayList<>();
+	private List<Meal_Planner> meal_planners = new ArrayList<>();
 
 	public Recipe(Long recipe_id, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
 			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
 			User user, PrivacyStatus privacyStatus, List<Ingredient> ingredients, List<Tag> tags, List<Image> images,
-			List<Meal_planner> meal_planners) {
+			List<Meal_Planner> meal_planners) {
 		super();
 		this.recipe_id = recipe_id;
 		this.title = title;
@@ -120,11 +120,11 @@ public class Recipe {
 		this.ingredients = ingredients;
 	}
 
-	public List<Meal_planner> getMeal_planners() {
+	public List<Meal_Planner> getMeal_planners() {
 		return meal_planners;
 	}
 
-	public void setMeal_planners(List<Meal_planner> meal_planners) {
+	public void setMeal_planners(List<Meal_Planner> meal_planners) {
 		this.meal_planners = meal_planners;
 	}
 

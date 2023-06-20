@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Builder
-public class Meal_planner {
+public class Meal_Planner {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "meal_planner_id")
@@ -81,11 +81,11 @@ public class Meal_planner {
 		this.date = date;
 	}
 
-	public Meal_planner() {
+	public Meal_Planner() {
 		super();
 	}
 
-	public Meal_planner(Long mealPlannerId, Recipe recipe, User user, MealType mealType, Date date) {
+	public Meal_Planner(Long mealPlannerId, Recipe recipe, User user, MealType mealType, Date date) {
 		super();
 		this.mealPlannerId = mealPlannerId;
 		this.recipe = recipe;

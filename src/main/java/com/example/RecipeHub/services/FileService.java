@@ -104,7 +104,7 @@ public class FileService {
 			throws IOException {
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for (Long recipeId : recipeIds) {
-			RecipeDTO recipeDto = recipeService.getRecipeById(recipeId);
+			RecipeDTO recipeDto = recipeService.getRecipeDTOById(recipeId);
 			if (recipeDto.getUserId() != user.getUserId())
 				throw new ForbiddenExeption("you are not owner of this recipe");
 			recipeDTOs.add(recipeDto);

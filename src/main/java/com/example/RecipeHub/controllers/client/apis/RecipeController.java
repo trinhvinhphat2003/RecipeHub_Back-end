@@ -43,11 +43,11 @@ public class RecipeController {
 	}
 
 	@PostMapping("user/recipe")
-	public ResponseEntity<String> addNewRecipe(@RequestParam MultipartFile[] files,
+	public ResponseEntity<String> addNewRecipe(@RequestParam MultipartFile files,
 			@RequestPart("data") RecipeDTO dto, @AuthenticationPrincipal User user, HttpServletRequest httpServletRequest) {
 		dto.setRecipe_id(null);
 		dto.setUserId(user.getUserId());
-		recipeService.addNewRecipe(dto, files, user.getUserId(), httpServletRequest);
+		recipeService.addNewRecipe(dto, new MultipartFile[]{files}, user.getUserId(), httpServletRequest);
 		return ResponseEntity.ok("ok");
 	}
 
