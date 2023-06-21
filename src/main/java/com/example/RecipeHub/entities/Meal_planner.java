@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Builder
-public class Meal_Planner {
+public class Meal_planner {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "meal_planner_id")
@@ -72,11 +72,11 @@ public class Meal_Planner {
 		this.date = date;
 	}
 
-	public Meal_Planner() {
+	public Meal_planner() {
 		super();
 	}
 
-	public Meal_Planner(Long mealPlannerId, Recipe recipe, User user, MealType mealType, Date date) {
+	public Meal_planner(Long mealPlannerId, Recipe recipe, User user, MealType mealType, Date date) {
 		super();
 		this.mealPlannerId = mealPlannerId;
 		this.recipe = recipe;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.RecipeHub.dtos.MealPlannerRequest;
 import com.example.RecipeHub.dtos.MealPlannerResponse;
-import com.example.RecipeHub.entities.Meal_Planner;
+import com.example.RecipeHub.entities.Meal_planner;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.enums.MealType;
 import com.example.RecipeHub.errorHandlers.ForbiddenExeption;
@@ -36,7 +36,7 @@ public class MealPlannerService {
 
 	public MealPlannerResponse getMealPlannerByDate(Long dateLong) {
 		Date dateDate = DateTimeUtil.milisecondToDate(dateLong);
-		Meal_Planner meal_Planner = mealPlannerRepository.findByDate(dateDate).orElseThrow(() -> new NotFoundExeption("no meal planner in this date"));
+		Meal_planner meal_Planner = mealPlannerRepository.findByDate(dateDate).orElseThrow(() -> new NotFoundExeption("no meal planner in this date"));
 		return null;
 	}
 
@@ -48,6 +48,6 @@ public class MealPlannerService {
 		}
 		MealType mealType = request.getMealType();
 		
-		mealPlannerRepository.save(new Meal_Planner(null, recipe, recipe.getUser(), mealType, date));
+		mealPlannerRepository.save(new Meal_planner(null, recipe, recipe.getUser(), mealType, date));
 	}
 }

@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 
 import com.example.RecipeHub.dtos.MealPlannerResponse;
 import com.example.RecipeHub.dtos.RecipeDTO;
-import com.example.RecipeHub.entities.Meal_Planner;
+import com.example.RecipeHub.entities.Meal_planner;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.utils.DateTimeUtil;
 
@@ -33,6 +33,6 @@ public interface MealPlannerMapper {
 		@Mapping(target = "recipe", source = "recipe", qualifiedByName = "mapRecipe"),
 		@Mapping(target = "date", source = "date", qualifiedByName = "mapDate")
 	})
-	MealPlannerResponse mealPlannerTomealPlannerResponse(Meal_Planner meal_Planner);
+	MealPlannerResponse mealPlannerTomealPlannerResponse(Meal_planner meal_Planner);
 
 }
