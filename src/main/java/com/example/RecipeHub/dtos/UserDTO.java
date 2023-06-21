@@ -21,14 +21,11 @@ public class UserDTO {
 	private String gender;
 	private String role;
 	private LoginType loginType;
-	
-	public UserDTO() {
-		super();
-	}
+	private String email;
 	
 	
 	public UserDTO(Long userId, String fullName, String profileImage, Long birthday, String gender, String role,
-			LoginType loginType) {
+			LoginType loginType, String email) {
 		super();
 		this.userId = userId;
 		this.fullName = fullName;
@@ -37,9 +34,17 @@ public class UserDTO {
 		this.gender = gender;
 		this.role = role;
 		this.loginType = loginType;
+		this.email = email;
 	}
-
-
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public UserDTO() {
+		super();
+	}
 	public LoginType getLoginType() {
 		return loginType;
 	}
