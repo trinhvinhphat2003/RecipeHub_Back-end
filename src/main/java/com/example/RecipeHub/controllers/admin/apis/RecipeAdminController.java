@@ -30,8 +30,10 @@ public class RecipeAdminController {
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipe(@AuthenticationPrincipal User user,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "2") int size,
-			@RequestParam(value = "query", defaultValue = "") String query) {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithPaginationAndFilter(query, page, size);
+			@RequestParam(value = "query", defaultValue = "") String query,
+			@RequestParam(value = "sort", defaultValue = "id") String sort,
+			@RequestParam(value = "direction", defaultValue = "desc") String direction) {
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithPaginationAndFilter(query, page, size, sort, direction);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 }

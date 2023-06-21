@@ -85,8 +85,8 @@ public class RecipeService {
 	}
 
 
-	public ArrayList<RecipeDTO> getRecipesWithPaginationAndFilter(String query, int page, int size) {
-		Page<Recipe> recipes = recipeRepository.findByTitle(query, PaginationUtil.generatePageable(page, size, "recipe_id", "desc"));
+	public ArrayList<RecipeDTO> getRecipesWithPaginationAndFilter(String query, int page, int size, String sort, String direction) {
+		List<Recipe> recipes = recipeCustomRepository.filterByCondition(null, null, page, size, sort, direction, query, null, null, null);
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for (Recipe recipe : recipes)
 			recipeDTOs.add(RecipeMapper.INSTANCE.recipeToRecipeDto(recipe));
