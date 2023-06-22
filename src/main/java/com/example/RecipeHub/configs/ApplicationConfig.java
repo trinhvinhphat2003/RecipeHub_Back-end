@@ -114,8 +114,8 @@ public class ApplicationConfig {
 				// create recipe
 				User admin = userRepository.findByEmail("admin@gmail.com").get();
 				User user = userRepository.findByEmail("user@gmail.com").get();
-
-				String recipeTag = "Dinner";
+				//1
+				String recipeTag = "dinner";
 				String title = "admin Recipe 1";
 				Integer preTime = 30;
 				Integer cookTime = 60;
@@ -137,8 +137,8 @@ public class ApplicationConfig {
 				recipe.getTags().add(new Tag(null, recipeTag, null));
 				
 				recipeService.save(recipe);
-
-				recipeTag = "Dinner";
+				//2
+				recipeTag = "dinner";
 				title = "admin Recipe 2";
 				preTime = 30;
 				cookTime = 60;
@@ -158,9 +158,9 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
-				// 1
+				
 				recipeService.save(recipe);
-
+				//3
 				recipeTag = "noon";
 				title = "user Recipe 1";
 				preTime = 30;
@@ -181,9 +181,9 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
-				// 2
+				
 				recipeService.save(recipe);
-
+				//4
 				recipeTag = "noon";
 				title = "user Recipe 2";
 				preTime = 30;
@@ -206,10 +206,9 @@ public class ApplicationConfig {
 
 				recipe.getTags().add(new Tag(null, recipeTag, null));
 				recipe.getImages().add(new Image(null, "this is url for image", recipe));
-				// 3
+				
 				recipeService.save(recipe);
-				// 3
-				recipeTag = "Dinner2";
+				recipeTag = "dinner";
 				recipe = recipeRepository.findByTitle(title).get();
 				Tag tag = tagRepository.findByTagName(recipeTag).get();
 				recipe.getTags().add(tag);
