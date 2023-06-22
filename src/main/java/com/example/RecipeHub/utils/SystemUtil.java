@@ -12,6 +12,6 @@ public class SystemUtil {
 	}
 	
 	public static String getRecipeImagePath(HttpServletRequest request){
-		return "http://" + request.getServerName()/* + ":" + request.getServerPort() */+ "/api/v1/global/image/recipe/";
+		return "https://" + request.getServerName()/* + ":" + request.getServerPort() */+ "/api/v1/global/image/recipe/";
 	}
 }

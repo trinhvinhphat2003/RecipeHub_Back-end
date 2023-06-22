@@ -138,7 +138,7 @@ public class ApplicationConfig {
 				
 				recipeService.save(recipe);
 
-				recipeTag = "Dinner1";
+				recipeTag = "Dinner";
 				title = "admin Recipe 2";
 				preTime = 30;
 				cookTime = 60;
@@ -161,7 +161,7 @@ public class ApplicationConfig {
 				// 1
 				recipeService.save(recipe);
 
-				recipeTag = "Dinner2";
+				recipeTag = "noon";
 				title = "user Recipe 1";
 				preTime = 30;
 				cookTime = 60;
@@ -184,7 +184,7 @@ public class ApplicationConfig {
 				// 2
 				recipeService.save(recipe);
 
-				recipeTag = "Dinner3";
+				recipeTag = "noon";
 				title = "user Recipe 2";
 				preTime = 30;
 				cookTime = 60;
