@@ -8,8 +8,8 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import com.example.RecipeHub.dtos.MealPlannerResponse;
-import com.example.RecipeHub.dtos.RecipeDTO;
+import com.example.RecipeHub.client.dtos.MealPlannerResponse;
+import com.example.RecipeHub.client.dtos.RecipeDTO;
 import com.example.RecipeHub.entities.Meal_planner;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.utils.DateTimeUtil;

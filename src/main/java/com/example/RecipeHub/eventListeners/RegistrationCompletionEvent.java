@@ -2,7 +2,7 @@ package com.example.RecipeHub.eventListeners;
 
 import org.springframework.context.ApplicationEvent;
 
-import com.example.RecipeHub.dtos.RegisterRequest;
+import com.example.RecipeHub.client.dtos.RegisterRequest;
 
 public class RegistrationCompletionEvent extends ApplicationEvent {
     private RegisterRequest request;

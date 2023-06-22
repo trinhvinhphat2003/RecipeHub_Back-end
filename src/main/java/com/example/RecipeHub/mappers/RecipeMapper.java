@@ -9,10 +9,10 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import com.example.RecipeHub.dtos.ImageDTO;
-import com.example.RecipeHub.dtos.IngredientDTO;
-import com.example.RecipeHub.dtos.RecipeDTO;
-import com.example.RecipeHub.dtos.TagDTO;
+import com.example.RecipeHub.client.dtos.ImageDTO;
+import com.example.RecipeHub.client.dtos.IngredientDTO;
+import com.example.RecipeHub.client.dtos.RecipeDTO;
+import com.example.RecipeHub.client.dtos.TagDTO;
 import com.example.RecipeHub.entities.Image;
 import com.example.RecipeHub.entities.Ingredient;
 import com.example.RecipeHub.entities.Recipe;

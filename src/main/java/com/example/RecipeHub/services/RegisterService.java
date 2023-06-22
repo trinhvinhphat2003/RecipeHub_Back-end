@@ -1,8 +1,8 @@
 package com.example.RecipeHub.services;
 
-import com.example.RecipeHub.dtos.RegisterRequest;
-import com.example.RecipeHub.dtos.RegisterResponse;
-import com.example.RecipeHub.dtos.VerificationTokenRequest;
+import com.example.RecipeHub.client.dtos.RegisterRequest;
+import com.example.RecipeHub.client.dtos.RegisterResponse;
+import com.example.RecipeHub.client.dtos.VerificationTokenRequest;
 import com.example.RecipeHub.entities.User;
 
 import jakarta.servlet.http.HttpServletRequest;

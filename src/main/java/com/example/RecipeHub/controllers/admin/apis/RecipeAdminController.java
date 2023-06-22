@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.RecipeHub.dtos.RecipeDTO;
+import com.example.RecipeHub.admin.dtos.RecipesPaginationResponse;
+import com.example.RecipeHub.client.dtos.RecipeDTO;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.services.RecipeService;
@@ -27,13 +28,13 @@ public class RecipeAdminController {
 	}
 
 	@GetMapping("/recipes")
-	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipe(@AuthenticationPrincipal User user,
+	public ResponseEntity<RecipesPaginationResponse> getAllRecipe(@AuthenticationPrincipal User user,
 			@RequestParam(value = "page", defaultValue = "0", required = false) int page,
 			@RequestParam(value = "size", defaultValue = "2", required = false) int size,
 			@RequestParam(value = "query", defaultValue = "", required = false) String query,
 			@RequestParam(value = "sort", defaultValue = "recipe_id", required = false) String sort,
 			@RequestParam(value = "direction", defaultValue = "desc", required = false) String direction) {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithPaginationAndFilter(query, page, size, sort, direction);
-		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+		RecipesPaginationResponse response = recipeService.getRecipesWithPaginationAndFilter(query, page, size, sort, direction);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

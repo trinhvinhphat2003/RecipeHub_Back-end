@@ -8,9 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.example.RecipeHub.dtos.LoginDTO;
-import com.example.RecipeHub.dtos.LoginResponseDTO;
-import com.example.RecipeHub.dtos.ResponseObject;
+import com.example.RecipeHub.client.dtos.LoginDTO;
+import com.example.RecipeHub.client.dtos.LoginResponseDTO;
+import com.example.RecipeHub.client.dtos.ResponseObject;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.LoginType;

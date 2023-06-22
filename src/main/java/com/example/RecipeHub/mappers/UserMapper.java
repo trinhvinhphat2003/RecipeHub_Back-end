@@ -9,8 +9,8 @@ import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.RecipeHub.dtos.RegisterRequest;
-import com.example.RecipeHub.dtos.UserDTO;
+import com.example.RecipeHub.client.dtos.RegisterRequest;
+import com.example.RecipeHub.client.dtos.UserDTO;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.Role;

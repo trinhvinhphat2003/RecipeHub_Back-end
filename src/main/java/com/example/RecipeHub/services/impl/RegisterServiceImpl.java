@@ -8,8 +8,8 @@ import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.RecipeHub.dtos.RegisterRequest;
-import com.example.RecipeHub.dtos.RegisterResponse;
+import com.example.RecipeHub.client.dtos.RegisterRequest;
+import com.example.RecipeHub.client.dtos.RegisterResponse;
 import com.example.RecipeHub.entities.MailInfo;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.entities.VerificationToken;
