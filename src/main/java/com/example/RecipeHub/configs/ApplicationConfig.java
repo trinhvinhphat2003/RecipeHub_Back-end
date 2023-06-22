@@ -114,6 +114,12 @@ public class ApplicationConfig {
 				// create recipe
 				User admin = userRepository.findByEmail("admin@gmail.com").get();
 				User user = userRepository.findByEmail("user@gmail.com").get();
+				
+				tagRepository.save(new Tag("dinner"));
+				tagRepository.save(new Tag("noon"));
+				Tag noon = tagRepository.findByTagName("noon").get();
+				Tag dinner = tagRepository.findByTagName("dinner").get();
+				
 				//1
 				String recipeTag = "dinner";
 				String title = "admin Recipe 1";
@@ -134,9 +140,13 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "100 gram"));
 				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
 
-				recipe.getTags().add(new Tag(null, recipeTag, null));
+				recipe = recipeRepository.save(recipe);
 				
-				recipeService.save(recipe);
+				recipe.getTags().add(dinner);
+				
+				recipe = recipeRepository.save(recipe);
+				
+				
 				//2
 				recipeTag = "dinner";
 				title = "admin Recipe 2";
@@ -157,9 +167,13 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
 				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
 
-				recipe.getTags().add(new Tag(null, recipeTag, null));
+				recipe = recipeRepository.save(recipe);
+				
+				recipe.getTags().add(dinner);
+				recipe.getTags().add(noon);
 				
 				recipeService.save(recipe);
+				
 				//3
 				recipeTag = "noon";
 				title = "user Recipe 1";
@@ -180,7 +194,9 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
 				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
 
-				recipe.getTags().add(new Tag(null, recipeTag, null));
+				recipe = recipeRepository.save(recipe);
+				
+				recipe.getTags().add(noon);
 				
 				recipeService.save(recipe);
 				//4
@@ -204,14 +220,15 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
 				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "1 gram"));
 
-				recipe.getTags().add(new Tag(null, recipeTag, null));
+				recipe = recipeRepository.save(recipe);
+				
+				recipe.getTags().add(noon);
 				recipe.getImages().add(new Image(null, "this is url for image", recipe));
 				
-				recipeService.save(recipe);
-				recipeTag = "dinner";
-				recipe = recipeRepository.findByTitle(title).get();
-				Tag tag = tagRepository.findByTagName(recipeTag).get();
-				recipe.getTags().add(tag);
+				recipe = recipeRepository.save(recipe);
+				recipeTag = "breakfast";
+				Tag breakfast = tagRepository.save(new Tag("breakfast"));
+				recipe.getTags().add(breakfast);
 				recipeService.save(recipe);
 
 			}
