@@ -18,7 +18,8 @@ public class RecipeCustomRepository {
 	private EntityManager entityManager;
 
 	public List<Recipe> filterByCondition(ArrayList<String> tags, ArrayList<String> ingredients, Integer page,
-			Integer size, String sortBy, String direction, String title, String privacyStatus, Boolean isFavorite, Long user_id) {
+			Integer size, String sortBy, String direction, String title, String privacyStatus, Boolean isFavorite,
+			Long user_id) {
 		// initial
 		String sql = "select r.* from recipe r \r\n";
 		if (tags != null && tags.size() > 0) {
@@ -36,16 +37,16 @@ public class RecipeCustomRepository {
 		// append privacy status
 		if (privacyStatus != null)
 			sql += "and r.privacy_status like :privacyStatus\n";
-		
-		//append is favorite
-		if (isFavorite != null) 
+
+		// append is favorite
+		if (isFavorite != null)
 			sql += "and r.is_favourite = " + (isFavorite ? 1 : 0) + "\n";
-		
-		//append user id
-		if(user_id != null) {
+
+		// append user id
+		if (user_id != null) {
 			sql += "and r.user_id = " + user_id + "\n";
 		}
-		
+
 		// append tags
 		if (tags != null && tags.size() > 0) {
 			sql += "and ";
@@ -96,16 +97,21 @@ public class RecipeCustomRepository {
 		query.setParameter("title", "%" + title + "%");
 
 		// add privacy status
-		query.setParameter("privacyStatus", "%" + privacyStatus + "%");
+		if (privacyStatus != null)
+			query.setParameter("privacyStatus", "%" + privacyStatus + "%");
 
 		// add tags
-		for (int i = 0; i < tags.size(); i++) {
-			query.setParameter("tag" + i, tags.get(i));
+		if (ingredients != null && ingredients.size() > 0) {
+			for (int i = 0; i < tags.size(); i++) {
+				query.setParameter("tag" + i, tags.get(i));
+			}
 		}
 
 		// add ingredients
-		for (int i = 0; i < ingredients.size(); i++) {
-			query.setParameter("ingredient" + i, "%" + ingredients.get(i) + "%");
+		if (ingredients != null && ingredients.size() > 0) {
+			for (int i = 0; i < ingredients.size(); i++) {
+				query.setParameter("ingredient" + i, "%" + ingredients.get(i) + "%");
+			}
 		}
 
 		// pagination
