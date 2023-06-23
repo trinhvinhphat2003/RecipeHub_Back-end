@@ -43,7 +43,7 @@ public class FIlterDTO {
 	public void setIngredients(ArrayList<String> ingredients) {
 		this.ingredients = ingredients;
 	}
-	public boolean isFavorite() {
+	public Boolean isFavorite() {
 		return favorite;
 	}
 	public void setFavorite(Boolean favorite) {
