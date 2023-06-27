@@ -84,7 +84,8 @@ public class ApplicationConfig {
 			@Override
 			public void run(String... args) throws Exception {
 				
-				
+				//init
+				String image1 = "https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=";
 				
 				// create user
 				userRepository.save(new User("admin@gmail.com", getPasswordEncoder().encode("123456"), Role.ADMIN,
@@ -139,6 +140,13 @@ public class ApplicationConfig {
 
 				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "100 gram"));
 				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
+				
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
 
 				recipe = recipeRepository.save(recipe);
 				
@@ -166,6 +174,10 @@ public class ApplicationConfig {
 
 				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
 				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
+				
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
 
 				recipe = recipeRepository.save(recipe);
 				
@@ -193,6 +205,11 @@ public class ApplicationConfig {
 
 				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
 				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
+				
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, "this is url for image", recipe));
 
 				recipe = recipeRepository.save(recipe);
 				
@@ -223,13 +240,204 @@ public class ApplicationConfig {
 				recipe = recipeRepository.save(recipe);
 				
 				recipe.getTags().add(noon);
-				recipe.getImages().add(new Image(null, "this is url for image", recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
 				
 				recipe = recipeRepository.save(recipe);
 				recipeTag = "breakfast";
 				Tag breakfast = tagRepository.save(new Tag("breakfast"));
 				recipe.getTags().add(breakfast);
 				recipeService.save(recipe);
+				
+				//5
+				recipeTag = "dinner";
+				title = "admin Recipe 3";
+				preTime = 30;
+				cookTime = 60;
+				recipeYield = 4;
+				rating = 5;
+				isFavourite = true;
+				description = "This recipe 0 is amazing!";
+				unit = "grams";
+				steps = "Step 1\nStep 2\nStep 3";
+				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
+				privacyStatus = PrivacyStatus.PUBLIC;
+
+				recipe = new Recipe(admin, title, preTime, cookTime, recipeYield, rating, isFavourite,
+						description, unit, steps, nutrition, privacyStatus);
+
+				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "100 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
+				
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+
+				recipe = recipeRepository.save(recipe);
+				
+				recipe.getTags().add(dinner);
+				
+				recipe = recipeRepository.save(recipe);
+				
+				//6
+				recipeTag = "dinner";
+				title = "admin Recipe 4";
+				preTime = 30;
+				cookTime = 60;
+				recipeYield = 4;
+				rating = 5;
+				isFavourite = true;
+				description = "This recipe 0 is amazing!";
+				unit = "grams";
+				steps = "Step 1\nStep 2\nStep 3";
+				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
+				privacyStatus = PrivacyStatus.PUBLIC;
+
+				recipe = new Recipe(admin, title, preTime, cookTime, recipeYield, rating, isFavourite,
+						description, unit, steps, nutrition, privacyStatus);
+
+				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "100 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
+				
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+
+				recipe = recipeRepository.save(recipe);
+				
+				recipe.getTags().add(dinner);
+				
+				recipe = recipeRepository.save(recipe);
+				
+				//7
+				recipeTag = "dinner";
+				title = "admin Recipe 5";
+				preTime = 30;
+				cookTime = 60;
+				recipeYield = 4;
+				rating = 5;
+				isFavourite = true;
+				description = "This recipe 0 is amazing!";
+				unit = "grams";
+				steps = "Step 1\nStep 2\nStep 3";
+				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
+				privacyStatus = PrivacyStatus.PUBLIC;
+
+				recipe = new Recipe(admin, title, preTime, cookTime, recipeYield, rating, isFavourite,
+						description, unit, steps, nutrition, privacyStatus);
+
+				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "100 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
+				
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+
+				recipe = recipeRepository.save(recipe);
+				
+				recipe.getTags().add(dinner);
+				
+				recipe = recipeRepository.save(recipe);
+				
+				//8
+				recipeTag = "noon";
+				title = "user Recipe 3";
+				preTime = 30;
+				cookTime = 60;
+				recipeYield = 4;
+				rating = 4;
+				isFavourite = true;
+				description = "This recipe 3 is amazing!";
+				unit = "grams";
+				steps = "Step 1\nStep 2\nStep 3";
+				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
+				privacyStatus = PrivacyStatus.PRIVATE;
+
+				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite, description, unit,
+						steps, nutrition, privacyStatus);
+
+				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "1 gram"));
+
+				recipe = recipeRepository.save(recipe);
+				
+				recipe.getTags().add(noon);
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				
+				recipe = recipeRepository.save(recipe);
+				
+				//9
+				recipeTag = "noon";
+				title = "user Recipe 4";
+				preTime = 30;
+				cookTime = 60;
+				recipeYield = 4;
+				rating = 4;
+				isFavourite = true;
+				description = "This recipe 3 is amazing!";
+				unit = "grams";
+				steps = "Step 1\nStep 2\nStep 3";
+				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
+				privacyStatus = PrivacyStatus.PRIVATE;
+
+				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite, description, unit,
+						steps, nutrition, privacyStatus);
+
+				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "1 gram"));
+
+				recipe = recipeRepository.save(recipe);
+				
+				recipe.getTags().add(noon);
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				
+				recipe = recipeRepository.save(recipe);
+				
+				//10
+				recipeTag = "noon";
+				title = "user Recipe 5";
+				preTime = 30;
+				cookTime = 60;
+				recipeYield = 4;
+				rating = 4;
+				isFavourite = true;
+				description = "This recipe 3 is amazing!";
+				unit = "grams";
+				steps = "Step 1\nStep 2\nStep 3";
+				nutrition = "Protein: 10g\nCarbohydrates: 20g\nFat: 5g";
+				privacyStatus = PrivacyStatus.PRIVATE;
+
+				recipe = new Recipe(user, title, preTime, cookTime, recipeYield, rating, isFavourite, description, unit,
+						steps, nutrition, privacyStatus);
+
+				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
+				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "1 gram"));
+
+				recipe = recipeRepository.save(recipe);
+				
+				recipe.getTags().add(noon);
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				recipe.getImages().add(new Image(null, image1, recipe));
+				
+				recipe = recipeRepository.save(recipe);
 
 			}
 		};

@@ -88,7 +88,7 @@ public class RecipeController {
 	@PostMapping("user/recipes/filter")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesByUserWithFilter(@AuthenticationPrincipal User user,
 			@RequestBody FIlterDTO fIlterDTO, @RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "2") int size) {
+			@RequestParam(value = "size", defaultValue = "20") int size) {
 		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, user.getUserId());
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}

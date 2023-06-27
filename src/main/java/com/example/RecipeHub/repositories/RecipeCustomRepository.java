@@ -31,6 +31,7 @@ public class RecipeCustomRepository {
 		}
 
 		// append title
+		if(title == null) title = "";
 		sql += "where\n";
 		sql += "r.title like :title\n";
 
