@@ -157,7 +157,7 @@ public class RecipeService {
 			recipe.getIngredients().add(new Ingredient(null, recipe, ingredientDTO.getIngredientName(), ingredientDTO.getAmount()));
 		}
 		
-		recipe = FileUtil.saveRecipeImage(imageFiles, recipe, recipeImagePath, httpServletRequest);
+		if(imageFiles != null) recipe = FileUtil.saveRecipeImage(imageFiles, recipe, recipeImagePath, httpServletRequest);
 		recipeRepository.save(recipe);
 		
 	}
