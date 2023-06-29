@@ -14,9 +14,9 @@ import com.example.RecipeHub.entities.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 	public Optional<User> findByEmail(String email);
 	
-	@Query()
-	public Page<User> filterUserAndPagination(String query, String sortBy, String direction, Pageable pageable);
 	
-	@Query()
-	public Page<User> filterUser(String query);
+//	public Page<User> filterUserAndPagination(String query, String sortBy, String direction, Pageable pageable);
+//	
+//	
+//	public Page<User> filterUser(String query);
 }
