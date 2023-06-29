@@ -1,7 +1,7 @@
 package com.example.RecipeHub.enums;
 
 public enum Friendship_status {
-    WAITING,
+    PENDING,
     ACCEPTED,
     REJECTED
 }

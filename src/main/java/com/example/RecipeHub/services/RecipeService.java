@@ -2,6 +2,7 @@ package com.example.RecipeHub.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,7 @@ import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.PrivacyStatus;
+import com.example.RecipeHub.errorHandlers.ForbiddenExeption;
 import com.example.RecipeHub.errorHandlers.NotFoundExeption;
 import com.example.RecipeHub.mappers.RecipeMapper;
 import com.example.RecipeHub.repositories.RecipeCustomRepository;
@@ -40,12 +42,14 @@ public class RecipeService {
 	private final RecipeRepository recipeRepository;
 	private final TagService tagService;
 	private final RecipeCustomRepository recipeCustomRepository;
+	private final IngredientService ingredientService;
 
-	public RecipeService(RecipeRepository recipeRepository, TagService tagService, RecipeCustomRepository recipeCustomRepository) {
+	public RecipeService(RecipeRepository recipeRepository, TagService tagService, RecipeCustomRepository recipeCustomRepository, IngredientService ingredientService) {
 		super();
 		this.recipeRepository = recipeRepository;
 		this.tagService = tagService;
-		this.recipeCustomRepository = recipeCustomRepository;;
+		this.recipeCustomRepository = recipeCustomRepository;
+		this.ingredientService = ingredientService;;
 	}
 
 	public Pageable generatePageable(Integer page, Integer size, String sortBy, String direction) {
@@ -160,6 +164,112 @@ public class RecipeService {
 		if(imageFiles != null) recipe = FileUtil.saveRecipeImage(imageFiles, recipe, recipeImagePath, httpServletRequest);
 		recipeRepository.save(recipe);
 		
+	}
+
+	public void deleteOneUserRecipeById(Long recipeId, Long userId) {
+		Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new NotFoundExeption("recipe not found"));
+		if(recipe.getUser().getUserId() != userId) throw new ForbiddenExeption("this recipe is not your");
+		recipeRepository.delete(recipe);
+	}
+	
+	public void deleteOneRecipeById(Long recipeId) {
+		Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new NotFoundExeption("recipe not found"));
+		recipeRepository.delete(recipe);
+	}
+
+	public void editRecipe(RecipeDTO dto, Long recipeId, Long userId) {
+		Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new NotFoundExeption("thí recipe is not existed"));
+		if(recipe.getUser().getUserId() != userId) throw new ForbiddenExeption("this is not your own recipe");
+		
+		recipe.setTitle(dto.getTitle());
+		recipe.setPre_time(dto.getPre_time());
+		recipe.setCook_time(dto.getCook_time());
+		recipe.setRecipe_yield(dto.getRecipe_yield());
+		recipe.setRating(dto.getRating());
+		recipe.setIs_favourite(dto.isIs_favourite());
+		recipe.setDescription(dto.getDescription());
+		recipe.setUnit(dto.getUnit());
+		recipe.setSteps(dto.getSteps());
+		recipe.setPrivacyStatus(PrivacyStatus.valueOf(dto.getPrivacyStatus()));
+		
+		//tags
+		ArrayList<TagDTO> tagDTOs = dto.getTags();
+		
+		Iterator<Tag> iterator = recipe.getTags().iterator();
+		ArrayList<String> defautTags = new ArrayList<>();
+		defautTags.add("Breakfast");
+		defautTags.add("Lunch");
+		defautTags.add("Dinner");
+		defautTags.add("Appetizer");
+		defautTags.add("Dessert");
+		defautTags.add("Drink");
+		defautTags.add("Snack");
+		//delete tags
+		while (iterator.hasNext()) {
+			Tag tag = iterator.next();
+			boolean check = true;
+			for(TagDTO tagDTO : tagDTOs) {
+				if(tag.getTagName().equals(tagDTO.getTagName())) {
+					check = false;
+					break;
+				}
+			}
+			if(check) {
+				if(defautTags.contains(tag.getTagName())) {
+					recipe.getTags().remove(tag);
+					iterator = recipe.getTags().iterator();
+				} else {
+					recipe.getTags().remove(tag);
+					iterator = recipe.getTags().iterator();
+				}
+			}
+		}
+		//add tags
+		for(TagDTO tagDTO : tagDTOs) {
+			boolean check = true;
+			for(Tag tag : recipe.getTags()) {
+				if(tagDTO.getTagName().equals(tag.getTagName())) {
+					check = false;
+					break;
+				}
+			}
+			if(check) {
+				if(defautTags.contains(tagDTO.getTagName())) {
+					Tag newTag = tagService.getByTagName(tagDTO.getTagName());
+					recipe.getTags().add(newTag);
+				} else {
+					Tag newTag = null;
+					try {
+					newTag = tagService.getByTagName(tagDTO.getTagName());
+					} catch (Exception e) {
+						newTag = tagService.save(new Tag(tagDTO.getTagName()));
+					}
+					recipe.getTags().add(newTag);
+				}
+			}
+		}
+		
+		//ingredients
+		ArrayList<IngredientDTO> ingredientDTOs = dto.getIngredients();
+		Iterator<Ingredient> iterator2 = recipe.getIngredients().iterator();
+		while(iterator2.hasNext()) {
+			Ingredient ingredient = iterator2.next();
+			recipe.getIngredients().remove(ingredient);
+			ingredientService.deleteById(ingredient.getIngredientId());
+			iterator2 = recipe.getIngredients().iterator();
+		}
+		recipe = recipeRepository.save(recipe);
+		for(IngredientDTO ingredientDTO : ingredientDTOs) {
+			recipe.getIngredients().add(new Ingredient(null, recipe, ingredientDTO.getIngredientName(), ingredientDTO.getAmount()));
+		}
+		
+		//image
+		ArrayList<ImageDTO> imageDTOs = dto.getImages();
+		for(ImageDTO imageDTO : imageDTOs) {
+			
+		}
+		
+		recipeRepository.save(recipe);
 	}
 
 }

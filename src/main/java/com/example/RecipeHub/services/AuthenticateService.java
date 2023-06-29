@@ -15,6 +15,7 @@ import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.LoginType;
 import com.example.RecipeHub.enums.Role;
+import com.example.RecipeHub.errorHandlers.ForbiddenExeption;
 import com.example.RecipeHub.errorHandlers.UnauthorizedExeption;
 import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.repositories.UserRepository;
@@ -48,6 +49,8 @@ public class AuthenticateService {
 		//get user
 		User user = userRepository.findByEmail(loginDTO.getEmail()).get();
 		
+		if(user.isBlocked()) throw new ForbiddenExeption("your account is now block by admin");
+		
 		//generate jwt token
 		String JwtToken = "Bearer " + jwtService.generateToken(user);
 		
@@ -77,7 +80,7 @@ public class AuthenticateService {
 		Optional<User> user = userRepository.findByEmail(email);
 		//if user not exist, create a new
 		if (!user.isPresent()) {
-			User newUser = new User(email, "", Role.USER, responseObject.getName(), Gender.UNKNOW, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), responseObject.getPicture(), LoginType.GOOGLE);
+			User newUser = new User(email, "", Role.USER, responseObject.getName(), Gender.UNKNOW, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), responseObject.getPicture(), LoginType.GOOGLE, false);
 			//User newUser2 = new User(null, email, "", responseObject.getName(), responseObject.getPicture(), responseObject.getBirthDay(), Role.USER, Gender.MALE, true, null, null, null);
 			userRepository.save(newUser);
 			emailRes[0] = email;

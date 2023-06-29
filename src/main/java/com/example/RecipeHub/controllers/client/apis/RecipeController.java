@@ -6,9 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,19 +46,45 @@ public class RecipeController {
 
 	@PostMapping("user/recipe")
 	public ResponseEntity<String> addNewRecipe(@RequestParam(required = false) MultipartFile[] files,
-			@RequestPart("data") RecipeDTO dto, @AuthenticationPrincipal User user, HttpServletRequest httpServletRequest) {
+			@RequestPart("data") RecipeDTO dto, @AuthenticationPrincipal User user,
+			HttpServletRequest httpServletRequest) {
 		dto.setRecipe_id(null);
 		dto.setUserId(user.getUserId());
 		recipeService.addNewRecipe(dto, files, user.getUserId(), httpServletRequest);
 		return ResponseEntity.ok("ok");
 	}
 
+	@PutMapping("user/recipe/{recipe_id}")
+	public ResponseEntity<String> editRecipe(@RequestBody RecipeDTO dto, @AuthenticationPrincipal User user, @PathVariable("recipe_id") Long recipeId) {
+		recipeService.editRecipe(dto, recipeId, user.getUserId());
+		return ResponseEntity.ok("Recipe have been editted");
+	}
+
 	@GetMapping("user/recipes")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesForUser(@AuthenticationPrincipal User user) {
-		if (user == null)
-			throw new UnauthorizedExeption("");
 		ArrayList<RecipeDTO> recipeDtos = recipeService.getAllRecipesByUser(user);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+	}
+
+	@GetMapping("user/recipe/{recipe_id}")
+	public ResponseEntity<RecipeDTO> getOneRecipeByUser(@AuthenticationPrincipal User user,
+			@PathVariable("recipe_id") Long recipeId) {
+		RecipeDTO recipeDtos = recipeService.getRecipeDTOById(recipeId);
+		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("global/recipe/{recipe_id}")
+	public ResponseEntity<RecipeDTO> getOneRecipeGlobal(@AuthenticationPrincipal User user,
+			@PathVariable("recipe_id") Long recipeId) {
+		RecipeDTO recipeDtos = recipeService.getRecipeDTOById(recipeId);
+		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+	}
+
+	@DeleteMapping("user/recipe/{recipe_id}")
+	public ResponseEntity<String> deleteOneRecipeByUser(@AuthenticationPrincipal User user,
+			@PathVariable("recipe_id") Long recipeId) {
+		recipeService.deleteOneUserRecipeById(recipeId, user.getUserId());
+		return new ResponseEntity<>("deleted recipe have id " + recipeId + " successfully", HttpStatus.OK);
 	}
 
 	@GetMapping("global/recipes")
@@ -64,7 +92,8 @@ public class RecipeController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "2") int size) {
 
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(new FIlterDTO(null, null, null, null, null, null, PrivacyStatus.PUBLIC.name()), page, size, null);
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(
+				new FIlterDTO(null, null, null, null, null, null, PrivacyStatus.PUBLIC.name()), page, size, null);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 
@@ -76,7 +105,7 @@ public class RecipeController {
 		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, null);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
-	
+
 //	@PostMapping("global/recipes/filter/test")
 //	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilterTest(@RequestBody FIlterDTO fIlterDTO,
 //			@RequestParam(value = "page", defaultValue = "0") int page,

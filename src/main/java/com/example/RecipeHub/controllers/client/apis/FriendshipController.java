@@ -57,7 +57,7 @@ public class FriendshipController {
 			throw new UnauthorizedExeption("");
 		User receiver = userService.getUserById(receiver_id);
 		if(receiver.getUserId() == user.getUserId()) throw new BadRequestExeption("you can not request to yourself");
-		FriendshipRequest friendshipRequest = new FriendshipRequest(user, receiver, Friendship_status.WAITING);
+		FriendshipRequest friendshipRequest = new FriendshipRequest(user, receiver, Friendship_status.PENDING);
 		friendshipRequestService.save(friendshipRequest);
 		return new ResponseEntity<String>("you have send friend's request to " + receiver.getFullName(),
 				HttpStatus.OK);
@@ -72,7 +72,7 @@ public class FriendshipController {
 		if (friendshipRequest.getStatus() == Friendship_status.ACCEPTED
 				|| friendshipRequest.getStatus() == Friendship_status.REJECTED)
 			throw new BadRequestExeption("");
-		else if (friendshipRequest.getStatus() == Friendship_status.WAITING) {
+		else if (friendshipRequest.getStatus() == Friendship_status.PENDING) {
 			friendshipRequest.setStatus(Friendship_status.ACCEPTED);
 			friendService.addFriend(user.getUserId(), friendshipRequest.getSender().getUserId());
 			friendshipRequestService.save(friendshipRequest);

@@ -11,6 +11,8 @@ import com.example.RecipeHub.errorHandlers.NotFoundExeption;
 import com.example.RecipeHub.mappers.TagMapper;
 import com.example.RecipeHub.repositories.TagRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class TagService {
 	private final TagRepository tagRepository;
@@ -43,5 +45,17 @@ public class TagService {
 			if(!defautTags.contains(tag.getTagName())) dtos.add(TagMapper.INSTANCE.tagToTagDto(tag));
 		}
 		return dtos;
+	}
+
+	public Tag save(Tag tag) {
+		return tagRepository.save(tag);
+	}
+
+	public Tag getByTagName(String tagName) {
+		return tagRepository.findByTagName(tagName).orElseThrow(() -> new NotFoundExeption("Tag is not existed"));
+	}
+
+	public void deleteTagById(Long tagId) {
+		tagRepository.deleteById(tagId);
 	}
 }

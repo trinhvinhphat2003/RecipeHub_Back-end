@@ -89,13 +89,13 @@ public class ApplicationConfig {
 				
 				// create user
 				userRepository.save(new User("admin@gmail.com", getPasswordEncoder().encode("123456"), Role.ADMIN,
-						"admin", Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC));
+						"admin", Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC, false));
 				userRepository.save(new User("user@gmail.com", getPasswordEncoder().encode("123456"), Role.USER, "user",
-						Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC));
+						Gender.MALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC, false));
 				userRepository.save(new User("user1@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
-						"user1", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC));
+						"user1", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC, false));
 				userRepository.save(new User("user2@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
-						"user2", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC));
+						"user2", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC, false));
 
 				// create friend request
 //				friendshipRepository.save(new FriendshipRequest(userRepository.findById(3l).get(),

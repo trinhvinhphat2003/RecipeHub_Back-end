@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,5 +38,12 @@ public class RecipeAdminController {
 			@RequestParam(value = "direction", defaultValue = "desc", required = false) String direction) {
 		RecipesPaginationResponse response = recipeService.getRecipesWithPaginationAndFilter(query, page, size, sort, direction);
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("admin/recipe/{recipe_id}")
+	public ResponseEntity<String> deleteOneRecipeByUser(@AuthenticationPrincipal User user,
+			@PathVariable("recipe_id") Long recipeId) {
+		recipeService.deleteOneRecipeById(recipeId);
+		return new ResponseEntity<>("deleted recipe have id " + recipeId + " successfully", HttpStatus.OK);
 	}
 }

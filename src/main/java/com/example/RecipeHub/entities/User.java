@@ -66,6 +66,9 @@ public class User implements UserDetails {
 
 	@Column(name = "enable")
 	private boolean enable;
+	
+	@Column(name = "blocked")
+	private boolean blocked;
 
 	public boolean isEnable() {
 		return enable;
@@ -84,8 +87,28 @@ public class User implements UserDetails {
 
 	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<FriendshipRequest> friendshipRequests = new ArrayList<>();
+	
+	public User(Long userId, String email, String password, String fullName, String profileImage, Date birthday,
+			Role role, Gender gender, LoginType loginType, boolean enable, boolean blocked, List<User> friends,
+			List<Recipe> recipes, List<FriendshipRequest> friendshipRequests) {
+		super();
+		this.userId = userId;
+		this.email = email;
+		this.password = password;
+		this.fullName = fullName;
+		this.profileImage = profileImage;
+		this.birthday = birthday;
+		this.role = role;
+		this.gender = gender;
+		this.loginType = loginType;
+		this.enable = enable;
+		this.blocked = blocked;
+		this.friends = friends;
+		this.recipes = recipes;
+		this.friendshipRequests = friendshipRequests;
+	}
 
-	public User(String email, String password, Role role, String fullName, Gender gender, boolean enable, Date birthday, String profileImage, LoginType loginType) {
+	public User(String email, String password, Role role, String fullName, Gender gender, boolean enable, Date birthday, String profileImage, LoginType loginType, boolean blocked) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -96,6 +119,7 @@ public class User implements UserDetails {
 		this.birthday = birthday;
 		this.profileImage = profileImage;
 		this.loginType = loginType;
+		this.blocked = blocked;
 	}
 
 	@Override
@@ -236,26 +260,13 @@ public class User implements UserDetails {
 		this.loginType = loginType;
 	}
 
-	public User(Long userId, String email, String password, String fullName, String profileImage, Date birthday,
-			Role role, Gender gender, LoginType loginType, boolean enable, List<User> friends, List<Recipe> recipes,
-			List<FriendshipRequest> friendshipRequests) {
-		super();
-		this.userId = userId;
-		this.email = email;
-		this.password = password;
-		this.fullName = fullName;
-		this.profileImage = profileImage;
-		this.birthday = birthday;
-		this.role = role;
-		this.gender = gender;
-		this.loginType = loginType;
-		this.enable = enable;
-		this.friends = friends;
-		this.recipes = recipes;
-		this.friendshipRequests = friendshipRequests;
+	public boolean isBlocked() {
+		return blocked;
 	}
 
-	
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+	}	
 
 	//
 

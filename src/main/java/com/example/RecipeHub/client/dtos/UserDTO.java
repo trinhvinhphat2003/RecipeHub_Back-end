@@ -22,10 +22,11 @@ public class UserDTO {
 	private String role;
 	private LoginType loginType;
 	private String email;
+	private boolean isBlocked;
 	
 	
 	public UserDTO(Long userId, String fullName, String profileImage, Long birthday, String gender, String role,
-			LoginType loginType, String email) {
+			LoginType loginType, String email, boolean isBlocked) {
 		super();
 		this.userId = userId;
 		this.fullName = fullName;
@@ -35,6 +36,13 @@ public class UserDTO {
 		this.role = role;
 		this.loginType = loginType;
 		this.email = email;
+		this.isBlocked = isBlocked;
+	}
+	public boolean isBlocked() {
+		return isBlocked;
+	}
+	public void setBlocked(boolean isBlocked) {
+		this.isBlocked = isBlocked;
 	}
 	public String getEmail() {
 		return email;
