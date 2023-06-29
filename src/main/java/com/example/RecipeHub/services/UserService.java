@@ -2,12 +2,15 @@ package com.example.RecipeHub.services;
 
 import java.util.ArrayList;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.example.RecipeHub.client.dtos.UserDTO;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.errorHandlers.NotFoundExeption;
+import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.repositories.UserRepository;
+import com.example.RecipeHub.utils.PaginationUtil;
 
 @Service
 public class UserService {
@@ -40,12 +43,15 @@ public class UserService {
 	}
 
 	public int filterUser(String sort, String direction, String query) {
-		// TODO Auto-generated method stub
-		return 0;
+		return userRepository.filterUser(query).size();
 	}
 
 	public ArrayList<UserDTO> filterUserAndPagination(int page, int size, String sort, String direction, String query) {
-		// TODO Auto-generated method stub
-		return null;
+		Page<User> users = userRepository.filterUserAndPagination(query, sort, direction, PaginationUtil.generatePageable(page, size, sort, direction));
+		ArrayList<UserDTO> result = new ArrayList<>();
+		for(User user : users) {
+			result.add(UserMapper.INSTANCE.userToUserDTO(user));
+		}
+		return result;
 	}
 }

@@ -32,7 +32,7 @@ public class UserAdminController {
 	@GetMapping("/users")
 	public ResponseEntity<UsersPaginationResponse> getAllRecipe(@AuthenticationPrincipal User user,
 			@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-			@RequestParam(value = "size", defaultValue = "2", required = false) int size,
+			@RequestParam(value = "size", defaultValue = "20", required = false) int size,
 			@RequestParam(value = "query", defaultValue = "", required = false) String query,
 			@RequestParam(value = "sort", defaultValue = "user_id", required = false) String sort,
 			@RequestParam(value = "direction", defaultValue = "desc", required = false) String direction) { 
