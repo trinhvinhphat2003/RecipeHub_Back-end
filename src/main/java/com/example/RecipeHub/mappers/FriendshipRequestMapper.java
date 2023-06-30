@@ -6,8 +6,8 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import com.example.RecipeHub.dtos.FriendshipRequestDTO;
-import com.example.RecipeHub.dtos.UserDTO;
+import com.example.RecipeHub.client.dtos.FriendshipRequestDTO;
+import com.example.RecipeHub.client.dtos.UserDTO;
 import com.example.RecipeHub.entities.FriendshipRequest;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Friendship_status;

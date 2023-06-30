@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RecipeHub.dtos.FriendshipRequestDTO;
-import com.example.RecipeHub.dtos.UserDTO;
+import com.example.RecipeHub.client.dtos.FriendshipRequestDTO;
+import com.example.RecipeHub.client.dtos.UserDTO;
 import com.example.RecipeHub.entities.FriendshipRequest;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Friendship_status;
@@ -28,15 +28,13 @@ import com.example.RecipeHub.services.UserService;
 @RequestMapping("/api/v1/")
 public class FriendshipController {
 
-	private final FriendshipRepository friendshipRepository;
 	private final UserService userService;
 	private final FriendService friendService;
 	private final FriendshipRequestService friendshipRequestService;
 
-	public FriendshipController(FriendshipRepository friendshipRepository, UserService userService,
+	public FriendshipController(UserService userService,
 			FriendService friendService, FriendshipRequestService friendshipRequestService) {
 		super();
-		this.friendshipRepository = friendshipRepository;
 		this.userService = userService;
 		this.friendService = friendService;
 		this.friendshipRequestService = friendshipRequestService;
@@ -57,14 +55,14 @@ public class FriendshipController {
 			throw new UnauthorizedExeption("");
 		User receiver = userService.getUserById(receiver_id);
 		if(receiver.getUserId() == user.getUserId()) throw new BadRequestExeption("you can not request to yourself");
-		FriendshipRequest friendshipRequest = new FriendshipRequest(user, receiver, Friendship_status.WAITING);
+		FriendshipRequest friendshipRequest = new FriendshipRequest(user, receiver, Friendship_status.PENDING);
 		friendshipRequestService.save(friendshipRequest);
 		return new ResponseEntity<String>("you have send friend's request to " + receiver.getFullName(),
 				HttpStatus.OK);
 	}
 
 	@PostMapping("user/accept-friend/{request_id}")
-	public ResponseEntity<String> accptRequest(@PathVariable("request_id") Long request_id,
+	public ResponseEntity<String> acceptRequest(@PathVariable("request_id") Long request_id,
 			@AuthenticationPrincipal User user) {
 		if (user == null)
 			throw new UnauthorizedExeption("");
@@ -72,13 +70,23 @@ public class FriendshipController {
 		if (friendshipRequest.getStatus() == Friendship_status.ACCEPTED
 				|| friendshipRequest.getStatus() == Friendship_status.REJECTED)
 			throw new BadRequestExeption("");
-		else if (friendshipRequest.getStatus() == Friendship_status.WAITING) {
+		else if (friendshipRequest.getStatus() == Friendship_status.PENDING) {
 			friendshipRequest.setStatus(Friendship_status.ACCEPTED);
+			friendshipRequestService.deleteById(friendshipRequest.getFriendshipRequestId());
 			friendService.addFriend(user.getUserId(), friendshipRequest.getSender().getUserId());
 			friendshipRequestService.save(friendshipRequest);
 		}
 		return new ResponseEntity<String>("you become " + friendshipRequest.getSender().getFullName() + "'s friend",
 				HttpStatus.OK);
+	}
+	
+	@PostMapping("user/reject-friend/{request_id}")
+	public ResponseEntity<String> rejectRequest(@PathVariable("request_id") Long request_id,
+			@AuthenticationPrincipal User user) {
+		FriendshipRequest friendshipRequest = friendshipRequestService.getFriendshipRequestById(request_id);
+		String nameSender = friendshipRequest.getSender().getFullName();
+		friendshipRequestService.deleteById(request_id);
+		return ResponseEntity.ok("you have rejected friend request from " + nameSender);
 	}
 
 	@GetMapping("user/friend/requests")
@@ -102,6 +110,6 @@ public class FriendshipController {
 		friend.getFriends().remove(user);
 		userService.save(user);
 		userService.save(friend);
-		return new ResponseEntity<String>("", HttpStatus.OK);
+		return new ResponseEntity<String>("you have been unfriend with " + friend.getFullName(), HttpStatus.OK);
 	}
 }

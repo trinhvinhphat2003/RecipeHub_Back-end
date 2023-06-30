@@ -1,4 +1,4 @@
-package com.example.RecipeHub.dtos;
+package com.example.RecipeHub.client.dtos;
 
 import com.example.RecipeHub.entities.User;
 

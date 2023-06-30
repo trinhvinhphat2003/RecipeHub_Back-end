@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.RecipeHub.enums.Gender;
+import com.example.RecipeHub.enums.LoginType;
 import com.example.RecipeHub.enums.Role;
 
 import jakarta.persistence.CascadeType;
@@ -58,9 +59,16 @@ public class User implements UserDetails {
 
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
+	
+	@Column(name = "login_type")
+	@Enumerated(EnumType.STRING)
+	private LoginType loginType;
 
 	@Column(name = "enable")
 	private boolean enable;
+	
+	@Column(name = "blocked")
+	private boolean blocked;
 
 	public boolean isEnable() {
 		return enable;
@@ -70,17 +78,37 @@ public class User implements UserDetails {
 		this.enable = enable;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
 	private List<User> friends = new ArrayList<>();
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Recipe> recipes = new ArrayList<>();
 
 	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<FriendshipRequest> friendshipRequests = new ArrayList<>();
+	
+	public User(Long userId, String email, String password, String fullName, String profileImage, Date birthday,
+			Role role, Gender gender, LoginType loginType, boolean enable, boolean blocked, List<User> friends,
+			List<Recipe> recipes, List<FriendshipRequest> friendshipRequests) {
+		super();
+		this.userId = userId;
+		this.email = email;
+		this.password = password;
+		this.fullName = fullName;
+		this.profileImage = profileImage;
+		this.birthday = birthday;
+		this.role = role;
+		this.gender = gender;
+		this.loginType = loginType;
+		this.enable = enable;
+		this.blocked = blocked;
+		this.friends = friends;
+		this.recipes = recipes;
+		this.friendshipRequests = friendshipRequests;
+	}
 
-	public User(String email, String password, Role role, String fullName, Gender gender, boolean enable) {
+	public User(String email, String password, Role role, String fullName, Gender gender, boolean enable, Date birthday, String profileImage, LoginType loginType, boolean blocked) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -88,6 +116,10 @@ public class User implements UserDetails {
 		this.fullName = fullName;
 		this.gender = gender;
 		this.enable = enable;
+		this.birthday = birthday;
+		this.profileImage = profileImage;
+		this.loginType = loginType;
+		this.blocked = blocked;
 	}
 
 	@Override
@@ -220,23 +252,21 @@ public class User implements UserDetails {
 		super();
 	}
 
-	public User(Long userId, String email, String password, String fullName, String profileImage, Date birthday,
-			Role role, Gender gender, boolean enable, List<User> friends, List<Recipe> recipes,
-			List<FriendshipRequest> friendshipRequests) {
-		super();
-		this.userId = userId;
-		this.email = email;
-		this.password = password;
-		this.fullName = fullName;
-		this.profileImage = profileImage;
-		this.birthday = birthday;
-		this.role = role;
-		this.gender = gender;
-		this.enable = enable;
-		this.friends = friends;
-		this.recipes = recipes;
-		this.friendshipRequests = friendshipRequests;
+	public LoginType getLoginType() {
+		return loginType;
 	}
+
+	public void setLoginType(LoginType loginType) {
+		this.loginType = loginType;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+	}	
 
 	//
 

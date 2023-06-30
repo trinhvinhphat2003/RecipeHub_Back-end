@@ -76,26 +76,22 @@ public class Recipe {
 	private PrivacyStatus privacyStatus;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
-	private List<Recipe_HAVE_Ingredient> ingredients = new ArrayList<>();
+	private List<Ingredient> ingredients = new ArrayList<>();
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "recipe_HAVE_tag", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<Tag> tags = new ArrayList<>();
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "recipe_HAVE_image",
-			joinColumns = @JoinColumn(name = "recipe_id"),
-			inverseJoinColumns = @JoinColumn(name = "image_id")
-			)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
 	private List<Image> images = new ArrayList<>();
-
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
+	private List<Meal_planner> meal_planners = new ArrayList<>();
 
 	public Recipe(Long recipe_id, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
 			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
-			User user, PrivacyStatus privacyStatus, List<Recipe_HAVE_Ingredient> ingredients, List<Tag> tags,
-			List<Image> images) {
+			User user, PrivacyStatus privacyStatus, List<Ingredient> ingredients, List<Tag> tags, List<Image> images,
+			List<Meal_planner> meal_planners) {
 		super();
 		this.recipe_id = recipe_id;
 		this.title = title;
@@ -113,6 +109,23 @@ public class Recipe {
 		this.ingredients = ingredients;
 		this.tags = tags;
 		this.images = images;
+		this.meal_planners = meal_planners;
+	}
+
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
+
+	public List<Meal_planner> getMeal_planners() {
+		return meal_planners;
+	}
+
+	public void setMeal_planners(List<Meal_planner> meal_planners) {
+		this.meal_planners = meal_planners;
 	}
 
 	public PrivacyStatus getPrivacyStatus() {
@@ -227,39 +240,11 @@ public class Recipe {
 		this.user = user;
 	}
 
-	public List<Recipe_HAVE_Ingredient> getIngredients() {
-		return ingredients;
-	}
-
-	public void setIngredients(List<Recipe_HAVE_Ingredient> ingredients) {
-		this.ingredients = ingredients;
-	}
-
 	public List<Tag> getTags() {
 		return tags;
 	}
 
 	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
-
-	public Recipe(Long recipe_id, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
-			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
-			User user, List<Recipe_HAVE_Ingredient> ingredients, List<Tag> tags) {
-		super();
-		this.recipe_id = recipe_id;
-		this.title = title;
-		this.pre_time = pre_time;
-		this.cook_time = cook_time;
-		this.recipe_yield = recipe_yield;
-		this.rating = rating;
-		this.is_favourite = is_favourite;
-		this.description = description;
-		this.unit = unit;
-		this.steps = steps;
-		this.nutrition = nutrition;
-		this.user = user;
-		this.ingredients = ingredients;
 		this.tags = tags;
 	}
 

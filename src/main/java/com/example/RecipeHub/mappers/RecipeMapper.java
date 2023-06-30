@@ -9,14 +9,13 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import com.example.RecipeHub.dtos.ImageDTO;
-import com.example.RecipeHub.dtos.IngredientDTO;
-import com.example.RecipeHub.dtos.RecipeDTO;
-import com.example.RecipeHub.dtos.TagDTO;
+import com.example.RecipeHub.client.dtos.ImageDTO;
+import com.example.RecipeHub.client.dtos.IngredientDTO;
+import com.example.RecipeHub.client.dtos.RecipeDTO;
+import com.example.RecipeHub.client.dtos.TagDTO;
 import com.example.RecipeHub.entities.Image;
 import com.example.RecipeHub.entities.Ingredient;
 import com.example.RecipeHub.entities.Recipe;
-import com.example.RecipeHub.entities.Recipe_HAVE_Ingredient;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.PrivacyStatus;
@@ -35,11 +34,10 @@ public interface RecipeMapper {
 	}
 
 	@Named("mapIngredients")
-	static ArrayList<IngredientDTO> mapIngredients(List<Recipe_HAVE_Ingredient> ingredients) {
+	static ArrayList<IngredientDTO> mapIngredients(List<Ingredient> ingredients) {
 		ArrayList<IngredientDTO> ingredientDTOs = new ArrayList<>();
-		for (Recipe_HAVE_Ingredient ingredient : ingredients)
-			ingredientDTOs.add(IngregientMapper.INSTANCE.ingredientToIngredientDto(ingredient.getIngredient(),
-					ingredient.getAmount()));
+		for (Ingredient ingredient : ingredients)
+			ingredientDTOs.add(IngregientMapper.INSTANCE.ingredientToIngredientDto(ingredient));
 		return ingredientDTOs;
 	}
 
@@ -73,12 +71,12 @@ public interface RecipeMapper {
 	
 	@Named("mapUserFromDto")
 	static User mapUserFromDto(Long userId) {
-		return new User(userId, null, null, null, null, null, null, null, true, null, null, null);
+		return new User(userId, null, null, null, null, null, null, null, null, true, false,null, null, null);
 	}
 	
 	@Named("mapIngredientsFromDto")
-	static ArrayList<Recipe_HAVE_Ingredient> mapIngredientsFromDto(ArrayList<IngredientDTO> ingredientDtos) {
-		ArrayList<Recipe_HAVE_Ingredient> ingredients = new ArrayList<>();
+	static ArrayList<Ingredient> mapIngredientsFromDto(ArrayList<IngredientDTO> ingredientDtos) {
+		ArrayList<Ingredient> ingredients = new ArrayList<>();
 		return ingredients;
 	}
 	

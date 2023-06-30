@@ -28,4 +28,8 @@ public class ErrorHandler {
 	public ResponseEntity<String> accessDenied(ForbiddenExeption ex){
 		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.FORBIDDEN);
 	}
+	@ExceptionHandler(InternalExeption.class)
+	public ResponseEntity<String> accessDenied(InternalExeption ex){
+		return new ResponseEntity<>(ex.getMessage() ,HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

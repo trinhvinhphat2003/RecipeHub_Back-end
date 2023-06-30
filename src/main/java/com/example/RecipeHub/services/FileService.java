@@ -2,18 +2,30 @@ package com.example.RecipeHub.services;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.example.RecipeHub.dtos.IngredientDTO;
-import com.example.RecipeHub.dtos.RecipeDTO;
+import com.example.RecipeHub.client.dtos.IngredientDTO;
+import com.example.RecipeHub.client.dtos.RecipeDTO;
+import com.example.RecipeHub.entities.Image;
+import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.User;
+import com.example.RecipeHub.errorHandlers.BadRequestExeption;
 import com.example.RecipeHub.errorHandlers.ForbiddenExeption;
+import com.example.RecipeHub.errorHandlers.InternalExeption;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -64,6 +76,7 @@ public class FileService {
 			ArrayList<IngredientDTO> ingredientDTOs = recipe.getIngredients();
 			for (IngredientDTO ingredientDTO : ingredientDTOs)
 				ingredients.append(ingredientDTO.getIngredientName() + ": " + ingredientDTO.getAmount() + ", ");
+			if(ingredientDTOs.size() == 0)ingredients.append(", ");
 			String ingredientString = ingredients.toString();
 			ingredientString = ingredientString.substring(0, ingredientString.length() - 2);
 			row.createCell(4).setCellValue(ingredientString);
@@ -92,7 +105,7 @@ public class FileService {
 			throws IOException {
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for (Long recipeId : recipeIds) {
-			RecipeDTO recipeDto = recipeService.getRecipeById(recipeId);
+			RecipeDTO recipeDto = recipeService.getRecipeDTOById(recipeId);
 			if (recipeDto.getUserId() != user.getUserId())
 				throw new ForbiddenExeption("you are not owner of this recipe");
 			recipeDTOs.add(recipeDto);
@@ -154,4 +167,5 @@ public class FileService {
 		workbook.close();
 		outputStream.close();
 	}
+		
 }

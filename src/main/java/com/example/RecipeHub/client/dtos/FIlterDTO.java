@@ -1,4 +1,4 @@
-package com.example.RecipeHub.dtos;
+package com.example.RecipeHub.client.dtos;
 
 import java.util.ArrayList;
 
@@ -7,10 +7,18 @@ import com.example.RecipeHub.entities.Ingredient;
 public class FIlterDTO {
 	private ArrayList<String> tags = new ArrayList<>();
 	private ArrayList<String> ingredients;
-	private boolean favorite;
+	private Boolean favorite;
 	private String sortBy;
+	private String direction;
 	private String title;
 	private String privacyStatus;
+	
+	public String getDirection() {
+		return direction;
+	}
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
 	public String getPrivacyStatus() {
 		return privacyStatus;
 	}
@@ -35,10 +43,10 @@ public class FIlterDTO {
 	public void setIngredients(ArrayList<String> ingredients) {
 		this.ingredients = ingredients;
 	}
-	public boolean isFavorite() {
+	public Boolean isFavorite() {
 		return favorite;
 	}
-	public void setFavorite(boolean favorite) {
+	public void setFavorite(Boolean favorite) {
 		this.favorite = favorite;
 	}
 	public String getSortBy() {
@@ -48,19 +56,19 @@ public class FIlterDTO {
 		this.sortBy = sortBy;
 	}
 	
-
-	public FIlterDTO(ArrayList<String> tags, ArrayList<String> ingredients, boolean favorite, String sortBy,
-			String title, String privacyStatus) {
+	public FIlterDTO() {
+		super();
+	}
+	public FIlterDTO(ArrayList<String> tags, ArrayList<String> ingredients, Boolean favorite, String sortBy,
+			String direction, String title, String privacyStatus) {
 		super();
 		this.tags = tags;
 		this.ingredients = ingredients;
 		this.favorite = favorite;
 		this.sortBy = sortBy;
+		this.direction = direction;
 		this.title = title;
 		this.privacyStatus = privacyStatus;
-	}
-	public FIlterDTO() {
-		super();
 	}
 	
 	
