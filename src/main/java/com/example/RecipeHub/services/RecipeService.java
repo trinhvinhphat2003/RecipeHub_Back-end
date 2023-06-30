@@ -21,6 +21,7 @@ import com.example.RecipeHub.client.dtos.ImageDTO;
 import com.example.RecipeHub.client.dtos.IngredientDTO;
 import com.example.RecipeHub.client.dtos.RecipeDTO;
 import com.example.RecipeHub.client.dtos.TagDTO;
+import com.example.RecipeHub.entities.Image;
 import com.example.RecipeHub.entities.Ingredient;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.Tag;
@@ -43,13 +44,15 @@ public class RecipeService {
 	private final TagService tagService;
 	private final RecipeCustomRepository recipeCustomRepository;
 	private final IngredientService ingredientService;
+	private final ImageService imageService;
 
-	public RecipeService(RecipeRepository recipeRepository, TagService tagService, RecipeCustomRepository recipeCustomRepository, IngredientService ingredientService) {
+	public RecipeService(RecipeRepository recipeRepository, TagService tagService, RecipeCustomRepository recipeCustomRepository, IngredientService ingredientService, ImageService imageService) {
 		super();
 		this.recipeRepository = recipeRepository;
 		this.tagService = tagService;
 		this.recipeCustomRepository = recipeCustomRepository;
-		this.ingredientService = ingredientService;;
+		this.ingredientService = ingredientService;
+		this.imageService = imageService;;
 	}
 
 	public Pageable generatePageable(Integer page, Integer size, String sortBy, String direction) {
@@ -177,7 +180,7 @@ public class RecipeService {
 		recipeRepository.delete(recipe);
 	}
 
-	public void editRecipe(RecipeDTO dto, Long recipeId, Long userId) {
+	public void editRecipe(RecipeDTO dto, Long recipeId, Long userId, MultipartFile[] files, HttpServletRequest httpServletRequest) {
 		Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new NotFoundExeption("thí recipe is not existed"));
 		if(recipe.getUser().getUserId() != userId) throw new ForbiddenExeption("this is not your own recipe");
 		
@@ -264,9 +267,27 @@ public class RecipeService {
 		}
 		
 		//image
+		//delete image
 		ArrayList<ImageDTO> imageDTOs = dto.getImages();
-		for(ImageDTO imageDTO : imageDTOs) {
-			
+		Iterator<Image> imageIterator = recipe.getImages().iterator();
+		while(imageIterator.hasNext()) {
+			Image image = imageIterator.next();
+			boolean check = true;
+			for(ImageDTO imageDTO : imageDTOs) {
+				if(image.getImageId() == imageDTO.getImageId()) {
+					check = false;
+					break;
+				}
+			}
+			if(check) {
+				recipe.getImages().remove(image);
+				imageIterator = recipe.getImages().iterator();
+				imageService.deleteById(image.getImageId());
+			}
+		}
+		//add image
+		if(files != null) {
+			recipe = FileUtil.saveRecipeImage(files, recipe, recipeImagePath, httpServletRequest);
 		}
 		
 		recipeRepository.save(recipe);

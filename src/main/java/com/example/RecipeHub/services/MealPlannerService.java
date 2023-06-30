@@ -2,6 +2,7 @@ package com.example.RecipeHub.services;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.enums.MealType;
 import com.example.RecipeHub.errorHandlers.ForbiddenExeption;
 import com.example.RecipeHub.errorHandlers.NotFoundExeption;
+import com.example.RecipeHub.mappers.RecipeMapper;
 import com.example.RecipeHub.repositories.MealPlannerRepository;
 import com.example.RecipeHub.utils.DateTimeUtil;
 
@@ -28,16 +30,22 @@ public class MealPlannerService {
 	}
 
 	public ArrayList<MealPlannerResponse> getMealPlannerFromTo(Long fromLong, Long toLong) {
-		Date fromDate = DateTimeUtil.milisecondToDate(fromLong);
-		Date toDate = DateTimeUtil.milisecondToDate(toLong);
+		List<Meal_planner> meal_Planners = mealPlannerRepository.findByDateFromTo(DateTimeUtil.milisecondToDateString(fromLong), DateTimeUtil.milisecondToDateString(toLong));
 		ArrayList<MealPlannerResponse> result = new ArrayList<>();
-		return null;
+		for (Meal_planner meal_Planner : meal_Planners) {
+			result.add(new MealPlannerResponse(meal_Planner.getMealPlannerId(), RecipeMapper.INSTANCE.recipeToRecipeDto(meal_Planner.getRecipe()), meal_Planner.getMealType().name(), DateTimeUtil.dateToMilisecond(meal_Planner.getDate())));
+		}
+		return result;
 	}
 
-	public MealPlannerResponse getMealPlannerByDate(Long dateLong) {
-		Date dateDate = DateTimeUtil.milisecondToDate(dateLong);
-		Meal_planner meal_Planner = mealPlannerRepository.findByDate(dateDate).orElseThrow(() -> new NotFoundExeption("no meal planner in this date"));
-		return null;
+	public ArrayList<MealPlannerResponse> getMealPlannerByDate(Long dateLong) {
+		String dateDate = DateTimeUtil.milisecondToDateString(dateLong);
+		List<Meal_planner> meal_Planners = mealPlannerRepository.findByDate(dateDate);
+		ArrayList<MealPlannerResponse> result = new ArrayList<>();
+		for (Meal_planner meal_Planner : meal_Planners) {
+			result.add(new MealPlannerResponse(meal_Planner.getMealPlannerId(), RecipeMapper.INSTANCE.recipeToRecipeDto(meal_Planner.getRecipe()), meal_Planner.getMealType().name(), DateTimeUtil.dateToMilisecond(meal_Planner.getDate())));
+		}
+		return result;
 	}
 
 	public void createNewMealPlanner(MealPlannerRequest request, Long userId) {
@@ -49,5 +57,13 @@ public class MealPlannerService {
 		MealType mealType = request.getMealType();
 		
 		mealPlannerRepository.save(new Meal_planner(null, recipe, recipe.getUser(), mealType, date));
+	}
+
+	public Meal_planner getOneById(Long mealPlannerId) {
+		return mealPlannerRepository.findById(mealPlannerId).orElseThrow(() -> new NotFoundExeption("this planner is not existed"));
+	}
+
+	public void deleteById(Long mealPlannerId) {
+		mealPlannerRepository.deleteById(mealPlannerId);
 	}
 }

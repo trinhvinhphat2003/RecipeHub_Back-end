@@ -55,8 +55,9 @@ public class RecipeController {
 	}
 
 	@PutMapping("user/recipe/{recipe_id}")
-	public ResponseEntity<String> editRecipe(@RequestBody RecipeDTO dto, @AuthenticationPrincipal User user, @PathVariable("recipe_id") Long recipeId) {
-		recipeService.editRecipe(dto, recipeId, user.getUserId());
+	public ResponseEntity<String> editRecipe(@RequestParam(required = false) MultipartFile[] files,
+			@RequestPart("data") RecipeDTO dto, @AuthenticationPrincipal User user, @PathVariable("recipe_id") Long recipeId, HttpServletRequest httpServletRequest) {
+		recipeService.editRecipe(dto, recipeId, user.getUserId(), files, httpServletRequest);
 		return ResponseEntity.ok("Recipe have been editted");
 	}
 

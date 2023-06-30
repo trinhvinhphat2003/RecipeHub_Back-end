@@ -18,15 +18,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.RecipeHub.entities.Image;
 import com.example.RecipeHub.entities.Ingredient;
+import com.example.RecipeHub.entities.Meal_planner;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.LoginType;
+import com.example.RecipeHub.enums.MealType;
 import com.example.RecipeHub.enums.PrivacyStatus;
 import com.example.RecipeHub.enums.Role;
 import com.example.RecipeHub.repositories.FriendshipRepository;
 import com.example.RecipeHub.repositories.IngredientRepository;
+import com.example.RecipeHub.repositories.MealPlannerRepository;
 import com.example.RecipeHub.repositories.RecipeCustomRepository;
 import com.example.RecipeHub.repositories.RecipeRepository;
 import com.example.RecipeHub.repositories.TagRepository;
@@ -60,6 +63,9 @@ public class ApplicationConfig {
 
 	@Autowired
 	private RecipeRepository recipeRepository;
+	
+	@Autowired
+	private MealPlannerRepository mealPlannerRepository;
 	
 	@Autowired
 	private RecipeCustomRepository recipeCustomRepository;
@@ -154,6 +160,8 @@ public class ApplicationConfig {
 				
 				recipe = recipeRepository.save(recipe);
 				
+				mealPlannerRepository.save(new Meal_planner(null, recipe, admin, MealType.DINNER, DateTimeUtil.milisecondToDate(System.currentTimeMillis() - (1000*60*60*24*2))));
+				mealPlannerRepository.save(new Meal_planner(null, recipe, admin, MealType.DINNER, DateTimeUtil.milisecondToDate(System.currentTimeMillis())));
 				
 				//2
 				recipeTag = "dinner";
@@ -438,6 +446,9 @@ public class ApplicationConfig {
 				recipe.getImages().add(new Image(null, image1, recipe));
 				
 				recipe = recipeRepository.save(recipe);
+				System.out.println(DateTimeUtil.milisecondToDateString(System.currentTimeMillis()));
+				System.out.println(System.currentTimeMillis());
+				System.out.println(System.currentTimeMillis()-(1000*60*60*24*2));
 
 			}
 		};
