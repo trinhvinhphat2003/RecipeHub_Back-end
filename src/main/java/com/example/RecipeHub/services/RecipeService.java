@@ -177,6 +177,13 @@ public class RecipeService {
 	
 	public void deleteOneRecipeById(Long recipeId) {
 		Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new NotFoundExeption("recipe not found"));
+		Iterator<Image> imageIterator = recipe.getImages().iterator();
+		while(imageIterator.hasNext()) {
+			Image image = imageIterator.next();
+			recipe.getImages().remove(image);
+			FileUtil.deleteImage(recipeImagePath, image.getImageUrl().substring(image.getImageUrl().lastIndexOf('/')).substring(1));
+			imageService.deleteById(image.getImageId());
+		}
 		recipeRepository.delete(recipe);
 	}
 
@@ -282,6 +289,7 @@ public class RecipeService {
 			if(check) {
 				recipe.getImages().remove(image);
 				imageIterator = recipe.getImages().iterator();
+				FileUtil.deleteImage(recipeImagePath, image.getImageUrl().substring(image.getImageUrl().lastIndexOf('/')).substring(1));
 				imageService.deleteById(image.getImageId());
 			}
 		}
