@@ -34,8 +34,10 @@ import com.example.RecipeHub.repositories.RecipeCustomRepository;
 import com.example.RecipeHub.repositories.RecipeRepository;
 import com.example.RecipeHub.utils.FileUtil;
 import com.example.RecipeHub.utils.PaginationUtil;
+import com.example.RecipeHub.utils.TagDefaultConstant;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 
 @Service
 public class RecipeService {
@@ -169,9 +171,19 @@ public class RecipeService {
 		
 	}
 
+	@Transactional
 	public void deleteOneUserRecipeById(Long recipeId, Long userId) {
 		Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new NotFoundExeption("recipe not found"));
 		if(recipe.getUser().getUserId() != userId) throw new ForbiddenExeption("this recipe is not your");
+		Iterator<Image> imageIterator = recipe.getImages().iterator();
+		while(imageIterator.hasNext()) {
+			Image image = imageIterator.next();
+			recipe.getImages().remove(image);
+			FileUtil.deleteImage(recipeImagePath, image.getImageUrl().substring(image.getImageUrl().lastIndexOf('/')).substring(1));
+			imageService.deleteById(image.getImageId());
+			imageIterator = recipe.getImages().iterator();
+		}
+		recipeRepository.deleteTagAndRecipeLinks(recipe.getRecipe_id());
 		recipeRepository.delete(recipe);
 	}
 	
@@ -206,14 +218,7 @@ public class RecipeService {
 		ArrayList<TagDTO> tagDTOs = dto.getTags();
 		
 		Iterator<Tag> iterator = recipe.getTags().iterator();
-		ArrayList<String> defautTags = new ArrayList<>();
-		defautTags.add("Breakfast");
-		defautTags.add("Lunch");
-		defautTags.add("Dinner");
-		defautTags.add("Appetizer");
-		defautTags.add("Dessert");
-		defautTags.add("Drink");
-		defautTags.add("Snack");
+		ArrayList<String> defautTags = TagDefaultConstant.TAGS_DEFAULT;
 		//delete tags
 		while (iterator.hasNext()) {
 			Tag tag = iterator.next();

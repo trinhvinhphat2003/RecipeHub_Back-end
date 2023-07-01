@@ -10,6 +10,7 @@ import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.errorHandlers.NotFoundExeption;
 import com.example.RecipeHub.mappers.TagMapper;
 import com.example.RecipeHub.repositories.TagRepository;
+import com.example.RecipeHub.utils.TagDefaultConstant;
 
 import jakarta.transaction.Transactional;
 
@@ -31,14 +32,7 @@ public class TagService {
 	}
 	
 	public ArrayList<TagDTO> getAllTagsByUserId(Long userId) {
-		ArrayList<String> defautTags = new ArrayList<>();
-		defautTags.add("Breakfast");
-		defautTags.add("Lunch");
-		defautTags.add("Dinner");
-		defautTags.add("Appetizer");
-		defautTags.add("Dessert");
-		defautTags.add("Drink");
-		defautTags.add("Snack");
+		ArrayList<String> defautTags = TagDefaultConstant.TAGS_DEFAULT;
 		List<Tag> tags = tagRepository.findByUserId(userId);
 		ArrayList<TagDTO> dtos = new ArrayList<>();
 		for(Tag tag : tags) {
@@ -57,5 +51,12 @@ public class TagService {
 
 	public void deleteTagById(Long tagId) {
 		tagRepository.deleteById(tagId);
+	}
+
+	@Transactional
+	public void deleteOneTagByIdForUser(Long tagId, Long userId) {
+		Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new NotFoundExeption("tag not found"));
+		tagRepository.deleteTagAndRecipeLinks(tag.getTagId());
+		tagRepository.deleteById(tag.getTagId());
 	}
 }
