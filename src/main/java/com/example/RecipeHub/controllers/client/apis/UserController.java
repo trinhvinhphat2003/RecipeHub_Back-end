@@ -3,6 +3,7 @@ package com.example.RecipeHub.controllers.client.apis;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,9 +33,9 @@ public class UserController {
 		return ResponseEntity.ok("profile is edited successfully");
 	}
 	
-	@GetMapping("/user/profile")
-	public ResponseEntity<UserDTO> getUser(@AuthenticationPrincipal User user) {
-		UserDTO result = UserMapper.INSTANCE.userToUserDTO(userService.getUserById(user.getUserId()));
+	@GetMapping("/global/user/profile/{userId}")
+	public ResponseEntity<UserDTO> getGlobalUser(@AuthenticationPrincipal User user, @PathVariable("userId") Long userId) {
+		UserDTO result = UserMapper.INSTANCE.userToUserDTO(userService.getUserById(userId));
 		return ResponseEntity.ok(result);
 	}
 }
