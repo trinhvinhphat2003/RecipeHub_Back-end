@@ -37,7 +37,7 @@ public class TagController {
 		Iterator<TagDTO> tagDtoIterator = response.iterator();
 		while(tagDtoIterator.hasNext()) {
 			TagDTO tagDTO = tagDtoIterator.next();
-			if(tagsDefault.contains(tagDTO.getTagName())) {
+			if(tagsDefault.contains(tagDTO.getTagName().toLowerCase())) {
 				response.remove(tagDTO);
 				tagDtoIterator = response.iterator();
 			}

@@ -4,5 +4,5 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TagDefaultConstant {
-	public static final ArrayList<String> TAGS_DEFAULT = new ArrayList<>(Arrays.asList("Breakfast", "Lunch", "Dinner", "Appetizer", "Dessert", "Drink", "Snack"));
+	public static final ArrayList<String> TAGS_DEFAULT = new ArrayList<>(Arrays.asList("breakfast", "lunch", "dinner", "appetizer", "dessert", "drink", "snack"));
 }
