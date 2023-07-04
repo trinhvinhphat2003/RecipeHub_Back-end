@@ -286,7 +286,7 @@ public class RecipeService {
 			Image image = imageIterator.next();
 			boolean check = true;
 			for(ImageDTO imageDTO : imageDTOs) {
-				if(image.getImageUrl().equals(imageDTO.getImageUrl())) {
+				if(image.getImageId().equals(imageDTO.getImageId())) {
 					check = false;
 					break;
 				}
