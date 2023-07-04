@@ -31,7 +31,7 @@ public class TagController {
 	}
 
 	@GetMapping("global/tags/{user_id}")
-	public ResponseEntity<ArrayList<TagDTO>> getAllUserTags(@PathVariable Long userId) {
+	public ResponseEntity<ArrayList<TagDTO>> getAllUserTags(@PathVariable("user_id") Long userId) {
 		ArrayList<String> tagsDefault = TagDefaultConstant.TAGS_DEFAULT;
 		ArrayList<TagDTO> response = tagService.getAllTagsByUserId(userId);
 		Iterator<TagDTO> tagDtoIterator = response.iterator();
