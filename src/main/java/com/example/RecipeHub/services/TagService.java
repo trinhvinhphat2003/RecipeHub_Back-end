@@ -28,6 +28,8 @@ public class TagService {
 	}
 
 	public Tag getTagByNameAndUserId(String tagName, Long userId) {
+		ArrayList<String> defaultTags = TagDefaultConstant.TAGS_DEFAULT;
+		if(defaultTags.contains(tagName.toLowerCase())) return tagRepository.findByTagName(tagName.toLowerCase()).orElse(null);
 		return (tagRepository.findOneByUserIdAndName(tagName, userId)).orElse(null);	
 	}
 	

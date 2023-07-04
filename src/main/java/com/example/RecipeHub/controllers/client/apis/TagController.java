@@ -45,10 +45,10 @@ public class TagController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@DeleteMapping("user/tag/{tag_id}") 
-	public ResponseEntity<String> deleteOneTag(@AuthenticationPrincipal User user, @PathVariable("tag_id") Long tagId) {
-		tagService.deleteOneTagByIdForUser(tagId, user.getUserId());
-		return ResponseEntity.ok("this tag have been deleted");
-	}
+//	@DeleteMapping("user/tag/{tag_id}") 
+//	public ResponseEntity<String> deleteOneTag(@AuthenticationPrincipal User user, @PathVariable("tag_id") Long tagId) {
+//		tagService.deleteOneTagByIdForUser(tagId, user.getUserId());
+//		return ResponseEntity.ok("this tag have been deleted");
+//	}
 
 }

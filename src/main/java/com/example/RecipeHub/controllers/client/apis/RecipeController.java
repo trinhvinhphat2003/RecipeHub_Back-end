@@ -30,6 +30,7 @@ import com.example.RecipeHub.enums.PrivacyStatus;
 import com.example.RecipeHub.errorHandlers.UnauthorizedExeption;
 import com.example.RecipeHub.mappers.RecipeMapper;
 import com.example.RecipeHub.services.RecipeService;
+import com.example.RecipeHub.services.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -38,10 +39,12 @@ import jakarta.servlet.http.HttpServletRequest;
 public class RecipeController {
 
 	private final RecipeService recipeService;
+	private final UserService userService;
 
-	public RecipeController(RecipeService recipeService) {
+	public RecipeController(RecipeService recipeService, UserService userService) {
 		super();
 		this.recipeService = recipeService;
+		this.userService = userService;
 	}
 
 	@PostMapping("user/recipe")
@@ -153,5 +156,12 @@ public class RecipeController {
 			@RequestParam(value = "size", defaultValue = "20") int size) {
 		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
 		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, user_id));
+	}
+	
+	@PostMapping("user/copy-recipe/{recipeId}")
+	public ResponseEntity<String> copyOtherRecipe(@AuthenticationPrincipal User user, @PathVariable("recipeId") Long recipeId) {
+		User userEntity = userService.getUserById(user.getUserId());
+		recipeService.copyRecipe(userEntity, recipeId);
+		return ResponseEntity.ok("you have copied recipe have id ");
 	}
 }

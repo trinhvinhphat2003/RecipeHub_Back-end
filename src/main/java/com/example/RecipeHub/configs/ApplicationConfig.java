@@ -37,6 +37,7 @@ import com.example.RecipeHub.repositories.UserRepository;
 import com.example.RecipeHub.services.FriendService;
 import com.example.RecipeHub.services.RecipeService;
 import com.example.RecipeHub.utils.DateTimeUtil;
+import com.example.RecipeHub.utils.TagDefaultConstant;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -103,6 +104,11 @@ public class ApplicationConfig {
 				userRepository.save(new User("user2@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
 						"user2", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC, false));
 
+				//create default tags
+				for(String tag : TagDefaultConstant.TAGS_DEFAULT) {
+					tagRepository.save(new Tag(tag));
+				}
+				
 				// create friend request
 //				friendshipRepository.save(new FriendshipRequest(userRepository.findById(3l).get(),
 //						userRepository.findById(1l).get(), Friendship_status.WAITING));
@@ -122,9 +128,7 @@ public class ApplicationConfig {
 				User admin = userRepository.findByEmail("admin@gmail.com").get();
 				User user = userRepository.findByEmail("user@gmail.com").get();
 				
-				tagRepository.save(new Tag("dinner"));
-				tagRepository.save(new Tag("noon"));
-				Tag noon = tagRepository.findByTagName("noon").get();
+				Tag lunch = tagRepository.findByTagName("lunch").get();
 				Tag dinner = tagRepository.findByTagName("dinner").get();
 				
 				//1
@@ -190,7 +194,7 @@ public class ApplicationConfig {
 				recipe = recipeRepository.save(recipe);
 				
 				recipe.getTags().add(dinner);
-				recipe.getTags().add(noon);
+				recipe.getTags().add(lunch);
 				
 				recipeService.save(recipe);
 				
@@ -221,7 +225,8 @@ public class ApplicationConfig {
 
 				recipe = recipeRepository.save(recipe);
 				
-				recipe.getTags().add(noon);
+				recipe.getTags().add(lunch);
+				recipe.getTags().add(new Tag("hello"));
 				
 				recipeService.save(recipe);
 				//4
@@ -247,15 +252,14 @@ public class ApplicationConfig {
 
 				recipe = recipeRepository.save(recipe);
 				
-				recipe.getTags().add(noon);
+				recipe.getTags().add(lunch);
 				recipe.getImages().add(new Image(null, image1, recipe));
 				recipe.getImages().add(new Image(null, image1, recipe));
 				recipe.getImages().add(new Image(null, image1, recipe));
 				
 				recipe = recipeRepository.save(recipe);
 				recipeTag = "breakfast";
-				Tag breakfast = tagRepository.save(new Tag("breakfast"));
-				recipe.getTags().add(breakfast);
+				recipe.getTags().add(tagRepository.findByTagName(recipeTag).get());
 				recipeService.save(recipe);
 				
 				//5
@@ -380,7 +384,7 @@ public class ApplicationConfig {
 
 				recipe = recipeRepository.save(recipe);
 				
-				recipe.getTags().add(noon);
+				recipe.getTags().add(lunch);
 				recipe.getImages().add(new Image(null, image1, recipe));
 				recipe.getImages().add(new Image(null, image1, recipe));
 				recipe.getImages().add(new Image(null, image1, recipe));
@@ -410,7 +414,7 @@ public class ApplicationConfig {
 
 				recipe = recipeRepository.save(recipe);
 				
-				recipe.getTags().add(noon);
+				recipe.getTags().add(lunch);
 				recipe.getImages().add(new Image(null, image1, recipe));
 				recipe.getImages().add(new Image(null, image1, recipe));
 				recipe.getImages().add(new Image(null, image1, recipe));
@@ -440,7 +444,7 @@ public class ApplicationConfig {
 
 				recipe = recipeRepository.save(recipe);
 				
-				recipe.getTags().add(noon);
+				recipe.getTags().add(lunch);
 				recipe.getImages().add(new Image(null, image1, recipe));
 				recipe.getImages().add(new Image(null, image1, recipe));
 				recipe.getImages().add(new Image(null, image1, recipe));
