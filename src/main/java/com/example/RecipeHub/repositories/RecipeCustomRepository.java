@@ -102,7 +102,7 @@ public class RecipeCustomRepository {
 			query.setParameter("privacyStatus", "%" + privacyStatus + "%");
 
 		// add tags
-		if (ingredients != null && ingredients.size() > 0) {
+		if (tags != null && tags.size() > 0) {
 			for (int i = 0; i < tags.size(); i++) {
 				query.setParameter("tag" + i, tags.get(i));
 			}
