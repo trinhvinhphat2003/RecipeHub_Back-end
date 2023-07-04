@@ -447,8 +447,8 @@ public class ApplicationConfig {
 				
 				recipe = recipeRepository.save(recipe);
 				System.out.println(DateTimeUtil.milisecondToDateString(System.currentTimeMillis()));
-				System.out.println(System.currentTimeMillis());
 				System.out.println(System.currentTimeMillis()-(1000*60*60*24*2));
+				System.out.println(System.currentTimeMillis() + (1000*60*60*24*2));
 
 			}
 		};
