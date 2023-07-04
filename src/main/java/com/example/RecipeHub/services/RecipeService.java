@@ -97,7 +97,7 @@ public class RecipeService {
 
 	public RecipesPaginationResponse getRecipesWithPaginationAndFilter(String query, int page, int size, String sort, String direction) {
 		List<Recipe> recipes = recipeCustomRepository.filterByCondition(null, null, page, size, sort, direction, query, null, null, null);
-		Integer totalItem = recipeCustomRepository.getCountOfFilterByCondition(null, null, page, size, sort, direction, query, null, null, null);
+		Long totalItem = recipeCustomRepository.getCountOfFilterByCondition(null, null, page, size, sort, direction, query, null, null, null);
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for (Recipe recipe : recipes)
 			recipeDTOs.add(RecipeMapper.INSTANCE.recipeToRecipeDto(recipe));
@@ -147,6 +147,48 @@ public class RecipeService {
 		for (Recipe recipe : recipes)
 			recipeDTOs.add(RecipeMapper.INSTANCE.recipeToRecipeDto(recipe));
 		return recipeDTOs;
+	}
+	
+	public Long getTotalItemOfRecipesWithFilter(FIlterDTO fIlterDTO, int page, int size, Long userId) {
+		switch (fIlterDTO.getSortBy()) {
+		case "id": {
+			fIlterDTO.setSortBy("recipe_id");
+			break;
+		}
+		case "title": {
+			fIlterDTO.setSortBy("title");
+			break;
+		}
+		case "rating": {
+			fIlterDTO.setSortBy("rating");
+			break;
+		}
+		case "yield": {
+			fIlterDTO.setSortBy("recipe_yield");
+			break;
+		}
+		case "time": {
+			fIlterDTO.setSortBy("cook_time");
+			break;
+		}
+		default:
+			fIlterDTO.setSortBy("recipe_id");
+		}
+		
+		switch (fIlterDTO.getDirection()){
+		case "desc": {
+			fIlterDTO.setDirection("desc");
+			break;
+		}
+		case "asc": {
+			fIlterDTO.setDirection("asc");
+			break;
+		}
+		default:
+			fIlterDTO.setDirection("desc");
+		}
+		Long totalItem = recipeCustomRepository.getCountOfFilterByCondition(fIlterDTO.getTags(), fIlterDTO.getIngredients(), page, size, fIlterDTO.getSortBy(), fIlterDTO.getDirection(), fIlterDTO.getTitle(), fIlterDTO.getPrivacyStatus(), fIlterDTO.isFavorite(), userId);
+		return totalItem;
 	}
 
 	@Value("${recipe.image.upload.directory}")

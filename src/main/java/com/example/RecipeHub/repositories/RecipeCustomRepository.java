@@ -125,7 +125,7 @@ public class RecipeCustomRepository {
 		return recipes;
 	}
 	
-	public Integer getCountOfFilterByCondition(ArrayList<String> tags, ArrayList<String> ingredients, Integer page,
+	public Long getCountOfFilterByCondition(ArrayList<String> tags, ArrayList<String> ingredients, Integer page,
 			Integer size, String sortBy, String direction, String title, String privacyStatus, Boolean isFavorite,
 			Long user_id) {
 		// initial
@@ -209,7 +209,7 @@ public class RecipeCustomRepository {
 			query.setParameter("privacyStatus", "%" + privacyStatus + "%");
 
 		// add tags
-		if (ingredients != null && ingredients.size() > 0) {
+		if (tags != null && tags.size() > 0) {
 			for (int i = 0; i < tags.size(); i++) {
 				query.setParameter("tag" + i, tags.get(i));
 			}
@@ -225,6 +225,6 @@ public class RecipeCustomRepository {
 		// result
 		List<Recipe> recipes = query.getResultList();
 
-		return recipes.size();
+		return Long.valueOf(recipes.size());
 	}
 }

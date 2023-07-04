@@ -6,20 +6,20 @@ import com.example.RecipeHub.client.dtos.RecipeDTO;
 
 public class RecipesPaginationResponse {
 	private ArrayList<RecipeDTO> recipes;
-	private int totalItem;
+	private Long totalItem;
 	public ArrayList<RecipeDTO> getRecipes() {
 		return recipes;
 	}
 	public void setRecipes(ArrayList<RecipeDTO> recipes) {
 		this.recipes = recipes;
 	}
-	public int getTotalItem() {
+	public Long getTotalItem() {
 		return totalItem;
 	}
-	public void setTotalItem(int totalItem) {
+	public void setTotalItem(Long totalItem) {
 		this.totalItem = totalItem;
 	}
-	public RecipesPaginationResponse(ArrayList<RecipeDTO> recipes, int totalItem) {
+	public RecipesPaginationResponse(ArrayList<RecipeDTO> recipes, Long totalItem) {
 		super();
 		this.recipes = recipes;
 		this.totalItem = totalItem;
