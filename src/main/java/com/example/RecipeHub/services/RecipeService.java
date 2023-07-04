@@ -184,7 +184,7 @@ public class RecipeService {
 			imageIterator = recipe.getImages().iterator();
 		}
 		recipeRepository.deleteTagAndRecipeLinks(recipe.getRecipe_id());
-		recipeRepository.delete(recipe);
+		recipeRepository.deleteById(recipe.getRecipe_id());
 	}
 	
 	public void deleteOneRecipeById(Long recipeId) {
