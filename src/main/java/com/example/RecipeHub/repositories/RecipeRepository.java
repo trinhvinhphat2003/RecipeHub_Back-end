@@ -34,7 +34,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 	Page<Recipe> findByTitle(@Param("title") String title, Pageable pageable);
 	
 	@Modifying
-    @Query(value = "delete from recipe_have_tag rt where rt.recipe_id = :recipeId", nativeQuery = true)
+    @Query(value = "delete from recipe_have_tag where recipe_id = :recipeId", nativeQuery = true)
     void deleteTagAndRecipeLinks(@Param("recipeId") Long recipeId);
 
 }
