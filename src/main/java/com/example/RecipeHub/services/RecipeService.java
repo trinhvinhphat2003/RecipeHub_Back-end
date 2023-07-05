@@ -118,7 +118,7 @@ public class RecipeService {
 
 	public ArrayList<RecipeDTO> getRecipesWithFilter(FIlterDTO fIlterDTO, int page, int size, Long userId) {
 		switch (fIlterDTO.getSortBy()) {
-		case "id": {
+		case "recent": {
 			fIlterDTO.setSortBy("recipe_id");
 			break;
 		}
