@@ -34,6 +34,7 @@ import com.example.RecipeHub.repositories.RecipeCustomRepository;
 import com.example.RecipeHub.repositories.RecipeRepository;
 import com.example.RecipeHub.utils.FileUtil;
 import com.example.RecipeHub.utils.PaginationUtil;
+import com.example.RecipeHub.utils.SystemUtil;
 import com.example.RecipeHub.utils.TagDefaultConstant;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -374,7 +375,7 @@ public class RecipeService {
 		recipeRepository.save(recipe);
 	}
 
-	public void copyRecipe(User user, Long recipeId) {
+	public void copyRecipe(User user, Long recipeId, HttpServletRequest httpServletRequest) {
 		Recipe recipe = recipeRepository.findById(recipeId)
 				.orElseThrow(() -> new NotFoundExeption("this recipe is not ecisted"));
 		if (recipe.getPrivacyStatus() == PrivacyStatus.PRIVATE)
@@ -416,6 +417,10 @@ public class RecipeService {
 		}
 
 		// add images
+		for(Image image : recipe.getImages()) {
+			String imageUrl = SystemUtil.getRecipeImagePath(httpServletRequest) + FileUtil.copyImage(image.getImageUrl().substring(image.getImageUrl().lastIndexOf('/')).substring(1), recipeImagePath);
+			copiedRecipe.getImages().add(new Image(null, imageUrl, copiedRecipe));
+		}
 		
 		recipeRepository.save(copiedRecipe);
 	}

@@ -37,6 +37,8 @@ import com.example.RecipeHub.repositories.UserRepository;
 import com.example.RecipeHub.services.FriendService;
 import com.example.RecipeHub.services.RecipeService;
 import com.example.RecipeHub.utils.DateTimeUtil;
+import com.example.RecipeHub.utils.FileUtil;
+import com.example.RecipeHub.utils.SystemUtil;
 import com.example.RecipeHub.utils.TagDefaultConstant;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -92,7 +94,7 @@ public class ApplicationConfig {
 			public void run(String... args) throws Exception {
 				
 				//init
-				String image1 = "https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=";
+				String image1 = "/192cf0a4-d69f-4add-99d5-c1bb3778b5f2.jpg";
 				
 				// create user
 				userRepository.save(new User("admin@gmail.com", getPasswordEncoder().encode("123456"), Role.ADMIN,
@@ -153,10 +155,6 @@ public class ApplicationConfig {
 				
 				recipe.getImages().add(new Image(null, image1, recipe));
 				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
 
 				recipe = recipeRepository.save(recipe);
 				
@@ -188,8 +186,6 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
 				
 				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
 
 				recipe = recipeRepository.save(recipe);
 				
@@ -219,9 +215,6 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Ingredient(null, recipe, "beaf", "1 gram"));
 				
 				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, "this is url for image", recipe));
 
 				recipe = recipeRepository.save(recipe);
 				
@@ -254,8 +247,6 @@ public class ApplicationConfig {
 				
 				recipe.getTags().add(lunch);
 				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
 				
 				recipe = recipeRepository.save(recipe);
 				recipeTag = "breakfast";
@@ -282,11 +273,6 @@ public class ApplicationConfig {
 				recipe.getIngredients().add(new Ingredient(null, recipe, "onion", "100 gram"));
 				recipe.getIngredients().add(new Ingredient(null, recipe, "carrot", "1 gram"));
 				
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
-				recipe.getImages().add(new Image(null, image1, recipe));
 				recipe.getImages().add(new Image(null, image1, recipe));
 
 				recipe = recipeRepository.save(recipe);

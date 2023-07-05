@@ -159,9 +159,9 @@ public class RecipeController {
 	}
 	
 	@PostMapping("user/copy-recipe/{recipeId}")
-	public ResponseEntity<String> copyOtherRecipe(@AuthenticationPrincipal User user, @PathVariable("recipeId") Long recipeId) {
+	public ResponseEntity<String> copyOtherRecipe(@AuthenticationPrincipal User user, @PathVariable("recipeId") Long recipeId, HttpServletRequest httpServletRequest) {
 		User userEntity = userService.getUserById(user.getUserId());
-		recipeService.copyRecipe(userEntity, recipeId);
+		recipeService.copyRecipe(userEntity, recipeId, httpServletRequest);
 		return ResponseEntity.ok("you have copied recipe have id ");
 	}
 }
