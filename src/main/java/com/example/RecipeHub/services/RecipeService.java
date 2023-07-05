@@ -259,8 +259,10 @@ public class RecipeService {
 			FileUtil.deleteImage(recipeImagePath,
 					image.getImageUrl().substring(image.getImageUrl().lastIndexOf('/')).substring(1));
 			imageService.deleteById(image.getImageId());
+			imageIterator = recipe.getImages().iterator();
 		}
-		recipeRepository.delete(recipe);
+		recipeRepository.deleteTagAndRecipeLinks(recipe.getRecipe_id());
+		recipeRepository.deleteById(recipe.getRecipe_id());
 	}
 
 	public void editRecipe(RecipeDTO dto, Long recipeId, Long userId, MultipartFile[] files,
