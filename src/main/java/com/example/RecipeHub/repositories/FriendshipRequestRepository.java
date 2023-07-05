@@ -13,4 +13,5 @@ import com.example.RecipeHub.enums.Friendship_status;
 @Repository
 public interface FriendshipRequestRepository extends JpaRepository<FriendshipRequest, Long>{
 	ArrayList<FriendshipRequest> findAllByReceiverAndStatus(User receiver, Friendship_status status);
+	ArrayList<FriendshipRequest> findAllBySenderAndStatus(User sender, Friendship_status status);
 }

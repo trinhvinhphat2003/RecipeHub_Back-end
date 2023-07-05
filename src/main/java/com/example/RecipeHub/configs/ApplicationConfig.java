@@ -94,7 +94,7 @@ public class ApplicationConfig {
 			public void run(String... args) throws Exception {
 				
 				//init
-				String image1 = "/192cf0a4-d69f-4add-99d5-c1bb3778b5f2.jpg";
+				String image1 = "https://recipehub.herokuapp.com/api/v1/global/image/avatar/192cf0a4-d69f-4add-99d5-c1bb3778b5f2.jpg";
 				
 				// create user
 				userRepository.save(new User("admin@gmail.com", getPasswordEncoder().encode("123456"), Role.ADMIN,

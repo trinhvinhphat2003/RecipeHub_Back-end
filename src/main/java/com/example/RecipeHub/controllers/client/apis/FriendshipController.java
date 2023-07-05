@@ -96,6 +96,14 @@ public class FriendshipController {
 		ArrayList<FriendshipRequestDTO> friendshipRequestDTOs = friendService.getAllFriendshipRequest(user);
 		return new ResponseEntity<>(friendshipRequestDTOs, HttpStatus.OK);
 	}
+	
+	@GetMapping("user/friend/sended-requests")
+	public ResponseEntity<ArrayList<FriendshipRequestDTO>> getSendedRequest(@AuthenticationPrincipal User user) {
+		if (user == null)
+			throw new UnauthorizedExeption("");
+		ArrayList<FriendshipRequestDTO> friendshipRequestDTOs = friendService.getAllSendedFriendshipRequest(user);
+		return new ResponseEntity<>(friendshipRequestDTOs, HttpStatus.OK);
+	}
 
 	@DeleteMapping("user/remove-friend/{friend_id}")
 	public ResponseEntity<String> removeFriend(@PathVariable("friend_id") Long friend_id,

@@ -71,4 +71,12 @@ public class FriendService {
 		for(FriendshipRequest friendshipRequest : friendshipRequests) friendshipRequestDTOs.add(FriendshipRequestMapper.INSTANCE.friendshipRequestToFriendshipRequestDTO(friendshipRequest));
 		return friendshipRequestDTOs;
 	}
+
+	public ArrayList<FriendshipRequestDTO> getAllSendedFriendshipRequest(User user) {
+		user = userRepository.findById(user.getUserId()).orElseThrow(() -> new NotFoundExeption(""));
+		ArrayList<FriendshipRequestDTO> friendshipRequestDTOs = new ArrayList<>();
+		List<FriendshipRequest> friendshipRequests = friendshipRequestRepository.findAllBySenderAndStatus(user, Friendship_status.PENDING);
+		for(FriendshipRequest friendshipRequest : friendshipRequests) friendshipRequestDTOs.add(FriendshipRequestMapper.INSTANCE.friendshipRequestToFriendshipRequestDTO(friendshipRequest));
+		return friendshipRequestDTOs;
+	}
 }
