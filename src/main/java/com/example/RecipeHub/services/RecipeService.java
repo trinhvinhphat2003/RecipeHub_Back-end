@@ -375,7 +375,7 @@ public class RecipeService {
 		recipeRepository.save(recipe);
 	}
 
-	public void copyRecipe(User user, Long recipeId, HttpServletRequest httpServletRequest) {
+	public Long copyRecipe(User user, Long recipeId, HttpServletRequest httpServletRequest) {
 		Recipe recipe = recipeRepository.findById(recipeId)
 				.orElseThrow(() -> new NotFoundExeption("this recipe is not ecisted"));
 		if (recipe.getPrivacyStatus() == PrivacyStatus.PRIVATE)
@@ -422,7 +422,8 @@ public class RecipeService {
 			copiedRecipe.getImages().add(new Image(null, imageUrl, copiedRecipe));
 		}
 		
-		recipeRepository.save(copiedRecipe);
+		copiedRecipe = recipeRepository.save(copiedRecipe);
+		return copiedRecipe.getRecipe_id();
 	}
 
 }
