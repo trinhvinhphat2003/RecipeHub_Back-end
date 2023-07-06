@@ -30,5 +30,8 @@ public class EditProfileRequest {
 		this.birthday = birthday;
 		this.gender = gender;
 	}
+	public EditProfileRequest() {
+		super();
+	}
 	
 }
