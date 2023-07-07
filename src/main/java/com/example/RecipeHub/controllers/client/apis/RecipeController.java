@@ -2,6 +2,7 @@ package com.example.RecipeHub.controllers.client.apis;
 
 import java.util.ArrayList;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,6 +29,8 @@ import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.PrivacyStatus;
 import com.example.RecipeHub.errorHandlers.UnauthorizedExeption;
+import com.example.RecipeHub.eventListeners.RegistrationCompletionEvent;
+import com.example.RecipeHub.eventListeners.ShareRecipeEvent;
 import com.example.RecipeHub.mappers.RecipeMapper;
 import com.example.RecipeHub.services.RecipeService;
 import com.example.RecipeHub.services.UserService;
@@ -40,11 +43,13 @@ public class RecipeController {
 
 	private final RecipeService recipeService;
 	private final UserService userService;
+	private final ApplicationEventPublisher eventPublisher;
 
-	public RecipeController(RecipeService recipeService, UserService userService) {
+	public RecipeController(RecipeService recipeService, UserService userService, ApplicationEventPublisher eventPublisher) {
 		super();
 		this.recipeService = recipeService;
 		this.userService = userService;
+		this.eventPublisher = eventPublisher;
 	}
 
 	@PostMapping("user/recipe")
@@ -163,5 +168,11 @@ public class RecipeController {
 		User userEntity = userService.getUserById(user.getUserId());
 		Long newId = recipeService.copyRecipe(userEntity, recipeId, httpServletRequest);
 		return ResponseEntity.ok(newId);
+	}
+	
+	@PostMapping("user/share-recipe/{recipeId}")
+	public ResponseEntity<String> shareRecipe(@AuthenticationPrincipal User user, @PathVariable("recipeId") Long recipeid, @RequestBody String[] emails) throws Exception {
+		eventPublisher.publishEvent(new ShareRecipeEvent(emails, user.getFullName(), recipeid));
+		return ResponseEntity.ok("share recipe to friends successfully");
 	}
 }

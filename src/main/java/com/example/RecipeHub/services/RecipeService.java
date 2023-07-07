@@ -2,8 +2,10 @@ package com.example.RecipeHub.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ import com.example.RecipeHub.client.dtos.RecipeDTO;
 import com.example.RecipeHub.client.dtos.TagDTO;
 import com.example.RecipeHub.entities.Image;
 import com.example.RecipeHub.entities.Ingredient;
+import com.example.RecipeHub.entities.MailInfo;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
@@ -48,16 +51,21 @@ public class RecipeService {
 	private final RecipeCustomRepository recipeCustomRepository;
 	private final IngredientService ingredientService;
 	private final ImageService imageService;
+	private static final String SHARE_RECIPE_EMAIL_HTML_TEMPLATE = "share-recipe-email";
+	private final EmailService emailService;
+	private final UserService userService;
 
 	public RecipeService(RecipeRepository recipeRepository, TagService tagService,
 			RecipeCustomRepository recipeCustomRepository, IngredientService ingredientService,
-			ImageService imageService) {
+			ImageService imageService, EmailService emailService, UserService userService) {
 		super();
 		this.recipeRepository = recipeRepository;
 		this.tagService = tagService;
 		this.recipeCustomRepository = recipeCustomRepository;
 		this.ingredientService = ingredientService;
 		this.imageService = imageService;
+		this.emailService = emailService;
+		this.userService = userService;
 		;
 	}
 
@@ -398,7 +406,7 @@ public class RecipeService {
 		copiedRecipe = recipeRepository.save(copiedRecipe);
 
 		copiedRecipe.setUser(user);
-		
+
 		// add ingredients
 		for (Ingredient ingredient : recipe.getIngredients()) {
 			copiedRecipe.getIngredients()
@@ -413,19 +421,33 @@ public class RecipeService {
 				copiedRecipe.getTags().add(newTag);
 			} else {
 				Tag newTag = tagService.getTagByNameAndUserId(tag.getTagName(), user.getUserId());
-				if(newTag == null) newTag = tagService.save(new Tag(tag.getTagName()));
+				if (newTag == null)
+					newTag = tagService.save(new Tag(tag.getTagName()));
 				copiedRecipe.getTags().add(newTag);
 			}
 		}
 
 		// add images
-		for(Image image : recipe.getImages()) {
-			String imageUrl = SystemUtil.getRecipeImagePath(httpServletRequest) + FileUtil.copyImage(image.getImageUrl().substring(image.getImageUrl().lastIndexOf('/')).substring(1), recipeImagePath);
+		for (Image image : recipe.getImages()) {
+			String imageUrl = SystemUtil.getRecipeImagePath(httpServletRequest) + FileUtil.copyImage(
+					image.getImageUrl().substring(image.getImageUrl().lastIndexOf('/')).substring(1), recipeImagePath);
 			copiedRecipe.getImages().add(new Image(null, imageUrl, copiedRecipe));
 		}
-		
+
 		copiedRecipe = recipeRepository.save(copiedRecipe);
 		return copiedRecipe.getRecipe_id();
+	}
+
+	public void sendSharedRecipeEmailUsingHtmlTemplate(String fullname, String email, Long recipeid) throws Exception {
+		final String subject = "Recipe share from your friend";
+		Map<String, Object> properties = new HashMap<>();
+		properties.put("name", fullname);
+		properties.put("recipeId", recipeid);
+		String sharedRecipeUrl = "https://recipehub-g3.vercel.app/global/" + recipeid;
+		properties.put("sharedRecipeUrl", sharedRecipeUrl);
+		MailInfo mailInfo = new MailInfo(email, subject, SHARE_RECIPE_EMAIL_HTML_TEMPLATE,
+				properties);
+		emailService.sendEmailUsingHTMLTemplate(mailInfo);
 	}
 
 }
