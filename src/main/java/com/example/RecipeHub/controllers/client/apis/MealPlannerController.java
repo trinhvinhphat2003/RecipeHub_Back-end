@@ -35,14 +35,14 @@ public class MealPlannerController {
 	public ResponseEntity<ArrayList<MealPlannerResponse>> getAllPlannerFromTo(@AuthenticationPrincipal User user,
 			@RequestParam(value = "from", required = true) Long from,
 			@RequestParam(value = "to", required = true) Long to) {
-		ArrayList<MealPlannerResponse> result = mealPlannerService.getMealPlannerFromTo(from, to);
+		ArrayList<MealPlannerResponse> result = mealPlannerService.getMealPlannerFromTo(from, to, user.getUserId());
 		return ResponseEntity.ok().body(result);
 	}
 	
 	@GetMapping("user/meal-planers/{date}")
 	public ResponseEntity< ArrayList<MealPlannerResponse>> getonePlanner(@AuthenticationPrincipal User user,
 			@PathVariable(value = "date", required = true) Long date) {
-		ArrayList<MealPlannerResponse> result = mealPlannerService.getMealPlannerByDate(date);
+		ArrayList<MealPlannerResponse> result = mealPlannerService.getMealPlannerByDate(date, user.getUserId());
 		return ResponseEntity.ok().body(result);
 	}
 	

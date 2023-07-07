@@ -29,8 +29,8 @@ public class MealPlannerService {
 		this.recipeService = recipeService;
 	}
 
-	public ArrayList<MealPlannerResponse> getMealPlannerFromTo(Long fromLong, Long toLong) {
-		List<Meal_planner> meal_Planners = mealPlannerRepository.findByDateFromTo(DateTimeUtil.milisecondToDateString(fromLong), DateTimeUtil.milisecondToDateString(toLong));
+	public ArrayList<MealPlannerResponse> getMealPlannerFromTo(Long fromLong, Long toLong, Long userId) {
+		List<Meal_planner> meal_Planners = mealPlannerRepository.findByDateFromTo(DateTimeUtil.milisecondToDateString(fromLong), DateTimeUtil.milisecondToDateString(toLong), userId);
 		ArrayList<MealPlannerResponse> result = new ArrayList<>();
 		for (Meal_planner meal_Planner : meal_Planners) {
 			result.add(new MealPlannerResponse(meal_Planner.getMealPlannerId(), RecipeMapper.INSTANCE.recipeToRecipeDto(meal_Planner.getRecipe()), meal_Planner.getMealType().name(), DateTimeUtil.dateToMilisecond(meal_Planner.getDate())));
@@ -38,9 +38,9 @@ public class MealPlannerService {
 		return result;
 	}
 
-	public ArrayList<MealPlannerResponse> getMealPlannerByDate(Long dateLong) {
+	public ArrayList<MealPlannerResponse> getMealPlannerByDate(Long dateLong, Long userId) {
 		String dateDate = DateTimeUtil.milisecondToDateString(dateLong);
-		List<Meal_planner> meal_Planners = mealPlannerRepository.findByDate(dateDate);
+		List<Meal_planner> meal_Planners = mealPlannerRepository.findByDate(dateDate, userId);
 		ArrayList<MealPlannerResponse> result = new ArrayList<>();
 		for (Meal_planner meal_Planner : meal_Planners) {
 			result.add(new MealPlannerResponse(meal_Planner.getMealPlannerId(), RecipeMapper.INSTANCE.recipeToRecipeDto(meal_Planner.getRecipe()), meal_Planner.getMealType().name(), DateTimeUtil.dateToMilisecond(meal_Planner.getDate())));
