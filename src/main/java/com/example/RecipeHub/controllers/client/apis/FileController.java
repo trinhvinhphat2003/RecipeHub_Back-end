@@ -92,7 +92,7 @@ public class FileController {
 			userService.save(userPersisted);
 		}
 		
-		return ResponseEntity.ok("Image uploaded successfully");
+		return ResponseEntity.ok(getApplicationPath(httpServletRequest) + "/api/v1/global/image/avatar/" + newFileName);
 	}
 
 	@GetMapping("global/image/avatar/{image}")
@@ -135,6 +135,6 @@ public class FileController {
 	}
 	
 	private String getApplicationPath(HttpServletRequest request){
-		return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+		return "http://" + request.getServerName() /*+ ":" + request.getServerPort()*/ + request.getContextPath();
 	}
 }
