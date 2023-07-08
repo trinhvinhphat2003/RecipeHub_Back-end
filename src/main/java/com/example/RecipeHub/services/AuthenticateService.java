@@ -29,6 +29,10 @@ public class AuthenticateService {
 	private final JwtService jwtService;
 
 	private final UserRepository userRepository;
+	
+	private final Integer LOGIN_SUCCESSFULLY = 1;
+	private final Integer ACCOUNT_IS_BLOCKED = 2;
+	private final Integer ACCOUNT_IS_NOT_VERIFIED = 3;
 
 	//this is used to make a http request to google
 	private final WebClient.Builder webClient;
@@ -43,20 +47,26 @@ public class AuthenticateService {
 	}
 	
 	public LoginResponseDTO authenticateBasic(LoginDTO loginDTO) {
+		LoginResponseDTO responseDto = null;
 		//check if user exist or not
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+
 		//get user
 		User user = userRepository.findByEmail(loginDTO.getEmail()).get();
 		
-		if(user.isBlocked()) throw new ForbiddenExeption("your account is now block by admin");
-		
-		//generate jwt token
-		String JwtToken = "Bearer " + jwtService.generateToken(user);
-		
-		//map to dto and send to client
-		LoginResponseDTO responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user));
-		return responseDto;
+		if(!user.isEnable()) {
+			responseDto = new LoginResponseDTO("", UserMapper.INSTANCE.userToUserDTO(user), ACCOUNT_IS_NOT_VERIFIED);
+			return responseDto;
+		} else if(user.isBlocked()) {
+			responseDto = new LoginResponseDTO("", UserMapper.INSTANCE.userToUserDTO(user), ACCOUNT_IS_BLOCKED);
+			return responseDto;
+		} else {
+			//generate jwt token
+			String JwtToken = "Bearer " + jwtService.generateToken(user);
+			responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user), LOGIN_SUCCESSFULLY);
+			return responseDto;
+		}
 	}
 	
 	public LoginResponseDTO authenticateOauth(String googleToken) {
@@ -90,7 +100,7 @@ public class AuthenticateService {
 		String JwtToken = "Bearer " + jwtService.generateToken(user.get());
 		
 		//response
-		LoginResponseDTO responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user.get()));
+		LoginResponseDTO responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user.get()), LOGIN_SUCCESSFULLY);
 		
 		return responseDto;
 	}

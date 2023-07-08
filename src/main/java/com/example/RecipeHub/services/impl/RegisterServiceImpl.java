@@ -32,6 +32,8 @@ public class RegisterServiceImpl implements RegisterService {
     private static final String TOKEN_INVALID = "Token invalid";
     private static final String TOKEN_EXPIRED = "Token expired";
     private static final String TOKEN_VALID = "Success";
+    public final static Integer REGISTER_SUCCESSFULLY = 1;
+    public final static Integer EMAIL_DUPLICATED = 1;
 
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
@@ -58,7 +60,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         // check if email has been register
         if(userRepository.findByEmail(registerRequest.getEmail()).isPresent()){
-            throw new BadRequestExeption("Email " + registerRequest.getEmail() + " has been registered.");
+        	return new RegisterResponse(EMAIL_DUPLICATED);
         }
 
         // save account to database
@@ -71,7 +73,7 @@ public class RegisterServiceImpl implements RegisterService {
 //        return RegisterResponse.builder()
 //                .jwtToken(jwtToken)
 //                .build();
-        return new RegisterResponse(jwtToken);
+        return new RegisterResponse(REGISTER_SUCCESSFULLY);
     }
 
     @Override

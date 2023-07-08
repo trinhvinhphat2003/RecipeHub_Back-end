@@ -1,23 +1,22 @@
 package com.example.RecipeHub.client.dtos;
 
 public class RegisterResponse {
-    private String jwtToken;
+	private Integer status;
 
 	public RegisterResponse() {
 		super();
 	}
 
-	public RegisterResponse(String jwtToken) {
+	public RegisterResponse(Integer status) {
 		super();
-		this.jwtToken = jwtToken;
+		this.status = status;
 	}
 
-	public String getJwtToken() {
-		return jwtToken;
+	public Integer getStatus() {
+		return status;
 	}
 
-	public void setJwtToken(String jwtToken) {
-		this.jwtToken = jwtToken;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
-    
 }
