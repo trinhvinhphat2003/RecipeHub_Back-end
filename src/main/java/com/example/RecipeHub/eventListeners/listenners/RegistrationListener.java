@@ -1,4 +1,4 @@
-package com.example.RecipeHub.eventListeners;
+package com.example.RecipeHub.eventListeners.listenners;
 
 
 import org.springframework.context.ApplicationListener;
@@ -6,6 +6,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.example.RecipeHub.eventListeners.events.RegistrationCompletionEvent;
 import com.example.RecipeHub.services.RegisterService;
 
 @Component

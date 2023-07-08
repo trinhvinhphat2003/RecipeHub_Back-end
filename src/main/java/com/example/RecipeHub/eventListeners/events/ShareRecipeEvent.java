@@ -1,4 +1,4 @@
-package com.example.RecipeHub.eventListeners;
+package com.example.RecipeHub.eventListeners.events;
 
 import org.springframework.context.ApplicationEvent;
 

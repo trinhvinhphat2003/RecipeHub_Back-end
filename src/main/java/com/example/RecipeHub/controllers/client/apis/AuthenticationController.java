@@ -15,7 +15,7 @@ import com.example.RecipeHub.client.dtos.LoginDTO;
 import com.example.RecipeHub.client.dtos.LoginResponseDTO;
 import com.example.RecipeHub.client.dtos.RegisterRequest;
 import com.example.RecipeHub.client.dtos.RegisterResponse;
-import com.example.RecipeHub.eventListeners.RegistrationCompletionEvent;
+import com.example.RecipeHub.eventListeners.events.RegistrationCompletionEvent;
 import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.services.AuthenticateService;
 import com.example.RecipeHub.services.RegisterService;

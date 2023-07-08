@@ -105,6 +105,8 @@ public class ApplicationConfig {
 						"user1", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC, false));
 				userRepository.save(new User("user2@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
 						"user2", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC, false));
+				userRepository.save(new User("trinhvinhphat123@gmail.com", getPasswordEncoder().encode("123456"), Role.USER,
+						"Phat", Gender.FEMALE, true, DateTimeUtil.milisecondToDate(System.currentTimeMillis()), avartarBaseUrl + "default.jpg", LoginType.BASIC, false));
 
 				//create default tags
 				for(String tag : TagDefaultConstant.TAGS_DEFAULT) {
