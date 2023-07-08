@@ -1,7 +1,6 @@
-package com.example.RecipeHub.eventListeners;
+package com.example.RecipeHub.eventListeners.events;
 
-import com.example.RecipeHub.dtos.RegisterRequest;
-import lombok.*;
+import com.example.RecipeHub.dtos.request.RegisterRequest;
 import org.springframework.context.ApplicationEvent;
 
 //@Getter

@@ -1,4 +1,4 @@
-package com.example.RecipeHub.dtos;
+package com.example.RecipeHub.dtos.request;
 
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.Role;

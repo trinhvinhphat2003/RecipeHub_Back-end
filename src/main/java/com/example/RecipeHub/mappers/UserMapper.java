@@ -1,17 +1,14 @@
 package com.example.RecipeHub.mappers;
 
-import com.example.RecipeHub.dtos.RegisterRequest;
-import lombok.RequiredArgsConstructor;
+import com.example.RecipeHub.dtos.request.RegisterRequest;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.RecipeHub.dtos.RegisterRequest;
 import com.example.RecipeHub.dtos.UserDTO;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.Role;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

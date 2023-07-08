@@ -57,7 +57,6 @@ public class MealPlannerServiceImpl implements MealPlannerService {
     @Override
     public MealPlannerResponse updateMealPlanner(MealPlannerRequest mealPlannerRequest) throws Exception {
         MealPlanner mealPlanner = mealPlannerRepository.findById(mealPlannerRequest.getMealPlannerId()).orElseThrow(() -> new RuntimeException("Meal planner not found"));
-//        mealPlannerRepository
         return null;
     }
 

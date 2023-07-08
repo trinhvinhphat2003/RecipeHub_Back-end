@@ -4,14 +4,13 @@ import com.example.RecipeHub.entities.MailInfo;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.entities.VerificationToken;
 import com.example.RecipeHub.mappers.UserMapper;
-import com.example.RecipeHub.dtos.RegisterRequest;
-import com.example.RecipeHub.dtos.RegisterResponse;
+import com.example.RecipeHub.dtos.request.RegisterRequest;
+import com.example.RecipeHub.dtos.response.RegisterResponse;
 import com.example.RecipeHub.repositories.UserRepository;
 import com.example.RecipeHub.repositories.VerificationTokenRepository;
 import com.example.RecipeHub.services.RegisterService;
 import com.example.RecipeHub.services.EmailService;
 import com.example.RecipeHub.services.JwtService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +20,9 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-//@RequiredArgsConstructor
 public class RegisterServiceImpl implements RegisterService {
 
     private static final long EXPIRATION_TIME = 86400000L;
-    private static final String VERIFICATION_EMAIL_HTML_TEMPLATE = "verification-email";
     private static final String TOKEN_INVALID = "Token invalid";
     private static final String TOKEN_EXPIRED = "Token expired";
     private static final String TOKEN_VALID = "Success";
@@ -96,22 +93,5 @@ public class RegisterServiceImpl implements RegisterService {
         //VerificationToken verificationToken = new VerificationToken(null, token, expirationDate, user);
         verificationTokenRepository.save(verificationToken);
         return token;
-    }
-
-    @Override
-    public void sendVerificationEmail(RegisterRequest registerRequest, String applicationPath, String token) throws Exception {
-        final String subject = "Verify your email address";
-        String verificationPath = applicationPath + "/api/v1/auth/verify-user?token=" + token;
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("name", registerRequest.getFullName());
-        properties.put("verificationUrl", verificationPath);
-        MailInfo mailInfo = MailInfo.builder()
-                .receiver(registerRequest.getEmail())
-                .subject(subject)
-                .htmlTemplateName(VERIFICATION_EMAIL_HTML_TEMPLATE)
-                .properties(properties)
-                .build();
-        // MailInfo mailInfo = new MailInfo(registerRequest.getEmail(), subject, VERIFICATION_EMAIL_HTML_TEMPLATE, properties);
-        emailService.sendEmailUsingHTMLTemplate(mailInfo);
     }
 }

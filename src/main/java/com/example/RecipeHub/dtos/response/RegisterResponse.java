@@ -1,4 +1,4 @@
-package com.example.RecipeHub.dtos;
+package com.example.RecipeHub.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
