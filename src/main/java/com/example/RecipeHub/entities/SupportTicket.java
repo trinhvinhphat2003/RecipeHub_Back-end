@@ -5,9 +5,12 @@ import java.util.List;
 
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.Role;
+import com.example.RecipeHub.enums.SupportTicketStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,37 +29,45 @@ import lombok.NoArgsConstructor;
 //@NoArgsConstructor
 //@AllArgsConstructor
 //@Builder
-public class Support_ticket {
+public class SupportTicket {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "support_ticket_id")
-	private Long support_ticket_id;
+	@Column(name = "supportTicketId")
+	private Long supportTicketId;
+
+	@Column(name = "email")
+	private String email;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	@Column(name = "message",nullable = false, columnDefinition = "text")
 	private String message;
 	
 	@Column(name = "status" ,nullable = false)
-	private Long status;
+	@Enumerated(EnumType.STRING)
+	private SupportTicketStatus status;
 
-	public Long getSupport_ticket_id() {
-		return support_ticket_id;
+	public SupportTicket(Long supportTicketId, String email, String message, SupportTicketStatus status) {
+		super();
+		this.supportTicketId = supportTicketId;
+		this.email = email;
+		this.message = message;
+		this.status = status;
 	}
 
-	public void setSupport_ticket_id(Long support_ticket_id) {
-		this.support_ticket_id = support_ticket_id;
+	public Long getSupportTicketId() {
+		return supportTicketId;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
+	public void setSupportTicketId(Long supportTicketId) {
+		this.supportTicketId = supportTicketId;
 	}
 
 	public String getMessage() {
@@ -67,23 +78,15 @@ public class Support_ticket {
 		this.message = message;
 	}
 
-	public Long getStatus() {
+	public SupportTicketStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Long status) {
+	public void setStatus(SupportTicketStatus status) {
 		this.status = status;
 	}
 
-	public Support_ticket(Long support_ticket_id, User user, String message, Long status) {
-		super();
-		this.support_ticket_id = support_ticket_id;
-		this.user = user;
-		this.message = message;
-		this.status = status;
-	}
-
-	public Support_ticket() {
+	public SupportTicket() {
 		super();
 	}
 	
