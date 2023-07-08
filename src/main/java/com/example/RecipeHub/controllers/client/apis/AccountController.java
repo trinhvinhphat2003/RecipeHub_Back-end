@@ -31,20 +31,20 @@ public class AccountController {
     }
     
     @PutMapping(path = "user/change-password/{newPassword}")
-    public ResponseEntity<?> changePassword(@PathVariable("newPassword") String newPassword, @AuthenticationPrincipal User user){
+    public ResponseEntity<String> changePassword(@PathVariable("newPassword") String newPassword, @AuthenticationPrincipal User user){
         // change password
         accountService.changePassword(newPassword, user);
         //inform password change
         eventPublisher.publishEvent(new PasswordChangeSuccessEvent(user));
-        return null;
+        return ResponseEntity.ok("you have changed your password successfully");
     }
 
     @PutMapping(path = "global/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestBody ForgottenPasswordDto forgottenPasswordDto) throws Exception {
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgottenPasswordDto forgottenPasswordDto) throws Exception {
         // generate password & save to user account
     	forgottenPasswordDto = accountService.generatePassword(forgottenPasswordDto);
         // send email notify new password
         eventPublisher.publishEvent(new ForgotPasswordEvent(forgottenPasswordDto));
-        return null;
+        return ResponseEntity.ok("a verified mail have been sent to your email");
     }   
 }
