@@ -1,7 +1,6 @@
-package com.example.RecipeHub.client.dtos;
+package com.example.RecipeHub.dtos;
 
 public class ForgottenPasswordDto {
-    private long id;
     private String email;
     private String name;
     private String password;
@@ -10,19 +9,10 @@ public class ForgottenPasswordDto {
 		super();
 	}
 
-	public ForgottenPasswordDto(long id, String email, String name, String password) {
-        this.id = id;
+	public ForgottenPasswordDto(String email, String name, String password) {
         this.email = email;
         this.name = name;
         this.password = password;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getEmail() {

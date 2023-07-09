@@ -6,7 +6,7 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import com.example.RecipeHub.client.dtos.SupportTicketDTO;
+import com.example.RecipeHub.dtos.SupportTicketDTO;
 import com.example.RecipeHub.entities.SupportTicket;
 
 @Mapper(componentModel = "spring")

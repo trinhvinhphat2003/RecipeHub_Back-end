@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RecipeHub.client.dtos.FriendshipRequestDTO;
-import com.example.RecipeHub.client.dtos.UserDTO;
+import com.example.RecipeHub.dtos.FriendshipRequestDTO;
+import com.example.RecipeHub.dtos.UserDTO;
 import com.example.RecipeHub.entities.FriendshipRequest;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Friendship_status;

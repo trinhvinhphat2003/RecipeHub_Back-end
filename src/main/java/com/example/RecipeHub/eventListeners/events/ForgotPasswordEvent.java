@@ -1,7 +1,8 @@
 package com.example.RecipeHub.eventListeners.events;
 
-import com.example.RecipeHub.client.dtos.ForgottenPasswordDto;
 import org.springframework.context.ApplicationEvent;
+
+import com.example.RecipeHub.dtos.ForgottenPasswordDto;
 
 public class ForgotPasswordEvent extends ApplicationEvent {
     private ForgottenPasswordDto userPasswordChangeDto;

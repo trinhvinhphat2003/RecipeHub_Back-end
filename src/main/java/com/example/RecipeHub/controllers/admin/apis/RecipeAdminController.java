@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.RecipeHub.admin.dtos.RecipesPaginationResponse;
-import com.example.RecipeHub.client.dtos.RecipeDTO;
+import com.example.RecipeHub.dtos.RecipeDTO;
+import com.example.RecipeHub.dtos.RecipesPaginationResponse;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.services.RecipeService;

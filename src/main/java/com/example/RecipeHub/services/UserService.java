@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import com.example.RecipeHub.client.dtos.EditProfileRequest;
-import com.example.RecipeHub.client.dtos.UserDTO;
+import com.example.RecipeHub.dtos.EditProfileRequest;
+import com.example.RecipeHub.dtos.UserDTO;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.errorHandlers.NotFoundExeption;
 import com.example.RecipeHub.mappers.UserMapper;

@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.RecipeHub.client.dtos.MealPlannerRequest;
-import com.example.RecipeHub.client.dtos.MealPlannerResponse;
+import com.example.RecipeHub.dtos.MealPlannerRequest;
+import com.example.RecipeHub.dtos.MealPlannerResponse;
 import com.example.RecipeHub.entities.Meal_planner;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.enums.MealType;

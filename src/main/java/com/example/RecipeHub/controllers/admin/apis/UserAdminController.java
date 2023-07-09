@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.RecipeHub.admin.dtos.RecipesPaginationResponse;
-import com.example.RecipeHub.admin.dtos.UsersPaginationResponse;
-import com.example.RecipeHub.client.dtos.UserDTO;
+import com.example.RecipeHub.dtos.RecipesPaginationResponse;
+import com.example.RecipeHub.dtos.UserDTO;
+import com.example.RecipeHub.dtos.UsersPaginationResponse;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.services.UserService;
 

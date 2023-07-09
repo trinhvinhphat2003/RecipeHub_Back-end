@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.RecipeHub.client.dtos.TagDTO;
+import com.example.RecipeHub.dtos.TagDTO;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.errorHandlers.NotFoundExeption;
 import com.example.RecipeHub.mappers.TagMapper;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RecipeHub.client.dtos.TagDTO;
+import com.example.RecipeHub.dtos.TagDTO;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.services.TagService;
 import com.example.RecipeHub.utils.TagDefaultConstant;

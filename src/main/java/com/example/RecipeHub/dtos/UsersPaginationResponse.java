@@ -1,8 +1,6 @@
-package com.example.RecipeHub.admin.dtos;
+package com.example.RecipeHub.dtos;
 
 import java.util.ArrayList;
-
-import com.example.RecipeHub.client.dtos.UserDTO;
 
 public class UsersPaginationResponse {
 	private ArrayList<UserDTO> users;

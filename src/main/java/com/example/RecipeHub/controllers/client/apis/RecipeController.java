@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.RecipeHub.client.dtos.FIlterDTO;
-import com.example.RecipeHub.client.dtos.IngredientDTO;
-import com.example.RecipeHub.client.dtos.RecipeDTO;
-import com.example.RecipeHub.client.dtos.TagDTO;
+import com.example.RecipeHub.dtos.FIlterDTO;
+import com.example.RecipeHub.dtos.IngredientDTO;
+import com.example.RecipeHub.dtos.RecipeDTO;
+import com.example.RecipeHub.dtos.TagDTO;
 import com.example.RecipeHub.entities.Ingredient;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.Tag;

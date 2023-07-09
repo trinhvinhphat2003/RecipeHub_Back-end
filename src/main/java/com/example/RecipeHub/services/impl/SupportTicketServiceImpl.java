@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.support.PageableUtils;
 import org.springframework.stereotype.Service;
 
-import com.example.RecipeHub.client.dtos.SupportTicketDTO;
+import com.example.RecipeHub.dtos.SupportTicketDTO;
 import com.example.RecipeHub.entities.SupportTicket;
 import com.example.RecipeHub.enums.SupportTicketStatus;
 import com.example.RecipeHub.mappers.SupportTicketMapper;

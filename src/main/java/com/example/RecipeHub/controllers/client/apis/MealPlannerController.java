@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RecipeHub.client.dtos.MealPlannerRequest;
-import com.example.RecipeHub.client.dtos.MealPlannerResponse;
+import com.example.RecipeHub.dtos.MealPlannerRequest;
+import com.example.RecipeHub.dtos.MealPlannerResponse;
 import com.example.RecipeHub.entities.Meal_planner;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.errorHandlers.ForbiddenExeption;

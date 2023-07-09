@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RecipeHub.client.dtos.SupportTicketDTO;
+import com.example.RecipeHub.dtos.SupportTicketDTO;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.services.SupportTicketService;
 

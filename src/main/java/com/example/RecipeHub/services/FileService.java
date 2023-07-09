@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.RecipeHub.client.dtos.IngredientDTO;
-import com.example.RecipeHub.client.dtos.RecipeDTO;
+import com.example.RecipeHub.dtos.IngredientDTO;
+import com.example.RecipeHub.dtos.RecipeDTO;
 import com.example.RecipeHub.entities.Image;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.User;

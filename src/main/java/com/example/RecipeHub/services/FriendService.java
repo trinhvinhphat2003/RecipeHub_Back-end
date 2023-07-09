@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.RecipeHub.client.dtos.FriendshipRequestDTO;
-import com.example.RecipeHub.client.dtos.UserDTO;
+import com.example.RecipeHub.dtos.FriendshipRequestDTO;
+import com.example.RecipeHub.dtos.UserDTO;
 import com.example.RecipeHub.entities.FriendshipRequest;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Friendship_status;

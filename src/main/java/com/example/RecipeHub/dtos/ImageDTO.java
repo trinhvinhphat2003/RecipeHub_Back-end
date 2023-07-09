@@ -1,4 +1,4 @@
-package com.example.RecipeHub.client.dtos;
+package com.example.RecipeHub.dtos;
 
 public class ImageDTO {
 	private Long imageId;

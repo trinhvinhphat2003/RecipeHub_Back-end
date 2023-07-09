@@ -2,7 +2,7 @@ package com.example.RecipeHub.services;
 
 import java.util.ArrayList;
 
-import com.example.RecipeHub.client.dtos.SupportTicketDTO;
+import com.example.RecipeHub.dtos.SupportTicketDTO;
 
 public interface SupportTicketService {
 	public ArrayList<SupportTicketDTO> getAllDtosWithPagination(Integer page, Integer size, String sortBy, String direction);
