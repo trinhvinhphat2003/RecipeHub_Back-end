@@ -10,10 +10,13 @@ import org.springframework.stereotype.Service;
 import com.example.RecipeHub.dtos.SupportTicketDTO;
 import com.example.RecipeHub.entities.SupportTicket;
 import com.example.RecipeHub.enums.SupportTicketStatus;
+import com.example.RecipeHub.errorHandlers.NotFoundExeption;
 import com.example.RecipeHub.mappers.SupportTicketMapper;
 import com.example.RecipeHub.repositories.SupportTicketRepository;
 import com.example.RecipeHub.services.SupportTicketService;
 import com.example.RecipeHub.utils.PaginationUtil;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class SupportTicketServiceImpl implements SupportTicketService{
@@ -26,8 +29,8 @@ public class SupportTicketServiceImpl implements SupportTicketService{
 	}
 
 	@Override
-	public ArrayList<SupportTicketDTO> getAllDtosWithPagination(String query, Integer page, Integer size, String sortBy, String direction) {
-		Page<SupportTicket> supportTickets = supportTicketRepository.findAllWithFilterAndPagination(query, sortBy, direction, PaginationUtil.generatePageable(page, size, sortBy, direction));
+	public ArrayList<SupportTicketDTO> getAllDtosWithPagination(String query, Integer page, Integer size, String sortBy, String direction, String status) {
+		Page<SupportTicket> supportTickets = supportTicketRepository.findAllWithFilterAndPagination(query, sortBy, direction, status, PaginationUtil.generatePageable(page, size, sortBy, direction));
 		ArrayList<SupportTicketDTO> result = new ArrayList<>();
 		for(SupportTicket supportTicket : supportTickets) {
 			result.add(SupportTicketMapper.INSTANCE.entityToDto(supportTicket));
@@ -57,9 +60,23 @@ public class SupportTicketServiceImpl implements SupportTicketService{
 	}
 
 	@Override
-	public Integer getCountOfDtos(String query) {
-		List<SupportTicket> result = supportTicketRepository.countFindAllWithFilter(query);
+	public Integer getCountOfDtos(String query, String status) {
+		List<SupportTicket> result = supportTicketRepository.countFindAllWithFilter(query, status);
 		return result.size();
+	}
+
+	@Override
+	public void acceptSupportTiket(Long supportTicketId) {
+		SupportTicket supportTicket = supportTicketRepository.findById(supportTicketId).orElseThrow(() -> new NotFoundExeption("this support ticket is not existed"));
+		supportTicket.setStatus(SupportTicketStatus.ACCEPTED);
+		supportTicketRepository.save(supportTicket);
+	}
+
+	@Transactional
+	@Override
+	public void rejectSupportTiket(Long supportTicketId) {
+		SupportTicket supportTicket = supportTicketRepository.findById(supportTicketId).orElseThrow(() -> new NotFoundExeption("this support ticket is not existed"));
+		supportTicketRepository.delete(supportTicket);
 	}
 
 }
