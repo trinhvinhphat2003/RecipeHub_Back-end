@@ -26,8 +26,8 @@ public class SupportTicketServiceImpl implements SupportTicketService{
 	}
 
 	@Override
-	public ArrayList<SupportTicketDTO> getAllDtosWithPagination(Integer page, Integer size, String sortBy, String direction) {
-		Page<SupportTicket> supportTickets = supportTicketRepository.findAll(PaginationUtil.generatePageable(page, size, sortBy, direction));
+	public ArrayList<SupportTicketDTO> getAllDtosWithPagination(String query, Integer page, Integer size, String sortBy, String direction) {
+		Page<SupportTicket> supportTickets = supportTicketRepository.findAllWithFilterAndPagination(query, sortBy, direction, PaginationUtil.generatePageable(page, size, sortBy, direction));
 		ArrayList<SupportTicketDTO> result = new ArrayList<>();
 		for(SupportTicket supportTicket : supportTickets) {
 			result.add(SupportTicketMapper.INSTANCE.entityToDto(supportTicket));
@@ -54,6 +54,12 @@ public class SupportTicketServiceImpl implements SupportTicketService{
 		supportTicket.setMessage(dto.getMessage());
 		supportTicket.setStatus(SupportTicketStatus.PENDING);
 		supportTicketRepository.save(supportTicket);
+	}
+
+	@Override
+	public Integer getCountOfDtos(String query) {
+		List<SupportTicket> result = supportTicketRepository.countFindAllWithFilter(query);
+		return result.size();
 	}
 
 }

@@ -45,7 +45,7 @@ public class User implements UserDetails {
 	@Column(nullable = true)
 	private String password;
 
-	@Column(name = "full_name")
+	@Column(name = "full_name", length = 100)
 	private String fullName;
 
 	@Column(name = "profile_image")
@@ -54,13 +54,14 @@ public class User implements UserDetails {
 	@Column(name = "birthday")
 	private Date birthday;
 
+	@Column(name = "role", length = 20)
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
-	@Column(name = "login_type")
+	@Column(name = "login_type", length = 20)
 	@Enumerated(EnumType.STRING)
 	private LoginType loginType;
 

@@ -20,6 +20,7 @@ import com.example.RecipeHub.entities.Image;
 import com.example.RecipeHub.entities.Ingredient;
 import com.example.RecipeHub.entities.Meal_planner;
 import com.example.RecipeHub.entities.Recipe;
+import com.example.RecipeHub.entities.SupportTicket;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
@@ -27,11 +28,13 @@ import com.example.RecipeHub.enums.LoginType;
 import com.example.RecipeHub.enums.MealType;
 import com.example.RecipeHub.enums.PrivacyStatus;
 import com.example.RecipeHub.enums.Role;
+import com.example.RecipeHub.enums.SupportTicketStatus;
 import com.example.RecipeHub.repositories.FriendshipRepository;
 import com.example.RecipeHub.repositories.IngredientRepository;
 import com.example.RecipeHub.repositories.MealPlannerRepository;
 import com.example.RecipeHub.repositories.RecipeCustomRepository;
 import com.example.RecipeHub.repositories.RecipeRepository;
+import com.example.RecipeHub.repositories.SupportTicketRepository;
 import com.example.RecipeHub.repositories.TagRepository;
 import com.example.RecipeHub.repositories.UserRepository;
 import com.example.RecipeHub.services.FriendService;
@@ -72,6 +75,9 @@ public class ApplicationConfig {
 	
 	@Autowired
 	private RecipeCustomRepository recipeCustomRepository;
+	
+	@Autowired
+	private SupportTicketRepository supportTicketRepository;
 
 	@Bean
 	public WebClient.Builder webClient() {
@@ -95,6 +101,11 @@ public class ApplicationConfig {
 				
 				//init
 				String image1 = "https://recipehub.herokuapp.com/api/v1/global/image/recipe/192cf0a4-d69f-4add-99d5-c1bb3778b5f2.jpg";
+				
+				//create support ticket
+				supportTicketRepository.save(new SupportTicket(null, "trinhvinhphat123@gmail.com", "hello", SupportTicketStatus.PENDING));
+				supportTicketRepository.save(new SupportTicket(null, "hello123@gmail.com", "hello", SupportTicketStatus.PENDING));
+				supportTicketRepository.save(new SupportTicket(null, "eololo123@gmail.com", "hihihihihi", SupportTicketStatus.PENDING));
 				
 				// create user
 				userRepository.save(new User("admin@gmail.com", getPasswordEncoder().encode("123456"), Role.ADMIN,

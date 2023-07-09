@@ -258,6 +258,7 @@ public class RecipeService {
 		recipeRepository.deleteById(recipe.getRecipe_id());
 	}
 
+	@Transactional
 	public void deleteOneRecipeById(Long recipeId) {
 		Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new NotFoundExeption("recipe not found"));
 		Iterator<Image> imageIterator = recipe.getImages().iterator();

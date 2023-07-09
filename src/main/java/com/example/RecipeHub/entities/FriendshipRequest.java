@@ -39,7 +39,7 @@ public class FriendshipRequest {
     private User receiver;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "status" ,nullable = false)
+    @Column(name = "status" ,nullable = false, length = 20)
     private Friendship_status status;
 
 	public FriendshipRequest(User sender, User receiver, Friendship_status status) {
