@@ -19,7 +19,7 @@ import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.services.RecipeService;
 
 @Controller
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/admin")
 public class RecipeAdminController {
 	
 	private final RecipeService recipeService;
@@ -29,7 +29,7 @@ public class RecipeAdminController {
 		this.recipeService = recipeService;
 	}
 
-	@GetMapping("/admin/recipes")
+	@GetMapping("/recipes")
 	public ResponseEntity<RecipesPaginationResponse> getAllRecipe(@AuthenticationPrincipal User user,
 			@RequestParam(value = "page", defaultValue = "0", required = false) int page,
 			@RequestParam(value = "size", defaultValue = "2", required = false) int size,
@@ -40,7 +40,7 @@ public class RecipeAdminController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/admin/recipe/{recipe_id}")
+	@DeleteMapping("/recipe/{recipe_id}")
 	public ResponseEntity<String> deleteOneRecipeByUser(@AuthenticationPrincipal User user,
 			@PathVariable("recipe_id") Long recipeId) {
 		recipeService.deleteOneRecipeById(recipeId);

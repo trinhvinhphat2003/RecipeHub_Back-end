@@ -19,7 +19,7 @@ import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.services.UserService;
 
 @Controller
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/admin")
 public class UserAdminController {
 	
 	private final UserService userService;
@@ -29,7 +29,7 @@ public class UserAdminController {
 		this.userService = userService;
 	}
 
-	@GetMapping("/admin/users")
+	@GetMapping("/users")
 	public ResponseEntity<UsersPaginationResponse> getAllRecipe(@AuthenticationPrincipal User user,
 			@RequestParam(value = "page", defaultValue = "0", required = false) int page,
 			@RequestParam(value = "size", defaultValue = "20", required = false) int size,
@@ -40,13 +40,13 @@ public class UserAdminController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("/admin/user/block/{user_id}")
+	@PostMapping("/user/block/{user_id}")
 	public ResponseEntity<String> blockUser(@AuthenticationPrincipal User user, @PathVariable("user_id") Long userId) {
 		userService.blockUserByUserId(userId);
 		return ResponseEntity.ok("this user have been blocked");
 	}
 	
-	@PostMapping("/admin/user/unblock/{user_id}")
+	@PostMapping("/user/unblock/{user_id}")
 	public ResponseEntity<String> unBlockUser(@AuthenticationPrincipal User user, @PathVariable("user_id") Long userId) {
 		userService.unBlockUserByUserId(userId);
 		return ResponseEntity.ok("this user have been unblocked");
