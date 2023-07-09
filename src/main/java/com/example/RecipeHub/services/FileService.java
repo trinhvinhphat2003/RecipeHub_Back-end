@@ -145,6 +145,7 @@ public class FileService {
 			ArrayList<IngredientDTO> ingredientDTOs = recipe.getIngredients();
 			for (IngredientDTO ingredientDTO : ingredientDTOs)
 				ingredients.append(ingredientDTO.getIngredientName() + ": " + ingredientDTO.getAmount() + ", ");
+			if(ingredientDTOs.size() == 0)ingredients.append(", ");
 			String ingredientString = ingredients.toString();
 			ingredientString = ingredientString.substring(0, ingredientString.length() - 2);
 			row.createCell(4).setCellValue(ingredientString);
