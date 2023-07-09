@@ -16,6 +16,6 @@ public interface SupportTicketRepository extends JpaRepository<SupportTicket, Lo
 	@Query(value = "SELECT * FROM support_ticket where email like %:query% or message like %:query% and status like %:status% order by :sortBy :direction", nativeQuery = true)
 	public Page<SupportTicket> findAllWithFilterAndPagination(@Param("query") String query, @Param("sortBy") String sortBy,@Param("direction") String direction, @Param("status") String status, Pageable pageable);
 	
-	@Query(value = "SELECT * FROM support_ticket where email like %:query% or message and status like %:status% like %:query%", nativeQuery = true)
+	@Query(value = "SELECT * FROM support_ticket where email like %:query% or message like %:query% and status like %:status%", nativeQuery = true)
 	public List<SupportTicket> countFindAllWithFilter(@Param("query") String query, @Param("status") String status);
 }
