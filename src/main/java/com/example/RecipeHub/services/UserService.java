@@ -44,7 +44,7 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public int filterUser(String sort, String direction, String query, Integer isBlocked) {
+	public int countOfFilterUser(String sort, String direction, String query, Integer isBlocked) {
 		return userRepository.filterUser(query).size();
 	}
 

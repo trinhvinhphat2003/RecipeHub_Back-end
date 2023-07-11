@@ -13,6 +13,7 @@ import com.example.RecipeHub.dtos.LoginResponseDTO;
 import com.example.RecipeHub.dtos.ResponseObject;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Gender;
+import com.example.RecipeHub.enums.LoginStatusResponse;
 import com.example.RecipeHub.enums.LoginType;
 import com.example.RecipeHub.enums.Role;
 import com.example.RecipeHub.errorHandlers.ForbiddenExeption;
@@ -56,15 +57,15 @@ public class AuthenticateService {
 		User user = userRepository.findByEmail(loginDTO.getEmail()).get();
 		
 		if(!user.isEnable()) {
-			responseDto = new LoginResponseDTO("", UserMapper.INSTANCE.userToUserDTO(user), ACCOUNT_IS_NOT_VERIFIED);
+			responseDto = new LoginResponseDTO("", UserMapper.INSTANCE.userToUserDTO(user), LoginStatusResponse.ACCOUNT_NOT_VERIFIED);
 			return responseDto;
 		} else if(user.isBlocked()) {
-			responseDto = new LoginResponseDTO("", UserMapper.INSTANCE.userToUserDTO(user), ACCOUNT_IS_BLOCKED);
+			responseDto = new LoginResponseDTO("", UserMapper.INSTANCE.userToUserDTO(user), LoginStatusResponse.ACCOUNT_BLOCKED);
 			return responseDto;
 		} else {
 			//generate jwt token
 			String JwtToken = "Bearer " + jwtService.generateToken(user);
-			responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user), LOGIN_SUCCESSFULLY);
+			responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user), LoginStatusResponse.LOGIN_SUCCESSFULLY);
 			return responseDto;
 		}
 	}
@@ -100,7 +101,7 @@ public class AuthenticateService {
 		String JwtToken = "Bearer " + jwtService.generateToken(user.get());
 		
 		//response
-		LoginResponseDTO responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user.get()), LOGIN_SUCCESSFULLY);
+		LoginResponseDTO responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user.get()), LoginStatusResponse.LOGIN_SUCCESSFULLY);
 		
 		return responseDto;
 	}

@@ -1,5 +1,7 @@
 package com.example.RecipeHub.dtos;
 
+import com.example.RecipeHub.enums.LoginStatusResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,23 +12,26 @@ import lombok.NoArgsConstructor;
 //@NoArgsConstructor
 //@Builder
 public class LoginResponseDTO {
-	private Integer status;
+	private LoginStatusResponse status;
 	private String JwtToken;
 	private UserDTO user;
-	public LoginResponseDTO(String jwtToken, UserDTO user, Integer status) {
+	public LoginResponseDTO(String jwtToken, UserDTO user, LoginStatusResponse status) {
 		super();
 		JwtToken = jwtToken;
 		this.user = user;
 		this.status = status;
 	}
 	
-	public Integer getStatus() {
+
+	public LoginStatusResponse getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+
+	public void setStatus(LoginStatusResponse status) {
 		this.status = status;
 	}
+
 
 	public String getJwtToken() {
 		return JwtToken;
