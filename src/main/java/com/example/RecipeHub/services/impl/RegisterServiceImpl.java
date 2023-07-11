@@ -1,22 +1,23 @@
 package com.example.RecipeHub.services.impl;
 
+import com.example.RecipeHub.client.dtos.request.RegisterRequest;
+import com.example.RecipeHub.client.dtos.response.RegisterResponse;
 import com.example.RecipeHub.entities.MailInfo;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.entities.VerificationToken;
+import com.example.RecipeHub.errorHandlers.BadRequestExeption;
 import com.example.RecipeHub.mappers.UserMapper;
-import com.example.RecipeHub.dtos.request.RegisterRequest;
-import com.example.RecipeHub.dtos.response.RegisterResponse;
 import com.example.RecipeHub.repositories.UserRepository;
 import com.example.RecipeHub.repositories.VerificationTokenRepository;
 import com.example.RecipeHub.services.RegisterService;
 import com.example.RecipeHub.services.EmailService;
 import com.example.RecipeHub.services.JwtService;
+import com.example.RecipeHub.utils.SystemUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -46,16 +47,17 @@ public class RegisterServiceImpl implements RegisterService {
 	}
 
 	@Override
-    public RegisterResponse register(RegisterRequest registerRequest) throws Exception {
+    public RegisterResponse register(RegisterRequest registerRequest, HttpServletRequest httpServletRequest) throws Exception {
 
         // check if email has been register
         if(userRepository.findByEmail(registerRequest.getEmail()).isPresent()){
-            throw new RuntimeException("Email " + registerRequest.getEmail() + " has been registered.");
+            throw new BadRequestExeption("Email " + registerRequest.getEmail() + " has been registered.");
         }
 
         // save account to database
         registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         User user = userMapper.registerRequestToUser(registerRequest);
+        user.setProfileImage(SystemUtil.getApplicationPath(httpServletRequest) + "/api/v1/global/image/avatar/default.jpg");
         user = userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user);

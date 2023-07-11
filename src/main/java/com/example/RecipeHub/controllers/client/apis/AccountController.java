@@ -1,8 +1,8 @@
 package com.example.RecipeHub.controllers.client.apis;
 
-import com.example.RecipeHub.dtos.ForgottenPasswordDto;
-import com.example.RecipeHub.dtos.request.RegisterRequest;
-import com.example.RecipeHub.dtos.response.RegisterResponse;
+import com.example.RecipeHub.client.dtos.ForgottenPasswordDto;
+import com.example.RecipeHub.client.dtos.request.RegisterRequest;
+import com.example.RecipeHub.client.dtos.response.RegisterResponse;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.eventListeners.events.ForgotPasswordEvent;
 import com.example.RecipeHub.eventListeners.events.PasswordChangeSuccessEvent;
@@ -31,7 +31,7 @@ public class AccountController {
     @PostMapping(path = "/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest, HttpServletRequest request) throws Exception {
         // register account
-        RegisterResponse registerResponse = registerService.register(registerRequest);
+        RegisterResponse registerResponse = registerService.register(registerRequest, request);
         // send verify email
         eventPublisher.publishEvent(new RegistrationCompletionEvent(registerRequest, getApplicationPath(request)));
         return ResponseEntity.ok(registerResponse);

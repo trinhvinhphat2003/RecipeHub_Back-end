@@ -9,6 +9,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,24 +29,41 @@ public class Ingredient {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ingredient_id")
 	private Long ingredientId;
-
-	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
-	private List<Recipe_HAVE_Ingredient> recipes = new ArrayList<>();
+	
+	@ManyToOne
+	@JoinColumn(name = "recipe_id")
+	private Recipe recipe;
 
 	@Column(name = "ingredient_name", nullable = false)
 	private String ingredientName;
 
-	public Ingredient(String ingredientName) {
-		super();
-		this.ingredientName = ingredientName;
-	}
+	@Column(name = "amount")
+	private String amount;
+
 	
-	public List<Recipe_HAVE_Ingredient> getRecipes() {
-		return recipes;
+
+	public Ingredient(Long ingredientId, Recipe recipe, String ingredientName, String amount) {
+		super();
+		this.ingredientId = ingredientId;
+		this.recipe = recipe;
+		this.ingredientName = ingredientName;
+		this.amount = amount;
 	}
 
-	public void setRecipes(List<Recipe_HAVE_Ingredient> recipes) {
-		this.recipes = recipes;
+	public Recipe getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
+	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
 	}
 
 	public String getIngredientName() {
@@ -52,14 +71,6 @@ public class Ingredient {
 	}
 
 	public void setIngredientName(String ingredientName) {
-		this.ingredientName = ingredientName;
-	}
-
-
-	public Ingredient(Long ingredientId, List<Recipe_HAVE_Ingredient> recipes, String ingredientName) {
-		super();
-		this.ingredientId = ingredientId;
-		this.recipes = recipes;
 		this.ingredientName = ingredientName;
 	}
 

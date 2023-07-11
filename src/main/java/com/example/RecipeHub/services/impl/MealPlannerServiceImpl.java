@@ -1,8 +1,8 @@
 package com.example.RecipeHub.services.impl;
 
+import com.example.RecipeHub.client.dtos.request.MealPlannerRequest;
+import com.example.RecipeHub.client.dtos.response.MealPlannerResponse;
 import com.example.RecipeHub.dtos.request.MealPlannerDayRangeRequest;
-import com.example.RecipeHub.dtos.request.MealPlannerRequest;
-import com.example.RecipeHub.dtos.response.MealPlannerResponse;
 import com.example.RecipeHub.entities.MealPlanner;
 import com.example.RecipeHub.mappers.MealPlannerMapper;
 import com.example.RecipeHub.repositories.MealPlannerRepository;
@@ -20,45 +20,46 @@ import java.util.TimeZone;
 
 @Service
 @RequiredArgsConstructor
-public class MealPlannerServiceImpl implements MealPlannerService {
+//public class MealPlannerServiceImpl implements MealPlannerService {
+public class MealPlannerServiceImpl {
 
-    private final MealPlannerMapper mealPlannerMapper;
+//    private final MealPlannerMapper mealPlannerMapper;
     private final MealPlannerRepository mealPlannerRepository;
 
-    @Override
-    public MealPlannerResponse addMealPlanner(MealPlannerRequest mealPlannerRequest) throws Exception {
-        MealPlanner mealPlanner = mealPlannerMapper.mealPlannerRequestToMealPlanner(mealPlannerRequest);
-        MealPlanner mealPlannerInDatabase = mealPlannerRepository.findMealPlannerByDateAndUser_UserId(mealPlannerRequest.getDate(), mealPlannerRequest.getUserId());
-        MealPlanner result;
-        MealPlannerResponse response;
-        if(mealPlannerInDatabase == null){
-            result = mealPlannerRepository.save(mealPlanner);
-        } else {
-            mealPlannerInDatabase.getRecipes().addAll(mealPlanner.getRecipes());
-            result = mealPlannerRepository.save(mealPlannerInDatabase);
-        }
-        response = mealPlannerMapper.mealPlannerToMealPlannerResponse(result);
-        return response;
-    }
-
-    @Override
-    public MealPlannerResponse getMealPlannerInADay(MealPlannerRequest mealPlannerRequest) throws Exception {
-        MealPlanner mealPlanner = mealPlannerRepository.findMealPlannerByDateAndUser_UserId(mealPlannerRequest.getDate(), mealPlannerRequest.getUserId());
-        MealPlannerResponse response = mealPlannerMapper.mealPlannerToMealPlannerResponse(mealPlanner);
-        return response;
-    }
-
-    @Override
-    public List<MealPlannerResponse> getMealPlannerInDayRange(MealPlannerDayRangeRequest mealPlannerRequest) throws Exception{
-        List<MealPlanner> mealPlanner = mealPlannerRepository.findMealPlannerByUser_UserIdAndDateBeforeAndDateAfter(mealPlannerRequest.getUserId(), mealPlannerRequest.getBeforeDate(), mealPlannerRequest.getAfterDate());
-        return mealPlannerMapper.mealPlannersToMealPlannerResponses(mealPlanner);
-    }
-
-    @Override
-    public MealPlannerResponse updateMealPlanner(MealPlannerRequest mealPlannerRequest) throws Exception {
-        MealPlanner mealPlanner = mealPlannerRepository.findById(mealPlannerRequest.getMealPlannerId()).orElseThrow(() -> new RuntimeException("Meal planner not found"));
-        return null;
-    }
+//    @Override
+//    public MealPlannerResponse addMealPlanner(MealPlannerRequest mealPlannerRequest) throws Exception {
+//        MealPlanner mealPlanner = mealPlannerMapper.mealPlannerRequestToMealPlanner(mealPlannerRequest);
+//        MealPlanner mealPlannerInDatabase = mealPlannerRepository.findMealPlannerByDateAndUser_UserId(mealPlannerRequest.getDate(), mealPlannerRequest.getUserId());
+//        MealPlanner result;
+//        MealPlannerResponse response;
+//        if(mealPlannerInDatabase == null){
+//            result = mealPlannerRepository.save(mealPlanner);
+//        } else {
+//            mealPlannerInDatabase.getRecipes().addAll(mealPlanner.getRecipes());
+//            result = mealPlannerRepository.save(mealPlannerInDatabase);
+//        }
+//        response = mealPlannerMapper.mealPlannerToMealPlannerResponse(result);
+//        return response;
+//    }
+//
+//    @Override
+//    public MealPlannerResponse getMealPlannerInADay(MealPlannerRequest mealPlannerRequest) throws Exception {
+//        MealPlanner mealPlanner = mealPlannerRepository.findMealPlannerByDateAndUser_UserId(mealPlannerRequest.getDate(), mealPlannerRequest.getUserId());
+//        MealPlannerResponse response = mealPlannerMapper.mealPlannerToMealPlannerResponse(mealPlanner);
+//        return response;
+//    }
+//
+//    @Override
+//    public List<MealPlannerResponse> getMealPlannerInDayRange(MealPlannerDayRangeRequest mealPlannerRequest) throws Exception{
+//        List<MealPlanner> mealPlanner = mealPlannerRepository.findMealPlannerByUser_UserIdAndDateBeforeAndDateAfter(mealPlannerRequest.getUserId(), mealPlannerRequest.getBeforeDate(), mealPlannerRequest.getAfterDate());
+//        return mealPlannerMapper.mealPlannersToMealPlannerResponses(mealPlanner);
+//    }
+//
+//    @Override
+//    public MealPlannerResponse updateMealPlanner(MealPlannerRequest mealPlannerRequest) throws Exception {
+//        MealPlanner mealPlanner = mealPlannerRepository.findById(mealPlannerRequest.getMealPlannerId()).orElseThrow(() -> new RuntimeException("Meal planner not found"));
+//        return null;
+//    }
 
     @Scheduled(cron = "0 0 1 15 */3 *", zone = "Asia/Saigon") // 01:00 AM on 15/1, 15/4, 15/7, 15/10
     public void removeMealPlanner100DaysBeforeCurrentDate(){

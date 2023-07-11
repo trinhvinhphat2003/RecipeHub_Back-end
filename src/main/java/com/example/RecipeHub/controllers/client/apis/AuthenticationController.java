@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RecipeHub.dtos.LoginDTO;
-import com.example.RecipeHub.dtos.LoginResponseDTO;
+import com.example.RecipeHub.client.dtos.LoginDTO;
+import com.example.RecipeHub.client.dtos.LoginResponseDTO;
 import com.example.RecipeHub.services.AuthenticateService;
 
 @RestController

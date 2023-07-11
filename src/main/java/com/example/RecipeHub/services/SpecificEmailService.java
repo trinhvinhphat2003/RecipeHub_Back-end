@@ -1,7 +1,7 @@
 package com.example.RecipeHub.services;
 
-import com.example.RecipeHub.dtos.ForgottenPasswordDto;
-import com.example.RecipeHub.dtos.request.RegisterRequest;
+import com.example.RecipeHub.client.dtos.ForgottenPasswordDto;
+import com.example.RecipeHub.client.dtos.request.RegisterRequest;
 import com.example.RecipeHub.entities.User;
 
 public interface SpecificEmailService {

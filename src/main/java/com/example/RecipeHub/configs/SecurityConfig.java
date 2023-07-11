@@ -38,6 +38,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/v1/auth/**").permitAll()
 				.requestMatchers("/api/v1/global/**").permitAll()
 				.requestMatchers("/api/v1/meal-planner/**").permitAll()
+				.requestMatchers("/api/v1/zalo-pay/**").permitAll()
 				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/api-docs/**").permitAll()
 				.anyRequest().authenticated()
 				.and()

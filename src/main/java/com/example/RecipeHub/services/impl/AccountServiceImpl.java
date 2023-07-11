@@ -1,6 +1,6 @@
 package com.example.RecipeHub.services.impl;
 
-import com.example.RecipeHub.dtos.ForgottenPasswordDto;
+import com.example.RecipeHub.client.dtos.ForgottenPasswordDto;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.repositories.UserRepository;
 import com.example.RecipeHub.services.AccountService;
