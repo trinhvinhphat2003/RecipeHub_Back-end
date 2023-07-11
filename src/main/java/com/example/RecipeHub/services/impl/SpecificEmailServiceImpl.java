@@ -6,6 +6,8 @@ import com.example.RecipeHub.entities.MailInfo;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.services.EmailService;
 import com.example.RecipeHub.services.SpecificEmailService;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -53,13 +55,16 @@ public class SpecificEmailServiceImpl implements SpecificEmailService {
         emailService.sendEmailUsingHTMLTemplate(mailInfo);
     }
 
+    @Value("${recipehub.baseURL}")
+	private String applicationBaseURL;
+    
 	@Override
 	public void sendForgotPasswordVerifiedEmail(ForgotPasswordVerifiedMailDTO info) throws Exception {
 		final String subject = "forgotpassword verify mail for you RecipeHub account";
         final String htmlTemplate = "forgot-password-verify-email";
         final Map<String, Object> properties = new HashMap<>();
         properties.put("name", info.getFullName());
-        properties.put("verifyUrl", "http://localhost:8080/api/v1/global/forgot-password/verified/" + info.getToken());
+        properties.put("verifyUrl", applicationBaseURL + "/api/v1/global/forgot-password/verified/" + info.getToken());
 //        MailInfo mailInfo = MailInfo.builder()
 //                .receiver(request.getEmail())
 //                .subject(subject)
