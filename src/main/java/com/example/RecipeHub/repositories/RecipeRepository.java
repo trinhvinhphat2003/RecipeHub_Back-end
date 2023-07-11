@@ -36,5 +36,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 	@Modifying
     @Query(value = "delete from recipe_have_tag where recipe_id = :recipeId", nativeQuery = true)
     void deleteTagAndRecipeLinks(@Param("recipeId") Long recipeId);
+	
+	@Query(value = "SELECT count(*) FROM recipe", nativeQuery = true)
+	public Integer countRecipe();
 
 }

@@ -79,4 +79,9 @@ public class SupportTicketServiceImpl implements SupportTicketService{
 		supportTicketRepository.delete(supportTicket);
 	}
 
+	@Override
+	public Integer countSupportTicketCurrentInDB() {
+		return supportTicketRepository.countSupportTicket();
+	}
+
 }

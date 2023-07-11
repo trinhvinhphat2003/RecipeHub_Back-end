@@ -46,4 +46,9 @@ public class RecipeAdminController {
 		recipeService.deleteOneRecipeById(recipeId);
 		return new ResponseEntity<>("deleted recipe have id " + recipeId + " successfully", HttpStatus.OK);
 	}
+	
+	@GetMapping("/recipe/total")
+	public ResponseEntity<Integer> countRecipeCurrentInDB() {
+		return ResponseEntity.ok(recipeService.countRecipeCurrentInDB());
+	}
 }

@@ -1,6 +1,7 @@
 package com.example.RecipeHub.controllers.client.apis;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +27,10 @@ public class SupportTicketController {
 	public ResponseEntity<String> addNewSupportTicket(@Valid @RequestBody SupportTicketDTO dto) {
 		supportTicketService.addOne(dto);
 		return ResponseEntity.ok("add new support ticket successfully");
+	}
+	
+	@GetMapping("admin/support-ticket/total")
+	public ResponseEntity<Integer> countRecipeCurrentInDB() {
+		return ResponseEntity.ok(supportTicketService.countSupportTicketCurrentInDB());
 	}
 }

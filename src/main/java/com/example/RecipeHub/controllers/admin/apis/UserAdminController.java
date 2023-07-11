@@ -52,4 +52,9 @@ public class UserAdminController {
 		userService.unBlockUserByUserId(userId);
 		return ResponseEntity.ok("this user have been unblocked");
 	}
+	
+	@GetMapping("/user/total")
+	public ResponseEntity<Integer> countRecipeCurrentInDB() {
+		return ResponseEntity.ok(userService.countUserCurrentInDB());
+	}
 }

@@ -64,4 +64,9 @@ public class UserService {
 		user.setGender(request.getGender());
 		userRepository.save(user);
 	}
+
+	public Integer countUserCurrentInDB() {
+		// TODO Auto-generated method stub
+		return userRepository.countUser();
+	}
 }

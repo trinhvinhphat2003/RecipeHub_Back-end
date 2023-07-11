@@ -18,4 +18,7 @@ public interface SupportTicketRepository extends JpaRepository<SupportTicket, Lo
 	
 	@Query(value = "SELECT * FROM support_ticket where email like %:query% or message like %:query% and status like %:status%", nativeQuery = true)
 	public List<SupportTicket> countFindAllWithFilter(@Param("query") String query, @Param("status") String status);
+
+	@Query(value = "SELECT count(*) FROM support_ticket", nativeQuery = true)
+	public Integer countSupportTicket();
 }

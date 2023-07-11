@@ -451,4 +451,8 @@ public class RecipeService {
 		emailService.sendEmailUsingHTMLTemplate(mailInfo);
 	}
 
+	public Integer countRecipeCurrentInDB() {
+		return recipeRepository.countRecipe();
+	}
+
 }

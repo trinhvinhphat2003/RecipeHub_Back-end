@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	
 	@Query(value="select u from User u where u.fullName like %:query% or u.email like %:query%")
 	public List<User> filterUser(@Param("query") String query);
+
+	@Query(value = "SELECT count(*) FROM user where enable = 1", nativeQuery = true)
+	public Integer countUser();
 }

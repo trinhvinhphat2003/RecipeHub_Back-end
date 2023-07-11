@@ -12,4 +12,5 @@ public interface SupportTicketService {
 	public void addOne(SupportTicketDTO dto);
 	public void acceptSupportTiket(Long supportTicketId);
 	public void rejectSupportTiket(Long supportTicketId);
+	public Integer countSupportTicketCurrentInDB();
 }
