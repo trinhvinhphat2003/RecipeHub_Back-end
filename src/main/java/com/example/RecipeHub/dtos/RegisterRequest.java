@@ -4,6 +4,7 @@ import com.example.RecipeHub.enums.Gender;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
@@ -16,7 +17,7 @@ public class RegisterRequest {
 	@NotBlank(message = "Fullname is required")
 	private String fullName;
 	private String profileImage;
-	@NotBlank(message = "Birthday is required")
+	@NotNull(message = "Birthday is required")
 	private Long birthday;
 
 	public Long getBirthday() {
