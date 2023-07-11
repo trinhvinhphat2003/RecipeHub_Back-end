@@ -13,6 +13,7 @@ import com.example.RecipeHub.dtos.RegisterResponse;
 import com.example.RecipeHub.entities.MailInfo;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.entities.VerificationToken;
+import com.example.RecipeHub.enums.RegisterStatusResponse;
 import com.example.RecipeHub.errorHandlers.BadRequestExeption;
 import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.repositories.UserRepository;
@@ -32,8 +33,6 @@ public class RegisterServiceImpl implements RegisterService {
     private static final String TOKEN_INVALID = "Token invalid";
     private static final String TOKEN_EXPIRED = "Token expired";
     private static final String TOKEN_VALID = "Success";
-    public final static Integer REGISTER_SUCCESSFULLY = 1;
-    public final static Integer EMAIL_DUPLICATED = 1;
 
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
@@ -60,7 +59,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         // check if email has been register
         if(userRepository.findByEmail(registerRequest.getEmail()).isPresent()){
-        	return new RegisterResponse(EMAIL_DUPLICATED);
+        	return new RegisterResponse(RegisterStatusResponse.EMAIL_DUPLICATED);
         }
 
         // save account to database
@@ -73,7 +72,7 @@ public class RegisterServiceImpl implements RegisterService {
 //        return RegisterResponse.builder()
 //                .jwtToken(jwtToken)
 //                .build();
-        return new RegisterResponse(REGISTER_SUCCESSFULLY);
+        return new RegisterResponse(RegisterStatusResponse.REGISTER_SUCCESSFULLY);
     }
 
     @Override

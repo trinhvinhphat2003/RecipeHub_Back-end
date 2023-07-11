@@ -15,6 +15,7 @@ import com.example.RecipeHub.dtos.LoginDTO;
 import com.example.RecipeHub.dtos.LoginResponseDTO;
 import com.example.RecipeHub.dtos.RegisterRequest;
 import com.example.RecipeHub.dtos.RegisterResponse;
+import com.example.RecipeHub.enums.RegisterStatusResponse;
 import com.example.RecipeHub.eventListeners.events.RegistrationCompletionEvent;
 import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.services.AuthenticateService;
@@ -53,7 +54,7 @@ public class AuthenticationController {
 	@PostMapping(path = "/register")
 	public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) throws Exception {
 		RegisterResponse registerResponse = accountService.register(registerRequest, request);
-		if(registerResponse.getStatus() == accountService.EMAIL_DUPLICATED) {
+		if(registerResponse.getStatus() == RegisterStatusResponse.EMAIL_DUPLICATED) {
 			return new ResponseEntity<RegisterResponse>(registerResponse, HttpStatus.BAD_REQUEST);
 		} else {
 			eventPublisher.publishEvent(new RegistrationCompletionEvent(registerRequest, getApplicationPath(request)));

@@ -8,8 +8,6 @@ import com.example.RecipeHub.entities.User;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface RegisterService {
-	public final static Integer REGISTER_SUCCESSFULLY = 1;
-    public final static Integer EMAIL_DUPLICATED = 1;
     RegisterResponse register(RegisterRequest registerRequest, HttpServletRequest httpServletRequest) throws Exception;
     String verifyUser(String token) throws Exception;
     String createVerificationToken(String userEmail);
