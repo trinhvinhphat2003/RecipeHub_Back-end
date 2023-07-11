@@ -21,6 +21,7 @@ import com.example.RecipeHub.services.AuthenticateService;
 import com.example.RecipeHub.services.RegisterService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -39,7 +40,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/basic/login")
-	public ResponseEntity<LoginResponseDTO> handleBasicLogin(@RequestBody LoginDTO loginDTO) {
+	public ResponseEntity<LoginResponseDTO> handleBasicLogin(@Valid @RequestBody LoginDTO loginDTO) {
 		return new ResponseEntity<>(authenticateService.authenticateBasic(loginDTO), HttpStatus.OK);
 	}
 
@@ -50,7 +51,7 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping(path = "/register")
-	public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest, HttpServletRequest request) throws Exception {
+	public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) throws Exception {
 		RegisterResponse registerResponse = accountService.register(registerRequest, request);
 		if(registerResponse.getStatus() == accountService.EMAIL_DUPLICATED) {
 			return new ResponseEntity<RegisterResponse>(registerResponse, HttpStatus.BAD_REQUEST);

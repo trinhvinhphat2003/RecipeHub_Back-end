@@ -20,6 +20,8 @@ import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.errorHandlers.ForbiddenExeption;
 import com.example.RecipeHub.services.MealPlannerService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/")
 public class MealPlannerController {
@@ -55,7 +57,7 @@ public class MealPlannerController {
 	}
 	
 	@PostMapping("user/meal-planer")
-	public ResponseEntity<String> postNewPlanner(@AuthenticationPrincipal User user, @RequestBody MealPlannerRequest request) {
+	public ResponseEntity<String> postNewPlanner(@AuthenticationPrincipal User user,@Valid @RequestBody MealPlannerRequest request) {
 		mealPlannerService.createNewMealPlanner(request, user.getUserId());
 		return ResponseEntity.ok("this planner has been created successfully");
 	}

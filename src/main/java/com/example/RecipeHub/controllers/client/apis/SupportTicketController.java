@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.RecipeHub.dtos.SupportTicketDTO;
 import com.example.RecipeHub.services.SupportTicketService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/")
 public class SupportTicketController {
@@ -21,7 +23,7 @@ public class SupportTicketController {
 	}
 
 	@PostMapping("global/support-ticket")
-	public ResponseEntity<String> addNewSupportTicket(@RequestBody SupportTicketDTO dto) {
+	public ResponseEntity<String> addNewSupportTicket(@Valid @RequestBody SupportTicketDTO dto) {
 		supportTicketService.addOne(dto);
 		return ResponseEntity.ok("add new support ticket successfully");
 	}

@@ -2,8 +2,14 @@ package com.example.RecipeHub.dtos;
 
 import com.example.RecipeHub.enums.MealType;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 public class MealPlannerRequest {
+	@NotNull(message = "Date is required")
 	private Long date;
+	@NotNull(message = "Recipe's id is required")
 	private Long recipeId;
 	private MealType mealType;
 	public MealPlannerRequest(Long date, Long recipeId, MealType mealType) {

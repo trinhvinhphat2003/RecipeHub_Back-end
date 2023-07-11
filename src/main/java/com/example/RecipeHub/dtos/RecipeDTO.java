@@ -2,6 +2,7 @@ package com.example.RecipeHub.dtos;
 
 import java.util.ArrayList;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
