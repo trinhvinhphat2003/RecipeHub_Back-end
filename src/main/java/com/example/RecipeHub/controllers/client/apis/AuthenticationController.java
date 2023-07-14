@@ -52,14 +52,10 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping(path = "/register")
-	public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) throws Exception {
-		RegisterResponse registerResponse = accountService.register(registerRequest, request);
-		if(registerResponse.getStatus() == RegisterStatusResponse.EMAIL_DUPLICATED) {
-			return new ResponseEntity<RegisterResponse>(registerResponse, HttpStatus.BAD_REQUEST);
-		} else {
-			eventPublisher.publishEvent(new RegistrationCompletionEvent(registerRequest, getApplicationPath(request)));
-			return ResponseEntity.ok(registerResponse);
-		}
+	public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) throws Exception {
+		String token = accountService.register(registerRequest, request);
+		eventPublisher.publishEvent(new RegistrationCompletionEvent(registerRequest, getApplicationPath(request), token));
+		return ResponseEntity.ok(RegisterStatusResponse.REGISTER_SUCCESSFULLY.name());
 	}
 	
 	@GetMapping(path = "/verify-user")

@@ -8,7 +8,7 @@ import com.example.RecipeHub.entities.User;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface RegisterService {
-    RegisterResponse register(RegisterRequest registerRequest, HttpServletRequest httpServletRequest) throws Exception;
+    String register(RegisterRequest registerRequest, HttpServletRequest httpServletRequest) throws Exception;
     String verifyUser(String token) throws Exception;
     String createVerificationToken(String userEmail);
     void sendVerificationEmail(RegisterRequest registerRequest, String applicationPath, String token) throws Exception;

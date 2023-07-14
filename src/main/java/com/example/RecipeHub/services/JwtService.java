@@ -67,9 +67,24 @@ public class JwtService {
 				
 	}
 	
+	public String generateTokenForRegisterVerification(String userJson) {
+		return Jwts
+				.builder()
+				.setClaims(new HashMap<>())
+				.setSubject(userJson)
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 2))
+				.signWith(getSigningKey(), SignatureAlgorithm.HS256)
+				.compact();
+	}
+	
 	public String extractUsername(String jwtToken) {
 		String email = extractClaim(jwtToken, Claims::getSubject);
-		
+		return email;
+	}
+	
+	public String extractSubject(String jwtToken) {
+		String email = extractClaim(jwtToken, Claims::getSubject);
 		return email;
 	}
 	
@@ -86,4 +101,5 @@ public class JwtService {
 		byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
+
 }

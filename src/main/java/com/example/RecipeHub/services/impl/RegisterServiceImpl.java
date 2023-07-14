@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.RecipeHub.dtos.RegisterRequest;
 import com.example.RecipeHub.dtos.RegisterResponse;
+import com.example.RecipeHub.dtos.UserEntityJsonBinding;
 import com.example.RecipeHub.entities.MailInfo;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.entities.VerificationToken;
+import com.example.RecipeHub.enums.LoginType;
 import com.example.RecipeHub.enums.RegisterStatusResponse;
 import com.example.RecipeHub.errorHandlers.BadRequestExeption;
 import com.example.RecipeHub.mappers.UserMapper;
@@ -22,8 +24,10 @@ import com.example.RecipeHub.services.EmailService;
 import com.example.RecipeHub.services.JwtService;
 import com.example.RecipeHub.services.RegisterService;
 import com.example.RecipeHub.utils.SystemUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -55,37 +59,46 @@ public class RegisterServiceImpl implements RegisterService {
 	}
 
 	@Override
-    public RegisterResponse register(RegisterRequest registerRequest, HttpServletRequest httpServletRequest) throws Exception {
+    public String register(RegisterRequest registerRequest, HttpServletRequest httpServletRequest) throws Exception {
 
         // check if email has been register
         if(userRepository.findByEmail(registerRequest.getEmail()).isPresent()){
-        	return new RegisterResponse(RegisterStatusResponse.EMAIL_DUPLICATED);
+        	throw new BadRequestExeption(RegisterStatusResponse.EMAIL_DUPLICATED.name());
         }
 
-        // save account to database
         registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         User user = userMapper.registerRequestToUser(registerRequest);
         user.setProfileImage(SystemUtil.getApplicationPath(httpServletRequest) + "/api/v1/global/image/avatar/default.jpg");
-        user = userRepository.save(user);
+        user.setLoginType(LoginType.BASIC);
+        UserEntityJsonBinding userBinding = new UserEntityJsonBinding(user.getEmail(), user.getPassword(), user.getFullName(), user.getProfileImage(), user.getBirthday(), user.getRole(), user.getGender(), user.getLoginType(), user.isEnable(), user.isBlocked());
+        String userJson = new ObjectMapper().writeValueAsString(userBinding);
+        System.out.println(userJson);
+        //user = userRepository.save(user);
 
-        String jwtToken = jwtService.generateToken(user);
+        //generate token
+        String jwtToken = jwtService.generateTokenForRegisterVerification(userJson);
+        VerificationToken verificationToken = new VerificationToken(null, jwtToken);
+        verificationTokenRepository.save(verificationToken);
 //        return RegisterResponse.builder()
 //                .jwtToken(jwtToken)
 //                .build();
-        return new RegisterResponse(RegisterStatusResponse.REGISTER_SUCCESSFULLY);
+        return jwtToken;
     }
 
+	@Transactional
     @Override
     public String verifyUser(String token) throws Exception {
         // check token co dung voi user do khong
         VerificationToken verificationToken = verificationTokenRepository.findVerificationTokenByToken(token)
                 .orElseThrow(() -> new RuntimeException(TOKEN_INVALID));
-        if(verificationToken.getExpirationDate().before(new Date(System.currentTimeMillis()))){
+        if(jwtService.isTokenExpired(verificationToken.getToken())){
             throw new RuntimeException(TOKEN_EXPIRED);
         }
-        User user = verificationToken.getUser();
+        UserEntityJsonBinding userBinding = new ObjectMapper().readValue(jwtService.extractSubject(token), UserEntityJsonBinding.class);
+        User user = new User(userBinding.getEmail(), userBinding.getPassword(), userBinding.getRole(), userBinding.getFullName(), userBinding.getGender(), userBinding.isEnable(), userBinding.getBirthday(), userBinding.getProfileImage(), userBinding.getLoginType(), userBinding.isBlocked());
         user.setEnable(true);
         userRepository.save(user);
+        verificationTokenRepository.delete(verificationToken);
         // chua return ne
         return TOKEN_VALID;
     }
@@ -93,14 +106,13 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public String createVerificationToken(String userEmail){
         String token = UUID.randomUUID().toString();
-        Date expirationDate = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 //        VerificationToken verificationToken = VerificationToken.builder()
 //                .token(token)
 //                .expirationDate(expirationDate)
 //                .user(user)
 //                .build();
-        VerificationToken verificationToken = new VerificationToken(null, token, expirationDate, user);
+        VerificationToken verificationToken = new VerificationToken(null, token);
         verificationTokenRepository.save(verificationToken);
         return token;
     }

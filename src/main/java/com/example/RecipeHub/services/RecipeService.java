@@ -277,7 +277,7 @@ public class RecipeService {
 	public void editRecipe(RecipeDTO dto, Long recipeId, Long userId, MultipartFile[] files,
 			HttpServletRequest httpServletRequest) {
 		Recipe recipe = recipeRepository.findById(recipeId)
-				.orElseThrow(() -> new NotFoundExeption("thí recipe is not existed"));
+				.orElseThrow(() -> new NotFoundExeption("this recipe is not existed"));
 		if (recipe.getUser().getUserId() != userId)
 			throw new ForbiddenExeption("this is not your own recipe");
 
@@ -402,7 +402,7 @@ public class RecipeService {
 		copiedRecipe.setUnit(recipe.getUnit());
 		copiedRecipe.setNutrition(recipe.getNutrition());
 		copiedRecipe.setSteps(recipe.getSteps());
-		copiedRecipe.setPrivacyStatus(PrivacyStatus.PUBLIC);
+		copiedRecipe.setPrivacyStatus(PrivacyStatus.PRIVATE);
 
 		copiedRecipe = recipeRepository.save(copiedRecipe);
 

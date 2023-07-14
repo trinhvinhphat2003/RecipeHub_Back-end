@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.LoginType;
 import com.example.RecipeHub.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -122,7 +123,7 @@ public class User implements UserDetails {
 		this.loginType = loginType;
 		this.blocked = blocked;
 	}
-
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub

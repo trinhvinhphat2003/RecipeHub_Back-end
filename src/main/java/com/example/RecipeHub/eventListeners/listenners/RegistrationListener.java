@@ -30,9 +30,7 @@ public class RegistrationListener{
     }
 
     private void completeRegistration(RegistrationCompletionEvent event) throws Exception {
-        // create token
-        String token = registerService.createVerificationToken(event.getRequest().getEmail());
         // send email
-        registerService.sendVerificationEmail(event.getRequest(), event.getApplicationPath(), token);
+        registerService.sendVerificationEmail(event.getRequest(), event.getApplicationPath(), event.getToken());
     }
 }
