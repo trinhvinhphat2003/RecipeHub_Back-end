@@ -12,6 +12,7 @@ public class FIlterDTO {
 	private String direction;
 	private String title;
 	private String privacyStatus;
+	private Boolean verified;
 	
 	public String getDirection() {
 		return direction;
@@ -56,11 +57,20 @@ public class FIlterDTO {
 		this.sortBy = sortBy;
 	}
 	
+	public Boolean getVerified() {
+		return verified;
+	}
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
+	}
+	public Boolean getFavorite() {
+		return favorite;
+	}
 	public FIlterDTO() {
 		super();
 	}
 	public FIlterDTO(ArrayList<String> tags, ArrayList<String> ingredients, Boolean favorite, String sortBy,
-			String direction, String title, String privacyStatus) {
+			String direction, String title, String privacyStatus, Boolean verified) {
 		super();
 		this.tags = tags;
 		this.ingredients = ingredients;
@@ -69,6 +79,7 @@ public class FIlterDTO {
 		this.direction = direction;
 		this.title = title;
 		this.privacyStatus = privacyStatus;
+		this.verified = verified;
 	}
 	
 	
