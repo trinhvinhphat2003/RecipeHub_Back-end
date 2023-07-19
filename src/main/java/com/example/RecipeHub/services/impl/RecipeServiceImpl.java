@@ -122,11 +122,11 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public RecipesPaginationResponse getRecipesWithPaginationAndFilter(String query, int page, int size, String sort,
-			String direction) {
+			String direction, Boolean isVerified) {
 		List<Recipe> recipes = recipeCustomRepository.filterByCondition(null, null, page, size, sort, direction, query,
-				null, null, null);
+				null, null, null, isVerified);
 		Long totalItem = recipeCustomRepository.getCountOfFilterByCondition(null, null, page, size, sort, direction,
-				query, null, null, null);
+				query, null, null, null, isVerified);
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for (Recipe recipe : recipes)
 			recipeDTOs.add(RecipeMapper.INSTANCE.recipeToRecipeDto(recipe));
@@ -134,7 +134,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public ArrayList<RecipeDTO> getRecipesWithFilter(FIlterDTO fIlterDTO, int page, int size, Long userId) {
+	public ArrayList<RecipeDTO> getRecipesWithFilter(FIlterDTO fIlterDTO, int page, int size, Long userId, Boolean isVerified) {
 		switch (fIlterDTO.getSortBy()) {
 		case "recent": {
 			fIlterDTO.setSortBy("recipe_id");
@@ -174,7 +174,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 		List<Recipe> recipes = recipeCustomRepository.filterByCondition(fIlterDTO.getTags(), fIlterDTO.getIngredients(),
 				page, size, fIlterDTO.getSortBy(), fIlterDTO.getDirection(), fIlterDTO.getTitle(),
-				fIlterDTO.getPrivacyStatus(), fIlterDTO.isFavorite(), userId);
+				fIlterDTO.getPrivacyStatus(), fIlterDTO.isFavorite(), userId, isVerified);
 		ArrayList<RecipeDTO> recipeDTOs = new ArrayList<>();
 		for (Recipe recipe : recipes)
 			recipeDTOs.add(RecipeMapper.INSTANCE.recipeToRecipeDto(recipe));
@@ -182,7 +182,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public Long getTotalItemOfRecipesWithFilter(FIlterDTO fIlterDTO, int page, int size, Long userId) {
+	public Long getTotalItemOfRecipesWithFilter(FIlterDTO fIlterDTO, int page, int size, Long userId, Boolean verified) {
 		switch (fIlterDTO.getSortBy()) {
 		case "id": {
 			fIlterDTO.setSortBy("recipe_id");
@@ -222,7 +222,7 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 		Long totalItem = recipeCustomRepository.getCountOfFilterByCondition(fIlterDTO.getTags(),
 				fIlterDTO.getIngredients(), page, size, fIlterDTO.getSortBy(), fIlterDTO.getDirection(),
-				fIlterDTO.getTitle(), fIlterDTO.getPrivacyStatus(), fIlterDTO.isFavorite(), userId);
+				fIlterDTO.getTitle(), fIlterDTO.getPrivacyStatus(), fIlterDTO.isFavorite(), userId, verified);
 		return totalItem;
 	}
 
@@ -249,6 +249,7 @@ public class RecipeServiceImpl implements RecipeService {
 		if (imageFiles != null)
 			recipe = FileUtil.saveRecipeImage(imageFiles, recipe, recipeImagePath, httpServletRequest);
 		User user = userService.findById(userId);
+		recipe.setVerified(false);
 		recipe.setUser(user);
 		recipeRepository.save(recipe);
 
@@ -308,6 +309,7 @@ public class RecipeServiceImpl implements RecipeService {
 		recipe.setUnit(dto.getUnit());
 		recipe.setSteps(dto.getSteps());
 		recipe.setPrivacyStatus(PrivacyStatus.valueOf(dto.getPrivacyStatus()));
+		recipe.setVerified(false);
 
 		// tags
 		ArrayList<TagDTO> tagDTOs = dto.getTags();
@@ -421,6 +423,7 @@ public class RecipeServiceImpl implements RecipeService {
 		copiedRecipe.setNutrition(recipe.getNutrition());
 		copiedRecipe.setSteps(recipe.getSteps());
 		copiedRecipe.setPrivacyStatus(PrivacyStatus.PRIVATE);
+		recipe.setVerified(false);
 
 		copiedRecipe = recipeRepository.save(copiedRecipe);
 

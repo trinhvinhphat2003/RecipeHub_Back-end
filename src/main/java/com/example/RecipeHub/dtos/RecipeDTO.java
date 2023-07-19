@@ -29,6 +29,13 @@ public class RecipeDTO {
 	private String steps;
 	private String nutrition;
 	private String privacyStatus;
+	private Boolean verified;
+	public Boolean getVerified() {
+		return verified;
+	}
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
+	}
 	public String getPrivacyStatus() {
 		return privacyStatus;
 	}
@@ -125,7 +132,7 @@ public class RecipeDTO {
 	public RecipeDTO(Long recipe_id, Long userId, ArrayList<IngredientDTO> ingredients, ArrayList<ImageDTO> images,
 			ArrayList<TagDTO> tags, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
 			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
-			String privacyStatus) {
+			String privacyStatus, Boolean verified) {
 		super();
 		this.recipe_id = recipe_id;
 		this.userId = userId;
@@ -143,6 +150,7 @@ public class RecipeDTO {
 		this.steps = steps;
 		this.nutrition = nutrition;
 		this.privacyStatus = privacyStatus;
+		this.verified = verified;
 	}
 	public Long getUserId() {
 		return userId;

@@ -19,7 +19,7 @@ public class RecipeCustomRepository {
 
 	public List<Recipe> filterByCondition(ArrayList<String> tags, ArrayList<String> ingredients, Integer page,
 			Integer size, String sortBy, String direction, String title, String privacyStatus, Boolean isFavorite,
-			Long user_id) {
+			Long user_id, Boolean isVerified) {
 		// initial
 		String sql = "select r.* from recipe r \r\n";
 		if (tags != null && tags.size() > 0) {
@@ -31,7 +31,8 @@ public class RecipeCustomRepository {
 		}
 
 		// append title
-		if(title == null) title = "";
+		if (title == null)
+			title = "";
 		sql += "where\n";
 		sql += "r.title like :title\n";
 
@@ -42,6 +43,10 @@ public class RecipeCustomRepository {
 		// append is favorite
 		if (isFavorite != null)
 			sql += "and r.is_favourite = " + (isFavorite ? 1 : 0) + "\n";
+
+		// append is verified
+		if (isVerified != null)
+			sql += "and r.verified = " + (isVerified ? 1 : 0) + "\n";
 
 		// append user id
 		if (user_id != null) {
@@ -124,10 +129,10 @@ public class RecipeCustomRepository {
 
 		return recipes;
 	}
-	
+
 	public Long getCountOfFilterByCondition(ArrayList<String> tags, ArrayList<String> ingredients, Integer page,
 			Integer size, String sortBy, String direction, String title, String privacyStatus, Boolean isFavorite,
-			Long user_id) {
+			Long user_id, Boolean isVerified) {
 		// initial
 		String sql = "select r.* from recipe r \r\n";
 		if (tags != null && tags.size() > 0) {
@@ -149,6 +154,10 @@ public class RecipeCustomRepository {
 		// append is favorite
 		if (isFavorite != null)
 			sql += "and r.is_favourite = " + (isFavorite ? 1 : 0) + "\n";
+
+		// append is verified
+		if (isVerified != null)
+			sql += "and r.verified = " + (isVerified ? 1 : 0) + "\n";
 
 		// append user id
 		if (user_id != null) {

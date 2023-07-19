@@ -30,11 +30,11 @@ public interface RecipeService {
 			String sortBy, String direction);
 
 	public RecipesPaginationResponse getRecipesWithPaginationAndFilter(String query, int page, int size, String sort,
-			String direction);
+			String direction, Boolean isVerified);
 
-	public ArrayList<RecipeDTO> getRecipesWithFilter(FIlterDTO fIlterDTO, int page, int size, Long userId);
+	public ArrayList<RecipeDTO> getRecipesWithFilter(FIlterDTO fIlterDTO, int page, int size, Long userId, Boolean isVerified);
 
-	public Long getTotalItemOfRecipesWithFilter(FIlterDTO fIlterDTO, int page, int size, Long userId);
+	public Long getTotalItemOfRecipesWithFilter(FIlterDTO fIlterDTO, int page, int size, Long userId, Boolean isVerified);
 
 	public void addNewRecipe(RecipeDTO dto, MultipartFile[] imageFiles, Long userId,
 			HttpServletRequest httpServletRequest);

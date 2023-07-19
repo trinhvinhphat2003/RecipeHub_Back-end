@@ -99,28 +99,31 @@ public class RecipeController {
 	@GetMapping("global/recipes")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipes(
 			@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "2") int size) {
+			@RequestParam(value = "size", defaultValue = "2") int size,
+			@RequestParam(value = "verified", required = false) Boolean verified) {
 
 		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(
-				new FIlterDTO(null, null, null, null, null, null, PrivacyStatus.PUBLIC.name()), page, size, null);
+				new FIlterDTO(null, null, null, null, null, null, PrivacyStatus.PUBLIC.name()), page, size, null, verified);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 
 	@PostMapping("global/recipes/filter")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO,
 			@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "20") int size) {
+			@RequestParam(value = "size", defaultValue = "20") int size,
+			@RequestParam(value = "verified", required = false) Boolean verified) {
 		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, null);
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, null, verified);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 	
 	@PostMapping("global/recipes/filter/total-item")
 	public ResponseEntity<Long> getTotalItemOfAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO,
 			@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "20") int size) {
+			@RequestParam(value = "size", defaultValue = "20") int size,
+			@RequestParam(value = "verified", required = false) Boolean verified) {
 		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
-		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, null));
+		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, null, verified));
 	}
 
 //	@PostMapping("global/recipes/filter/test")
@@ -134,33 +137,37 @@ public class RecipeController {
 	@PostMapping("user/recipes/filter")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesByUserWithFilter(@AuthenticationPrincipal User user,
 			@RequestBody FIlterDTO fIlterDTO, @RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "20") int size) {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, user.getUserId());
+			@RequestParam(value = "size", defaultValue = "20") int size,
+			@RequestParam(value = "verified", required = false) Boolean verified) {
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, user.getUserId(), verified);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 	
 	@PostMapping("user/recipes/filter/total-item")
 	public ResponseEntity<Long> getTotalItemOfAllRecipesByUserWithFilter(@AuthenticationPrincipal User user,
 			@RequestBody FIlterDTO fIlterDTO, @RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "20") int size) {
-		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, user.getUserId()));
+			@RequestParam(value = "size", defaultValue = "20") int size,
+			@RequestParam(value = "verified", required = false) Boolean verified) {
+		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, user.getUserId(), verified));
 	}
 
 	@PostMapping("global/recipes/filter/{user_id}")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO,
 			@PathVariable("user_id") Long user_id, @RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "20") int size) {
+			@RequestParam(value = "size", defaultValue = "20") int size,
+			@RequestParam(value = "verified", required = false) Boolean verified) {
 		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, user_id);
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, user_id, verified);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 	
 	@PostMapping("global/recipes/filter/{user_id}/total-item")
 	public ResponseEntity<Long> getTotalItemOfAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO,
 			@PathVariable("user_id") Long user_id, @RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "20") int size) {
+			@RequestParam(value = "size", defaultValue = "20") int size,
+			@RequestParam(value = "verified", required = false) Boolean verified) {
 		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
-		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, user_id));
+		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, user_id, verified));
 	}
 	
 	@PostMapping("user/copy-recipe/{recipeId}")
