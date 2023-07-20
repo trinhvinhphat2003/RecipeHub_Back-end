@@ -7,10 +7,9 @@ public class ZaloPayResponse {
     private String orderurl;
     private int returncode;
     private String returnmessage;
-//    "zptranstoken": "EOoYhp7fm2",
-//            "orderurl": "https://qcgateway.zalopay.vn/openinapp?order=eyJ6cHRyYW5zdG9rZW4iOiJFT29ZaHA3Zm0yIiwiYXBwaWQiOjU1M30=",
-//            "returncode": 1,
-//            "returnmessage": ""
+
+    public ZaloPayResponse() {
+    }
 
     public ZaloPayResponse(String zptranstoken, String orderurl, int returncode, String returnmessage) {
         this.zptranstoken = zptranstoken;

@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -44,8 +46,10 @@ public class AuthenticateService {
 	
 	public LoginResponseDTO authenticateBasic(LoginDTO loginDTO) {
 		//check if user exist or not
-		authenticationManager
+		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+		// store authentication details
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 		//get user
 		User user = userRepository.findByEmail(loginDTO.getEmail()).get();
 		

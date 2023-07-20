@@ -1,8 +1,11 @@
 package com.example.RecipeHub.services;
 
+import com.example.RecipeHub.client.dtos.response.ZaloPayResponse;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 public interface ZaloPayService {
-    void createPayment() throws IOException, URISyntaxException;
+    ZaloPayResponse createPayment() throws Exception;
+    void checkCallback(String jsonStr);
 }
