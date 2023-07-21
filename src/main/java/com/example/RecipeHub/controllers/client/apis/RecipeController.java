@@ -112,7 +112,7 @@ public class RecipeController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "20") int size) {
 		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, null, true);
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, null, null);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 	
@@ -121,7 +121,7 @@ public class RecipeController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "20") int size) {
 		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
-		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, null, true));
+		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, null, null));
 	}
 
 //	@PostMapping("global/recipes/filter/test")
