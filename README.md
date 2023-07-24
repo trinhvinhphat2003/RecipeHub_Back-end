@@ -1,4 +1,4 @@
-RecipeHub - Spring Boot 3.1 Project
+RecipeHub - Spring Boot 3.0.6 Project
 
 1. Description
 
