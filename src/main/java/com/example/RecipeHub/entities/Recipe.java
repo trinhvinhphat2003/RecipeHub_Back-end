@@ -71,6 +71,9 @@ public class Recipe {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
+	@JoinColumn(name = "verified")
+	private boolean verified = false;
+	
 	@Column(name = "privacy_status")
 	@Enumerated(EnumType.STRING)
 	private PrivacyStatus privacyStatus;
@@ -78,7 +81,7 @@ public class Recipe {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
 	private List<Ingredient> ingredients = new ArrayList<>();
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "recipe_HAVE_tag", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	private List<Tag> tags = new ArrayList<>();
 
@@ -91,7 +94,7 @@ public class Recipe {
 	public Recipe(Long recipe_id, String title, Integer pre_time, Integer cook_time, Integer recipe_yield,
 			Integer rating, boolean is_favourite, String description, String unit, String steps, String nutrition,
 			User user, PrivacyStatus privacyStatus, List<Ingredient> ingredients, List<Tag> tags, List<Image> images,
-			List<Meal_planner> meal_planners) {
+			List<Meal_planner> meal_planners, boolean verified) {
 		super();
 		this.recipe_id = recipe_id;
 		this.title = title;
@@ -110,6 +113,15 @@ public class Recipe {
 		this.tags = tags;
 		this.images = images;
 		this.meal_planners = meal_planners;
+		this.verified = verified;
+	}
+
+	public boolean isVerified() {
+		return verified;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
 	}
 
 	public List<Ingredient> getIngredients() {

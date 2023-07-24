@@ -8,18 +8,19 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RecipeHub.client.dtos.MealPlannerRequest;
-import com.example.RecipeHub.client.dtos.MealPlannerResponse;
+import com.example.RecipeHub.dtos.MealPlannerRequest;
+import com.example.RecipeHub.dtos.MealPlannerResponse;
 import com.example.RecipeHub.entities.Meal_planner;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.errorHandlers.ForbiddenExeption;
 import com.example.RecipeHub.services.MealPlannerService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -36,14 +37,14 @@ public class MealPlannerController {
 	public ResponseEntity<ArrayList<MealPlannerResponse>> getAllPlannerFromTo(@AuthenticationPrincipal User user,
 			@RequestParam(value = "from", required = true) Long from,
 			@RequestParam(value = "to", required = true) Long to) {
-		ArrayList<MealPlannerResponse> result = mealPlannerService.getMealPlannerFromTo(from, to);
+		ArrayList<MealPlannerResponse> result = mealPlannerService.getMealPlannerFromTo(from, to, user.getUserId());
 		return ResponseEntity.ok().body(result);
 	}
 	
 	@GetMapping("user/meal-planers/{date}")
 	public ResponseEntity< ArrayList<MealPlannerResponse>> getonePlanner(@AuthenticationPrincipal User user,
 			@PathVariable(value = "date", required = true) Long date) {
-		ArrayList<MealPlannerResponse> result = mealPlannerService.getMealPlannerByDate(date);
+		ArrayList<MealPlannerResponse> result = mealPlannerService.getMealPlannerByDate(date, user.getUserId());
 		return ResponseEntity.ok().body(result);
 	}
 	
@@ -56,7 +57,7 @@ public class MealPlannerController {
 	}
 	
 	@PostMapping("user/meal-planer")
-	public ResponseEntity<String> postNewPlanner(@AuthenticationPrincipal User user, @RequestBody MealPlannerRequest request) {
+	public ResponseEntity<String> postNewPlanner(@AuthenticationPrincipal User user,@Valid @RequestBody MealPlannerRequest request) {
 		mealPlannerService.createNewMealPlanner(request, user.getUserId());
 		return ResponseEntity.ok("this planner has been created successfully");
 	}

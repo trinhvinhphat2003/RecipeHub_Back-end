@@ -1,36 +1,12 @@
 package com.example.RecipeHub.services;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import com.example.RecipeHub.entities.FriendshipRequest;
-import com.example.RecipeHub.errorHandlers.NotFoundExeption;
-import com.example.RecipeHub.repositories.FriendshipRepository;
-import com.example.RecipeHub.repositories.FriendshipRequestRepository;
 
-@Service
-public class FriendshipRequestService {
-	
-	private final FriendshipRepository friendshipRepository;
-	private final FriendshipRequestRepository friendshipRequestRepository;
-	
-	public FriendshipRequestService(FriendshipRepository friendshipRepository, FriendshipRequestRepository friendshipRequestRepository) {
-		super();
-		this.friendshipRepository = friendshipRepository;
-		this.friendshipRequestRepository = friendshipRequestRepository;
-	}
+public interface FriendshipRequestService {
 
-	public FriendshipRequest getFriendshipRequestById(Long friendshipRequestId) {
-		return friendshipRequestRepository.findById(friendshipRequestId).orElseThrow(() -> new NotFoundExeption("this requst is not existed"));
-	}
+	public FriendshipRequest getFriendshipRequestById(Long friendshipRequestId);
 
-	public void save(FriendshipRequest friendshipRequest) {
-		friendshipRequestRepository.save(friendshipRequest);
-	}
+	public void save(FriendshipRequest friendshipRequest);
 
-	public void deleteById(Long friendshipRequestId) {
-		FriendshipRequest friendshipRequest = friendshipRequestRepository.findById(friendshipRequestId).orElseThrow(() -> new NotFoundExeption("this requst is not existed"));
-		friendshipRequestRepository.delete(friendshipRequest);
-	}
+	public void deleteById(Long friendshipRequestId);
 }

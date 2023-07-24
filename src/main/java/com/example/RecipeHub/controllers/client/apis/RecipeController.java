@@ -2,6 +2,7 @@ package com.example.RecipeHub.controllers.client.apis;
 
 import java.util.ArrayList;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,18 +19,21 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.RecipeHub.client.dtos.FIlterDTO;
-import com.example.RecipeHub.client.dtos.IngredientDTO;
-import com.example.RecipeHub.client.dtos.RecipeDTO;
-import com.example.RecipeHub.client.dtos.TagDTO;
+import com.example.RecipeHub.dtos.FIlterDTO;
+import com.example.RecipeHub.dtos.IngredientDTO;
+import com.example.RecipeHub.dtos.RecipeDTO;
+import com.example.RecipeHub.dtos.TagDTO;
 import com.example.RecipeHub.entities.Ingredient;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.Tag;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.PrivacyStatus;
 import com.example.RecipeHub.errorHandlers.UnauthorizedExeption;
+import com.example.RecipeHub.eventListeners.events.RegistrationCompletionEvent;
+import com.example.RecipeHub.eventListeners.events.ShareRecipeEvent;
 import com.example.RecipeHub.mappers.RecipeMapper;
 import com.example.RecipeHub.services.RecipeService;
+import com.example.RecipeHub.services.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -38,10 +42,14 @@ import jakarta.servlet.http.HttpServletRequest;
 public class RecipeController {
 
 	private final RecipeService recipeService;
+	private final UserService userService;
+	private final ApplicationEventPublisher eventPublisher;
 
-	public RecipeController(RecipeService recipeService) {
+	public RecipeController(RecipeService recipeService, UserService userService, ApplicationEventPublisher eventPublisher) {
 		super();
 		this.recipeService = recipeService;
+		this.userService = userService;
+		this.eventPublisher = eventPublisher;
 	}
 
 	@PostMapping("user/recipe")
@@ -91,10 +99,11 @@ public class RecipeController {
 	@GetMapping("global/recipes")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipes(
 			@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "2") int size) {
+			@RequestParam(value = "size", defaultValue = "2") int size,
+			@RequestParam(value = "verified", required = false) Boolean verified) {
 
 		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(
-				new FIlterDTO(null, null, null, null, null, null, PrivacyStatus.PUBLIC.name()), page, size, null);
+				new FIlterDTO(null, null, null, null, null, null, PrivacyStatus.PUBLIC.name(), null), page, size, null, verified);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
 	}
 
@@ -103,8 +112,16 @@ public class RecipeController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "20") int size) {
 		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, null);
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, null, null);
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+	}
+	
+	@PostMapping("global/recipes/filter/total-item")
+	public ResponseEntity<Long> getTotalItemOfAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO,
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "size", defaultValue = "20") int size) {
+		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
+		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, null, null));
 	}
 
 //	@PostMapping("global/recipes/filter/test")
@@ -118,9 +135,17 @@ public class RecipeController {
 	@PostMapping("user/recipes/filter")
 	public ResponseEntity<ArrayList<RecipeDTO>> getAllRecipesByUserWithFilter(@AuthenticationPrincipal User user,
 			@RequestBody FIlterDTO fIlterDTO, @RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "20") int size) {
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, user.getUserId());
+			@RequestParam(value = "size", defaultValue = "20") int size,
+			@RequestParam(value = "verified", required = false) Boolean verified) {
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, user.getUserId(), fIlterDTO.getVerified());
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+	}
+	
+	@PostMapping("user/recipes/filter/total-item")
+	public ResponseEntity<Long> getTotalItemOfAllRecipesByUserWithFilter(@AuthenticationPrincipal User user,
+			@RequestBody FIlterDTO fIlterDTO, @RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "size", defaultValue = "20") int size) {
+		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, user.getUserId(), fIlterDTO.getVerified()));
 	}
 
 	@PostMapping("global/recipes/filter/{user_id}")
@@ -128,7 +153,28 @@ public class RecipeController {
 			@PathVariable("user_id") Long user_id, @RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "20") int size) {
 		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
-		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, user_id);
+		ArrayList<RecipeDTO> recipeDtos = recipeService.getRecipesWithFilter(fIlterDTO, page, size, user_id, fIlterDTO.getVerified());
 		return new ResponseEntity<>(recipeDtos, HttpStatus.OK);
+	}
+	
+	@PostMapping("global/recipes/filter/{user_id}/total-item")
+	public ResponseEntity<Long> getTotalItemOfAllRecipesWithFilter(@RequestBody FIlterDTO fIlterDTO,
+			@PathVariable("user_id") Long user_id, @RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "size", defaultValue = "20") int size) {
+		fIlterDTO.setPrivacyStatus(PrivacyStatus.PUBLIC.name());
+		return ResponseEntity.ok(recipeService.getTotalItemOfRecipesWithFilter(fIlterDTO, page, size, user_id, fIlterDTO.getVerified()));
+	}
+	
+	@PostMapping("user/copy-recipe/{recipeId}")
+	public ResponseEntity<Long> copyOtherRecipe(@AuthenticationPrincipal User user, @PathVariable("recipeId") Long recipeId, HttpServletRequest httpServletRequest) {
+		User userEntity = userService.getUserById(user.getUserId());
+		Long newId = recipeService.copyRecipe(userEntity, recipeId, httpServletRequest);
+		return ResponseEntity.ok(newId);
+	}
+	
+	@PostMapping("user/share-recipe/{recipeId}")
+	public ResponseEntity<String> shareRecipe(@AuthenticationPrincipal User user, @PathVariable("recipeId") Long recipeid, @RequestBody String[] emails) throws Exception {
+		eventPublisher.publishEvent(new ShareRecipeEvent(emails, user.getFullName(), recipeid));
+		return ResponseEntity.ok("share recipe to friends successfully");
 	}
 }

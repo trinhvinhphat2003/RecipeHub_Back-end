@@ -18,25 +18,17 @@ public class VerificationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "token")
+    @Column(name = "token", columnDefinition = "text")
     private String token;
-    @Column(name = "expiration_date")
-    private Date expirationDate;
-
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable=false, name="user_id")
-    private User user; 
     
 	public VerificationToken() {
 		super();
 	}
 	
-	public VerificationToken(Long id, String token, Date expirationDate, User user) {
+	public VerificationToken(Long id, String token) {
 		super();
 		this.id = id;
 		this.token = token;
-		this.expirationDate = expirationDate;
-		this.user = user;
 	}
 
 	public Long getId() {
@@ -53,23 +45,5 @@ public class VerificationToken {
 
 	public void setToken(String token) {
 		this.token = token;
-	}
-
-	public Date getExpirationDate() {
-		return expirationDate;
-	}
-
-	public void setExpirationDate(Date expirationDate) {
-		this.expirationDate = expirationDate;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-    
-    
+	} 
 }

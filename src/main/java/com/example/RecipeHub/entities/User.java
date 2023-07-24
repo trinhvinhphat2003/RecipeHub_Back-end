@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.RecipeHub.enums.Gender;
 import com.example.RecipeHub.enums.LoginType;
 import com.example.RecipeHub.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -45,7 +46,7 @@ public class User implements UserDetails {
 	@Column(nullable = true)
 	private String password;
 
-	@Column(name = "full_name")
+	@Column(name = "full_name", length = 100)
 	private String fullName;
 
 	@Column(name = "profile_image")
@@ -54,13 +55,14 @@ public class User implements UserDetails {
 	@Column(name = "birthday")
 	private Date birthday;
 
+	@Column(name = "role", length = 20)
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
-	@Column(name = "login_type")
+	@Column(name = "login_type", length = 20)
 	@Enumerated(EnumType.STRING)
 	private LoginType loginType;
 
@@ -121,7 +123,7 @@ public class User implements UserDetails {
 		this.loginType = loginType;
 		this.blocked = blocked;
 	}
-
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub

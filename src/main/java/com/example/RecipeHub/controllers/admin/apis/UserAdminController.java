@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.RecipeHub.admin.dtos.RecipesPaginationResponse;
-import com.example.RecipeHub.admin.dtos.UsersPaginationResponse;
-import com.example.RecipeHub.client.dtos.UserDTO;
+import com.example.RecipeHub.dtos.RecipesPaginationResponse;
+import com.example.RecipeHub.dtos.UserDTO;
+import com.example.RecipeHub.dtos.UsersPaginationResponse;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.services.UserService;
 
@@ -34,21 +34,27 @@ public class UserAdminController {
 			@RequestParam(value = "page", defaultValue = "0", required = false) int page,
 			@RequestParam(value = "size", defaultValue = "20", required = false) int size,
 			@RequestParam(value = "query", defaultValue = "", required = false) String query,
+			@RequestParam(value = "isBlocked", required = false) Integer isBlocked,
 			@RequestParam(value = "sort", defaultValue = "user_id", required = false) String sort,
 			@RequestParam(value = "direction", defaultValue = "desc", required = false) String direction) { 
-		UsersPaginationResponse response = new UsersPaginationResponse(userService.filterUserAndPagination(page, size, sort, direction, query), userService.filterUser(sort, direction, query));
+		UsersPaginationResponse response = new UsersPaginationResponse(userService.filterUserAndPagination(page, size, sort, direction, query, isBlocked), userService.countOfFilterUser(sort, direction, query, isBlocked));
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("user/block/{user_id}")
+	@PostMapping("/user/block/{user_id}")
 	public ResponseEntity<String> blockUser(@AuthenticationPrincipal User user, @PathVariable("user_id") Long userId) {
 		userService.blockUserByUserId(userId);
 		return ResponseEntity.ok("this user have been blocked");
 	}
 	
-	@PostMapping("user/unblock/{user_id}")
+	@PostMapping("/user/unblock/{user_id}")
 	public ResponseEntity<String> unBlockUser(@AuthenticationPrincipal User user, @PathVariable("user_id") Long userId) {
 		userService.unBlockUserByUserId(userId);
 		return ResponseEntity.ok("this user have been unblocked");
+	}
+	
+	@GetMapping("/user/total")
+	public ResponseEntity<Integer> countRecipeCurrentInDB() {
+		return ResponseEntity.ok(userService.countUserCurrentInDB());
 	}
 }

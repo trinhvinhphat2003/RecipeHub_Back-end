@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RecipeHub.client.dtos.FriendshipRequestDTO;
-import com.example.RecipeHub.client.dtos.UserDTO;
+import com.example.RecipeHub.dtos.FriendshipRequestDTO;
+import com.example.RecipeHub.dtos.UserDTO;
 import com.example.RecipeHub.entities.FriendshipRequest;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.enums.Friendship_status;
@@ -94,6 +94,14 @@ public class FriendshipController {
 		if (user == null)
 			throw new UnauthorizedExeption("");
 		ArrayList<FriendshipRequestDTO> friendshipRequestDTOs = friendService.getAllFriendshipRequest(user);
+		return new ResponseEntity<>(friendshipRequestDTOs, HttpStatus.OK);
+	}
+	
+	@GetMapping("user/friend/sended-requests")
+	public ResponseEntity<ArrayList<FriendshipRequestDTO>> getSendedRequest(@AuthenticationPrincipal User user) {
+		if (user == null)
+			throw new UnauthorizedExeption("");
+		ArrayList<FriendshipRequestDTO> friendshipRequestDTOs = friendService.getAllSendedFriendshipRequest(user);
 		return new ResponseEntity<>(friendshipRequestDTOs, HttpStatus.OK);
 	}
 

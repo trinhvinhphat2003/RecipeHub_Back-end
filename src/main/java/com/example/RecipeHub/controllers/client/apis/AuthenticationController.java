@@ -11,16 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RecipeHub.client.dtos.LoginDTO;
-import com.example.RecipeHub.client.dtos.LoginResponseDTO;
-import com.example.RecipeHub.client.dtos.RegisterRequest;
-import com.example.RecipeHub.client.dtos.RegisterResponse;
-import com.example.RecipeHub.eventListeners.RegistrationCompletionEvent;
+import com.example.RecipeHub.dtos.LoginDTO;
+import com.example.RecipeHub.dtos.LoginResponseDTO;
+import com.example.RecipeHub.dtos.RegisterRequest;
+import com.example.RecipeHub.dtos.RegisterResponse;
+import com.example.RecipeHub.enums.RegisterStatusResponse;
+import com.example.RecipeHub.eventListeners.events.RegistrationCompletionEvent;
 import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.services.AuthenticateService;
 import com.example.RecipeHub.services.RegisterService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -39,7 +41,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/basic/login")
-	public ResponseEntity<LoginResponseDTO> handleBasicLogin(@RequestBody LoginDTO loginDTO) {
+	public ResponseEntity<LoginResponseDTO> handleBasicLogin(@Valid @RequestBody LoginDTO loginDTO) {
 		return new ResponseEntity<>(authenticateService.authenticateBasic(loginDTO), HttpStatus.OK);
 	}
 
@@ -50,10 +52,10 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping(path = "/register")
-	public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest, HttpServletRequest request) throws Exception {
-		RegisterResponse registerResponse = accountService.register(registerRequest, request);
-		eventPublisher.publishEvent(new RegistrationCompletionEvent(registerRequest, getApplicationPath(request)));
-		return ResponseEntity.ok(registerResponse);
+	public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) throws Exception {
+		String token = accountService.register(registerRequest, request);
+		eventPublisher.publishEvent(new RegistrationCompletionEvent(registerRequest, getApplicationPath(request), token));
+		return ResponseEntity.ok(RegisterStatusResponse.REGISTER_SUCCESSFULLY.name());
 	}
 	
 	@GetMapping(path = "/verify-user")

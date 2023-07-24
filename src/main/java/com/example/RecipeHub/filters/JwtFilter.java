@@ -12,6 +12,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.RecipeHub.entities.User;
+import com.example.RecipeHub.errorHandlers.ForbiddenExeption;
 import com.example.RecipeHub.services.JwtService;
 
 import jakarta.servlet.FilterChain;
@@ -33,7 +35,6 @@ public class JwtFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		String JwtHeader = request.getHeader("JWT");
 		if (JwtHeader == null || !JwtHeader.startsWith("Bearer")) {
-			// rememberme
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -44,6 +45,8 @@ public class JwtFilter extends OncePerRequestFilter {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (userEmail != null && auth == null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+			User user = (User) userDetails;
+			if(user.isBlocked() == true) throw new ForbiddenExeption("this account is blocked");
 			final boolean isTokenValid = jwtService.isTokenValid(jwtToken, userDetails);
 			if (isTokenValid) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

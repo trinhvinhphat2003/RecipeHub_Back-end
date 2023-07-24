@@ -32,8 +32,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.RecipeHub.client.dtos.IngredientDTO;
-import com.example.RecipeHub.client.dtos.RecipeDTO;
+import com.example.RecipeHub.dtos.IngredientDTO;
+import com.example.RecipeHub.dtos.RecipeDTO;
 import com.example.RecipeHub.entities.Recipe;
 import com.example.RecipeHub.entities.User;
 import com.example.RecipeHub.repositories.UserRepository;
@@ -92,7 +92,7 @@ public class FileController {
 			userService.save(userPersisted);
 		}
 		
-		return ResponseEntity.ok("Image uploaded successfully");
+		return ResponseEntity.ok(getApplicationPath(httpServletRequest) + "/api/v1/global/image/avatar/" + newFileName);
 	}
 
 	@GetMapping("global/image/avatar/{image}")
@@ -135,6 +135,6 @@ public class FileController {
 	}
 	
 	private String getApplicationPath(HttpServletRequest request){
-		return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+		return "http://" + request.getServerName() /*+ ":" + request.getServerPort()*/ + request.getContextPath();
 	}
 }
