@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.RecipeHub.dtos.EditProfileRequest;
 import com.example.RecipeHub.dtos.UserDTO;
 import com.example.RecipeHub.entities.User;
+import com.example.RecipeHub.enums.Role;
+import com.example.RecipeHub.errorHandlers.NotFoundExeption;
 import com.example.RecipeHub.mappers.UserMapper;
 import com.example.RecipeHub.services.UserService;
 
@@ -36,6 +38,7 @@ public class UserController {
 	@GetMapping("/global/user/profile/{userId}")
 	public ResponseEntity<UserDTO> getGlobalUser(@AuthenticationPrincipal User user, @PathVariable("userId") Long userId) {
 		UserDTO result = UserMapper.INSTANCE.userToUserDTO(userService.getUserById(userId));
+		if(result.getRole().equals(Role.ADMIN.name())) throw new NotFoundExeption("this user is not existed");
 		return ResponseEntity.ok(result);
 	}
 }
