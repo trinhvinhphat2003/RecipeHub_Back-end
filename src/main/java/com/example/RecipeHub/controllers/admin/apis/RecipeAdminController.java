@@ -61,4 +61,12 @@ public class RecipeAdminController {
 		recipeService.save(recipe);
 		return ResponseEntity.ok("this recipe have been verified");
 	}
+	
+	@PostMapping("/recipe/{recipeId}/unverify")
+	public ResponseEntity<String> unVerifyRecipe(@PathVariable Long recipeId) {
+		Recipe recipe = recipeService.getRecipeById(recipeId);
+		recipe.setVerified(false);
+		recipeService.save(recipe);
+		return ResponseEntity.ok("this recipe have been unverified");
+	}
 }
