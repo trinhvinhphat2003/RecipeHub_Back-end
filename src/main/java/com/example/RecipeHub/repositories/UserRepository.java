@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query(value = "select * from User u where (u.full_name like %:query% or u.email like %:query%) and blocked = :blocked order by :sortBy :direction", nativeQuery=true)
 	public Page<User> filterUserAndPagination(@Param("query") String query,@Param("sortBy") String sortBy,@Param("direction") String direction, @Param("blocked") Boolean blocked, Pageable pageable);
 	
-	@Query(value="select u from User u where (u.fullName like %:query% or u.email like %:query%) and blocked = :blocked")
+	@Query(value="select u from User u where (u.fullName like %:query% or u.email like %:query%) and (blocked = :blocked OR :blocked IS NULL)")
 	public List<User> filterUser(@Param("query") String query, @Param("blocked") Boolean blocked);
 
 	@Query(value = "SELECT count(*) FROM user where enable = 1", nativeQuery = true)
