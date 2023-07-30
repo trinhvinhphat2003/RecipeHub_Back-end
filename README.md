@@ -1,4 +1,4 @@
-RecipeHub - Spring Boot 3.0.6 Project
+RecipeHub - Spring Boot 3.0.6 Project(Deployed URL: https://recipehub-g3.vercel.app/)
 
 1. Description
 
