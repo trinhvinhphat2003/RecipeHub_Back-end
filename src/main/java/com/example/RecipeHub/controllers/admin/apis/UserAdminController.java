@@ -34,9 +34,10 @@ public class UserAdminController {
 			@RequestParam(value = "page", defaultValue = "0", required = false) int page,
 			@RequestParam(value = "size", defaultValue = "20", required = false) int size,
 			@RequestParam(value = "query", defaultValue = "", required = false) String query,
-			@RequestParam(value = "isBlocked", required = false) Integer isBlocked,
+			@RequestParam(value = "isBlocked", required = false, defaultValue = "2") Integer isBlocked,
 			@RequestParam(value = "sort", defaultValue = "user_id", required = false) String sort,
 			@RequestParam(value = "direction", defaultValue = "desc", required = false) String direction) { 
+		if(isBlocked.equals(2)) isBlocked = null;
 		UsersPaginationResponse response = new UsersPaginationResponse(userService.filterUserAndPagination(page, size, sort, direction, query, isBlocked), userService.countOfFilterUser(sort, direction, query, isBlocked));
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

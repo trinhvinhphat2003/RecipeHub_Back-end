@@ -409,8 +409,8 @@ public class RecipeServiceImpl implements RecipeService {
 	public Long copyRecipe(User user, Long recipeId, HttpServletRequest httpServletRequest) {
 		Recipe recipe = recipeRepository.findById(recipeId)
 				.orElseThrow(() -> new NotFoundExeption("this recipe is not ecisted"));
-		if (recipe.getPrivacyStatus() == PrivacyStatus.PRIVATE)
-			throw new ForbiddenExeption("you have no permission to copy this recipe");
+//		if (recipe.getPrivacyStatus() == PrivacyStatus.PRIVATE)
+//			throw new ForbiddenExeption("you have no permission to copy this recipe");
 		Recipe copiedRecipe = new Recipe();
 		copiedRecipe.setTitle(recipe.getTitle());
 		copiedRecipe.setPre_time(recipe.getPre_time());

@@ -52,13 +52,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int countOfFilterUser(String sort, String direction, String query, Integer isBlocked) {
-		return userRepository.filterUser(query).size();
+		return userRepository.filterUser(query, isBlocked == null ? null : (isBlocked == 1 ? true : false)).size();
 	}
 
 	@Override
 	public ArrayList<UserDTO> filterUserAndPagination(int page, int size, String sort, String direction, String query,
 			Integer isBlocked) {
-		Page<User> users = userRepository.filterUserAndPagination(query, sort, direction,
+		Page<User> users = userRepository.filterUserAndPagination(query, sort, direction, isBlocked == null ? null : (isBlocked == 1 ? true : false),
 				PaginationUtil.generatePageable(page, size, sort, direction));
 		ArrayList<UserDTO> result = new ArrayList<>();
 		for (User user : users) {

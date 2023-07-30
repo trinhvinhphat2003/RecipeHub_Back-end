@@ -93,11 +93,15 @@ public class AuthenticateServiceImpl implements AuthenticateService{
 			emailRes[0] = email;
 			user = userRepository.findByEmail(email);
 		}
-		//generate jwt token
-		String JwtToken = "Bearer " + jwtService.generateToken(user.get());
-		
-		//response
-		LoginResponseDTO responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user.get()), LoginStatusResponse.LOGIN_SUCCESSFULLY);
+		LoginResponseDTO responseDto = null;
+		if(user.get().isBlocked()) {
+			responseDto = new LoginResponseDTO("", UserMapper.INSTANCE.userToUserDTO(user.get()), LoginStatusResponse.ACCOUNT_BLOCKED);
+		} else {
+			//generate jwt token
+			String JwtToken = "Bearer " + jwtService.generateToken(user.get());
+			//response
+			responseDto = new LoginResponseDTO(JwtToken, UserMapper.INSTANCE.userToUserDTO(user.get()), LoginStatusResponse.LOGIN_SUCCESSFULLY);
+		}
 		
 		return responseDto;
 	}
